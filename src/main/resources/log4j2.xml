@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<Configuration monitorInterval="1000">
+<Configuration level="all" monitorInterval="1000">
+
     <Appenders>
         <Console name="console" target="SYSTEM_OUT">
             <PatternLayout>
@@ -17,12 +18,13 @@
             </Policies>
             <DefaultRolloverStrategy max="15"/>
         </RollingFile>
-
     </Appenders>
+
     <Loggers>
         <Root level="all">
             <AppenderRef ref="console"/>
             <AppenderRef ref="file" level="all"/>
         </Root>
     </Loggers>
+
 </Configuration>

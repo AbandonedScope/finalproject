@@ -14,6 +14,7 @@ import java.io.IOException;
 public class PreControllerFilter implements Filter {
     private static final Logger logger = LogManager.getLogger();
 
+    @Override
     public void init(FilterConfig config) throws ServletException {
     }
 
@@ -25,6 +26,7 @@ public class PreControllerFilter implements Filter {
         chain.doFilter(request, response);
     }
 
+    @Override
     public void destroy() {
     }
 }

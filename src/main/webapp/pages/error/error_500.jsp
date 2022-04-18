@@ -6,7 +6,8 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page isErrorPage="true" contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
     <title>500</title>
 </head>
@@ -14,6 +15,6 @@
 Request from : ${pageContext.errorData.requestURI} is failed. <br/>
 Servlet name : ${pageContext.errorData.servletName} <br/>
 Status code : ${pageContext.errorData.statusCode} <br/>
-Exception : ${pageContext.errorData.exception} <br/>
+Exception : ${pageContext.errorData.throwable} <br/>
 </body>
 </html>

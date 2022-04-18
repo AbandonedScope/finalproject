@@ -13,7 +13,7 @@ public class ServletContentListenerImpl implements ServletContextListener {
 
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        logger.log(Level.INFO, "Servlet context was initialized.");
+        logger.log(Level.INFO, "Servlet context was initialized. {}", sce.getServletContext());
     }
 
     @Override

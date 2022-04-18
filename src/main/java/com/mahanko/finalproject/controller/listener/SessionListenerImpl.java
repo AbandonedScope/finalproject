@@ -1,5 +1,7 @@
 package com.mahanko.finalproject.controller.listener;
 
+import com.mahanko.finalproject.controller.ParametersType;
+import com.mahanko.finalproject.model.entity.CustomerEntity;
 import jakarta.servlet.annotation.WebListener;
 import jakarta.servlet.http.HttpSessionEvent;
 import jakarta.servlet.http.HttpSessionListener;
@@ -13,6 +15,7 @@ public class SessionListenerImpl implements HttpSessionListener {
 
     @Override
     public void sessionCreated(HttpSessionEvent se) {
+        //se.getSession().setAttribute("user", new CustomerEntity());
         logger.log(Level.INFO, "Session was created, id : {}.", se.getSession().getId());
     }
 

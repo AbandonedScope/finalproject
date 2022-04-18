@@ -1,19 +1,29 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
     <title>JSP - Hello World</title>
 </head>
 <body>
-<form action="controller">
+<form action="controller" method="post">
     <input type="hidden" name="command" value="login"/>
-    Login : <input type="text" name="login" value=""/>
+    <label>
+        Login :
+        <input type="text" name="login" value="${sessionScope.user.getLogin()}"/>
+    </label>
     <br/>
-    Password : <input type="password" name="pass" value=""/>
+    <label>
+        Password :
+        <input type="password" name="password" value=""/>
+    </label>
     <br/>
-    <input type="submit" name="sub" value="push" />
+    <input type="submit" name="sub" value="log in"/>
     <br/>
-    ${login_msg}
 </form>
+<form action="controller">
+    <input type="hidden" name="command" value="register">
+    <input type="submit" name="sub" value="register">
+</form>
+${login_msg}
 </body>
 </html>

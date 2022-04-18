@@ -9,9 +9,12 @@ import java.io.IOException;
 
 @WebFilter(filterName = "ForwardFilter", dispatcherTypes = DispatcherType.FORWARD, urlPatterns = "/pages/*")
 public class ForwardFilter implements Filter {
+
+    @Override
     public void init(FilterConfig config) throws ServletException {
     }
 
+    @Override
     public void destroy() {
     }
 
