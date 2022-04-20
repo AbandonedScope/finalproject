@@ -17,18 +17,16 @@ import java.util.List;
 import java.util.Optional;
 
 public class CustomerDaoImpl implements CustomerDao {
+    private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_BY_PASSWORD_LOGIN =
             "SELECT * " +
             "FROM users " +
-            "JOIN roles " +
-            "ON users.u_role = roles.r_id " +
             "WHERE u_login = ? AND u_password = ? ";
     private static final String SELECT_EXISTS_BY_LOGIN =
             "SELECT EXISTS (SELECT  u_login FROM users WHERE u_login = ?)";
     private static final String INSERT_NEW_CUSTOMER =
             "INSERT INTO users(u_name, u_surname, u_login, u_password, u_loyaltypoints, u_blocked, u_role) " +
                     "VALUE (?, ?, ?, ?, ?, ?, ?)";
-    private static final Logger logger = LogManager.getLogger();
     private static final CustomerDaoImpl instance = new CustomerDaoImpl();
 
     private CustomerDaoImpl() {
@@ -53,8 +51,8 @@ public class CustomerDaoImpl implements CustomerDao {
                     customer = optionalCustomer.get();
                 }
             }
-        } catch (SQLException e) { // FIXME: 15.04.2022 INFO?
-            logger.log(Level.INFO, e);
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
             throw new DaoException(e);
         }
 
@@ -71,7 +69,7 @@ public class CustomerDaoImpl implements CustomerDao {
                 isExist = resultSet.getBoolean(1);
             }
         } catch (SQLException e) {
-            logger.log(Level.INFO, e);
+            logger.log(Level.ERROR, e);
             throw new DaoException(e);
         }
 
@@ -91,12 +89,12 @@ public class CustomerDaoImpl implements CustomerDao {
             statement.setString(4, entity.getPassword());
             statement.setInt(5, entity.getLoyalPoints());
             statement.setBoolean(6, entity.isBlocked());
-            statement.setInt(7, entity.getRole().getId());
+            statement.setString(7, entity.getRole().toString());
             if (statement.executeUpdate() != 0) {
                 isInserted = true;
             }
         } catch (SQLException e) {
-            logger.log(Level.INFO, e);
+            logger.log(Level.ERROR, e);
             throw new DaoException(e);
         }
 

@@ -1,6 +1,6 @@
 package com.mahanko.finalproject.validator.impl;
 
-import com.mahanko.finalproject.controller.ParametersType;
+import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.validator.CustomValidator;
 
 import java.util.Map;
@@ -38,11 +38,11 @@ public class CustomValidatorImpl implements CustomValidator {
             }
         }
 
-        String name = params.get(ParametersType.NAME.toString());
-        String surname = params.get(ParametersType.SURNAME.toString());
-        String login = params.get(ParametersType.LOGIN.toString());
-        String password = params.get(ParametersType.PASSWORD.toString());
-        String confirmPassword = params.get(ParametersType.CONFIRM_PASSWORD.toString());
+        String name = params.get(ParameterType.NAME);
+        String surname = params.get(ParameterType.SURNAME);
+        String login = params.get(ParameterType.LOGIN);
+        String password = params.get(ParameterType.PASSWORD);
+        String confirmPassword = params.get(ParameterType.CONFIRM_PASSWORD);
         if (!validateName(name) ||
                 !validateName(surname)) {
             isValid = false;

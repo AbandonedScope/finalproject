@@ -1,13 +1,14 @@
 package com.mahanko.finalproject.model.entity;
 
 public class CustomerEntity extends AbstractEntity<Long> {
+    private static final int DEFAULT_LOYALTY_POINTS_AMOUNT = 5;
     private String name;
     private String surname;
     private String password;
     private String login;
-    private int loyalPoints = 5;
-    private boolean blocked = false;
-    private RoleEntity roleEntity;
+    private int loyalPoints = DEFAULT_LOYALTY_POINTS_AMOUNT;
+    private boolean blocked;
+    private RoleType roleEntity;
 
     public CustomerEntity() {}
 
@@ -43,7 +44,7 @@ public class CustomerEntity extends AbstractEntity<Long> {
         this.blocked = blocked;
     }
 
-    public void setRole(RoleEntity roleEntity) {
+    public void setRole(RoleType roleEntity) {
         this.roleEntity = roleEntity;
     }
 
@@ -71,7 +72,7 @@ public class CustomerEntity extends AbstractEntity<Long> {
         return blocked;
     }
 
-    public RoleEntity getRole() {
+    public RoleType getRole() {
         return roleEntity;
     }
 
@@ -111,7 +112,7 @@ public class CustomerEntity extends AbstractEntity<Long> {
             return this;
         }
 
-        public CustomerBuilder setRole(RoleEntity roleEntity) {
+        public CustomerBuilder setRole(RoleType roleEntity) {
             CustomerEntity.this.roleEntity = roleEntity;
             return this;
         }

@@ -1,6 +1,7 @@
 package com.mahanko.finalproject.controller.command.impl;
 
-import com.mahanko.finalproject.controller.ParametersType;
+import com.mahanko.finalproject.controller.PagePath;
+import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
@@ -8,9 +9,7 @@ import com.mahanko.finalproject.model.entity.RoleType;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.service.CustomerService;
-import com.mahanko.finalproject.model.service.RoleService;
 import com.mahanko.finalproject.model.service.impl.CustomerServiceImpl;
-import com.mahanko.finalproject.model.service.impl.RoleServiceImpl;
 import com.mahanko.finalproject.util.PasswordEncryptor;
 import com.mahanko.finalproject.validator.CustomValidator;
 import com.mahanko.finalproject.validator.impl.CustomValidatorImpl;
@@ -25,28 +24,29 @@ import java.util.Map;
 
 public class AddUserCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
+    private static final String REGISTRATION_VALIDATION_FAILED_MESSAGE = "Some field(s) is(are) wrong.";
+    private static final String REGISTRATION_USER_EXISTS_MESSAGE = "Such user is already exists.";
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        RoleService roleService = RoleServiceImpl.getInstance();
-        String name = request.getParameter(ParametersType.NAME.toString());
-        String surname = request.getParameter(ParametersType.SURNAME.toString());
-        String login = request.getParameter(ParametersType.LOGIN.toString());
-        String password = request.getParameter(ParametersType.PASSWORD.toString());
-        String confirmPassword = request.getParameter(ParametersType.CONFIRM_PASSWORD.toString());
+        String name = request.getParameter(ParameterType.NAME);
+        String surname = request.getParameter(ParameterType.SURNAME);
+        String login = request.getParameter(ParameterType.LOGIN);
+        String password = request.getParameter(ParameterType.PASSWORD);
+        String confirmPassword = request.getParameter(ParameterType.CONFIRM_PASSWORD);
         Map<String, String> params = new HashMap<>(); // FIXME: 17.04.2022
-        params.put(ParametersType.NAME.toString(), name);
-        params.put(ParametersType.SURNAME.toString(), surname);
-        params.put(ParametersType.LOGIN.toString(), login);
-        params.put(ParametersType.PASSWORD.toString(), password);
-        params.put(ParametersType.CONFIRM_PASSWORD.toString(), confirmPassword);
+        params.put(ParameterType.NAME, name);
+        params.put(ParameterType.SURNAME, surname);
+        params.put(ParameterType.LOGIN, login);
+        params.put(ParameterType.PASSWORD, password);
+        params.put(ParameterType.CONFIRM_PASSWORD, confirmPassword);
         CustomValidator validator = new CustomValidatorImpl();
         try {
             Router route = new Router();
             if (!validator.validateRegistration(params)) {
-                route.setPage("pages/registration.jsp"); // FIXME: 15.04.2022 to constant
+                route.setPage(PagePath.REGISTRATION);
                 route.setType(Router.Type.FORWARD);
-                request.setAttribute("register_msg", "Some field(s) is(are) wrong.");
+                request.setAttribute(ParameterType.REGISTRATION_VALIDATION_MESSAGE, REGISTRATION_VALIDATION_FAILED_MESSAGE);
             } else {
                 String encryptedPassword = PasswordEncryptor.encrypt(password);
                 CustomerEntity customer = CustomerEntity.newBuilder()
@@ -54,17 +54,18 @@ public class AddUserCommand implements Command {
                         .setSurname(surname)
                         .setLogin(login)
                         .setPassword(encryptedPassword)
-                        .setRole(roleService.getRoleByType(RoleType.CUSTOMER))
+                        .setRole(RoleType.CUSTOMER)
                         .build();
                 CustomerService customerService = CustomerServiceImpl.getInstance();
                 if (!customerService.register(customer)) {
-                    route.setPage("pages/registration.jsp"); // FIXME: 15.04.2022 to constant
-                    request.setAttribute("register_msg", "Such user is already exists.");
+                    route.setPage(PagePath.REGISTRATION);
+                    request.setAttribute(ParameterType.REGISTRATION_VALIDATION_MESSAGE, REGISTRATION_USER_EXISTS_MESSAGE);
                 } else {
-                    request.getSession().setAttribute("user", customer);
-                    route.setPage("pages/main.jsp");
+                    request.getSession().setAttribute(ParameterType.USER, customer);
+                    route.setPage(PagePath.MAIN);
                 }
             }
+
             return route;
         } catch (ServiceException e) {
             logger.log(Level.ERROR, e);

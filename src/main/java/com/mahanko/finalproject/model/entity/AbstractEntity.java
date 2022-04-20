@@ -1,14 +1,14 @@
 package com.mahanko.finalproject.model.entity;
 
-public abstract class AbstractEntity<T> {
-    protected T id;
+public abstract class AbstractEntity<K> {
+    protected K id;
 
     protected AbstractEntity() {}
-    protected AbstractEntity(T id) {
+    protected AbstractEntity(K id) {
         this.id = id;
     }
 
-    public T getId() {
+    public K getId() {
         return id;
     }
 }

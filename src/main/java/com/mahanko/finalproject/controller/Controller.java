@@ -33,7 +33,7 @@ public class Controller extends HttpServlet {
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
         response.setContentType("text/html");
-        String commandStr = request.getParameter(ParametersType.COMMAND.toString());
+        String commandStr = request.getParameter(ParameterType.COMMAND);
         Command command = CommandType.define(commandStr);
         try {
             Router route = command.execute(request, response);
@@ -52,7 +52,7 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        String commandStr = request.getParameter(ParametersType.COMMAND.toString());
+        String commandStr = request.getParameter(ParameterType.COMMAND);
         Command command = CommandType.define(commandStr);
         try {
             Router route = command.execute(request, response);

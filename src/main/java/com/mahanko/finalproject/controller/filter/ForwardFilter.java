@@ -20,9 +20,6 @@ public class ForwardFilter implements Filter {
 
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
-        HttpServletRequest httpServletRequest = (HttpServletRequest) request;
-        HttpSession session = httpServletRequest.getSession();
-        session.setAttribute("filter_attribute", DispatcherType.FORWARD);
         chain.doFilter(request, response);
     }
 }

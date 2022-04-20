@@ -1,7 +1,7 @@
 package com.mahanko.finalproject.controller;
 
 public class Router {
-    private String page = "index.jsp";
+    private String page = PagePath.INDEX;
     private Type type = Type.REDIRECT;
 
     public enum Type {

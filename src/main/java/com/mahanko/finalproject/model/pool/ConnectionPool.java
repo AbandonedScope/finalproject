@@ -34,7 +34,7 @@ public class ConnectionPool { //FIXME: 09.04.2022 Read about these properties
         properties = new Properties();
         try (InputStream input = ConnectionPool.class.getClassLoader().getResourceAsStream(CONFIG_FILE_NAME)) {
             properties.load(input);
-            DATABASE_DRIVER = properties.getProperty("driver");
+            DATABASE_DRIVER = properties.getProperty("driver"); // FIXME: 18.04.2022 into constants
             URL = properties.getProperty("url");
             MAX_CONNECTIONS = Integer.parseInt(properties.getProperty("maxConnections"));
             Class.forName(DATABASE_DRIVER);
@@ -51,8 +51,8 @@ public class ConnectionPool { //FIXME: 09.04.2022 Read about these properties
                 freeConnections.put(new ProxyConnection(connection));
             }
         } catch (InterruptedException e) {
-            logger.log(Level.ERROR, e);
-            Thread.currentThread().interrupt();
+            logger.log(Level.ERROR, e); // FIXME: 18.04.2022 fatal
+            Thread.currentThread().interrupt(); // FIXME: 18.04.2022 delete
             throw new ExceptionInInitializerError(e.getMessage());
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
