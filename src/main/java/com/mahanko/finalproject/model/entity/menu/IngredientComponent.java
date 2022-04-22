@@ -1,16 +1,18 @@
 package com.mahanko.finalproject.model.entity.menu;
 
 import com.mahanko.finalproject.model.entity.AbstractEntity;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
-public class IngredientComponent extends AbstractEntity<Long> implements MenuComponent {
+public class IngredientComponent extends AbstractEntity<Long> implements MenuItemComponent {
+    private static final Logger logger = LogManager.getLogger();
     private String name;
-    private double cost;
     private double weight;
     private double proteins;
     private double fats;
     private double carbohydrates;
     private double calories;
-    private String pictureString;
+    private String pictureBase64;
 
     public static IngredientBuilder newBuilder() {
         return new IngredientComponent(). new IngredientBuilder();
@@ -24,16 +26,6 @@ public class IngredientComponent extends AbstractEntity<Long> implements MenuCom
         this.name = name;
     }
 
-    @Override
-    public double getCost() {
-        return cost;
-    }
-
-    public void setCost(double cost) {
-        this.cost = cost;
-    }
-
-    @Override
     public double getWeight() {
         return weight;
     }
@@ -42,7 +34,6 @@ public class IngredientComponent extends AbstractEntity<Long> implements MenuCom
         this.weight = weight;
     }
 
-    @Override
     public double getProteins() {
         return proteins;
     }
@@ -51,7 +42,6 @@ public class IngredientComponent extends AbstractEntity<Long> implements MenuCom
         this.proteins = proteins;
     }
 
-    @Override
     public double getFats() {
         return fats;
     }
@@ -60,7 +50,6 @@ public class IngredientComponent extends AbstractEntity<Long> implements MenuCom
         this.fats = fats;
     }
 
-    @Override
     public double getCarbohydrates() {
         return carbohydrates;
     }
@@ -69,7 +58,6 @@ public class IngredientComponent extends AbstractEntity<Long> implements MenuCom
         this.carbohydrates = carbohydrates;
     }
 
-    @Override
     public double getCalories() {
         return calories;
     }
@@ -79,21 +67,21 @@ public class IngredientComponent extends AbstractEntity<Long> implements MenuCom
     }
 
     public String getPicture() {
-        return pictureString;
+        return pictureBase64;
     }
 
     public void setPicture(String picture) {
-        this.pictureString = picture;
+        this.pictureBase64 = picture;
     }
 
     public class IngredientBuilder {
-        public IngredientBuilder setName(String name) {
-            IngredientComponent.this.setName(name);
+        public IngredientBuilder setId(Long id) {
+            IngredientComponent.this.id = id;
             return this;
         }
 
-        public IngredientBuilder setCost(double cost) {
-            IngredientComponent.this.setCost(cost);
+        public IngredientBuilder setName(String name) {
+            IngredientComponent.this.setName(name);
             return this;
         }
 

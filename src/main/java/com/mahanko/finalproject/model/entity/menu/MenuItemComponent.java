@@ -1,10 +1,9 @@
 package com.mahanko.finalproject.model.entity.menu;
 
-public interface MenuComponent {
-    double getCost();
-    double getCalories();
+public interface MenuItemComponent {
     double getWeight();
     double getProteins();
     double getFats();
     double getCarbohydrates();
+    double getCalories();
 }

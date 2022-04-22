@@ -33,9 +33,11 @@ public class AuthorizedFilter implements Filter {
         httpServletResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         httpServletResponse.setDateHeader("Expires", 0); // Proxies.
         String loginURI = httpServletRequest.getContextPath().concat("/").concat(PagePath.INDEX);
+        String registrationURI = httpServletRequest.getContextPath().concat("/").concat(PagePath.REGISTRATION);
         boolean loggedIn = session != null && session.getAttribute(ParameterType.USER) != null;
         boolean loginRequest = httpServletRequest.getRequestURI().equals(loginURI);
-        if (loggedIn || loginRequest) {
+        boolean registrationRequest = httpServletRequest.getRequestURI().equals(registrationURI);
+        if (loggedIn || loginRequest || registrationRequest) {
             chain.doFilter(request, response);
         } else {
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath() + indexPath);

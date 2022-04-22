@@ -38,11 +38,11 @@ public class CustomValidatorImpl implements CustomValidator {
             }
         }
 
-        String name = params.get(ParameterType.NAME);
-        String surname = params.get(ParameterType.SURNAME);
-        String login = params.get(ParameterType.LOGIN);
-        String password = params.get(ParameterType.PASSWORD);
-        String confirmPassword = params.get(ParameterType.CONFIRM_PASSWORD);
+        String name = params.get(ParameterType.USER_NAME);
+        String surname = params.get(ParameterType.USER_SURNAME);
+        String login = params.get(ParameterType.USER_LOGIN);
+        String password = params.get(ParameterType.USER_PASSWORD);
+        String confirmPassword = params.get(ParameterType.USER_CONFIRM_PASSWORD);
         if (!validateName(name) ||
                 !validateName(surname)) {
             isValid = false;

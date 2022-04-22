@@ -1,8 +1,7 @@
 package com.mahanko.finalproject.model.entity.menu;
 
-public enum MenuCompositeLevel {
-    MENU,
-    MENU_SECTION,
+public enum MenuItemCompositeLevel {
+    ITEM_COMBO,
     MENU_ITEM,
     INGREDIENT
 }

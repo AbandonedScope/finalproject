@@ -5,6 +5,7 @@ import com.mahanko.finalproject.controller.command.CommandType;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.model.pool.ConnectionPool;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
@@ -16,6 +17,7 @@ import org.apache.logging.log4j.Logger;
 import java.io.IOException;
 
 @WebServlet(name = "helloServlet", urlPatterns = "/controller")
+@MultipartConfig
 public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
     private static final String CONNECTION_POOL_CLASS_NAME = "com.mahanko.finalproject.model.pool.ConnectionPool";
@@ -51,7 +53,7 @@ public class Controller extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("text/html");
+        response.setContentType("multipart/form-data");
         String commandStr = request.getParameter(ParameterType.COMMAND);
         Command command = CommandType.define(commandStr);
         try {

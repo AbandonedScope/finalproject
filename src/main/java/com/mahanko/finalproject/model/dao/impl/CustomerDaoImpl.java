@@ -3,7 +3,7 @@ package com.mahanko.finalproject.model.dao.impl;
 import com.mahanko.finalproject.model.dao.CustomerDao;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
 import com.mahanko.finalproject.exception.DaoException;
-import com.mahanko.finalproject.model.mapper.impl.CustomCustomerRowMapper;
+import com.mahanko.finalproject.model.mapper.impl.CustomerRowMapper;
 import com.mahanko.finalproject.model.pool.ConnectionPool;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -23,7 +23,7 @@ public class CustomerDaoImpl implements CustomerDao {
             "FROM users " +
             "WHERE u_login = ? AND u_password = ? ";
     private static final String SELECT_EXISTS_BY_LOGIN =
-            "SELECT EXISTS (SELECT  u_login FROM users WHERE u_login = ?)";
+            "SELECT EXISTS (SELECT u_login FROM users WHERE u_login = ?)";
     private static final String INSERT_NEW_CUSTOMER =
             "INSERT INTO users(u_name, u_surname, u_login, u_password, u_loyaltypoints, u_blocked, u_role) " +
                     "VALUE (?, ?, ?, ?, ?, ?, ?)";
@@ -45,7 +45,7 @@ public class CustomerDaoImpl implements CustomerDao {
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                CustomCustomerRowMapper mapper = new CustomCustomerRowMapper();
+                CustomerRowMapper mapper = new CustomerRowMapper();
                 Optional<CustomerEntity> optionalCustomer = mapper.map(resultSet);
                 if (optionalCustomer.isPresent()) {
                     customer = optionalCustomer.get();

@@ -1,7 +1,12 @@
 package com.mahanko.finalproject.model.entity.menu;
 
-public class MenuSectionComposite extends MenuComposite<MenuItemComposite> {
+import com.mahanko.finalproject.model.entity.AbstractEntity;
+
+import java.util.List;
+
+public class MenuSection extends AbstractEntity<Integer> {
     private String name;
+    private List<MenuItemComposite> menuItems;
 
     public String getName() {
         return name;

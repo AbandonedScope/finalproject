@@ -50,12 +50,8 @@ public class ConnectionPool { //FIXME: 09.04.2022 Read about these properties
                 Connection connection = DriverManager.getConnection(URL, properties);
                 freeConnections.put(new ProxyConnection(connection));
             }
-        } catch (InterruptedException e) {
-            logger.log(Level.ERROR, e); // FIXME: 18.04.2022 fatal
-            Thread.currentThread().interrupt(); // FIXME: 18.04.2022 delete
-            throw new ExceptionInInitializerError(e.getMessage());
-        } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
+        } catch (InterruptedException | SQLException e) {
+            logger.log(Level.FATAL, e);
             throw new ExceptionInInitializerError(e.getMessage());
         }
     }

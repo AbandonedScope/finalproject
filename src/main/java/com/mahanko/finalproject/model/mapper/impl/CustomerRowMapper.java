@@ -13,7 +13,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
-public class CustomCustomerRowMapper implements CustomRowMapper<CustomerEntity> {
+public class CustomerRowMapper implements CustomRowMapper<CustomerEntity> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override

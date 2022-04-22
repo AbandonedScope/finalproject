@@ -8,7 +8,9 @@ public enum CommandType {
     LOGOUT(new LogoutCommand()),
     DEFAULT(new DefaultCommand()),
     ADD_USER(new AddUserCommand()),
-    ADD_MENU_ITEM(new AddMenuItemCommand());
+    ADD_INGREDIENT(new AddIngredientCommand()),
+    ADD_MENU_ITEM(new AddMenuItemCommand()),
+    ON_ADD_MENU_ITEM(new OnAddMenuItemPageCommand());
 
     private final Command command;
 

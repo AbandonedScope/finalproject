@@ -29,17 +29,17 @@ public class AddUserCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        String name = request.getParameter(ParameterType.NAME);
-        String surname = request.getParameter(ParameterType.SURNAME);
-        String login = request.getParameter(ParameterType.LOGIN);
-        String password = request.getParameter(ParameterType.PASSWORD);
-        String confirmPassword = request.getParameter(ParameterType.CONFIRM_PASSWORD);
+        String name = request.getParameter(ParameterType.USER_NAME);
+        String surname = request.getParameter(ParameterType.USER_SURNAME);
+        String login = request.getParameter(ParameterType.USER_LOGIN);
+        String password = request.getParameter(ParameterType.USER_PASSWORD);
+        String confirmPassword = request.getParameter(ParameterType.USER_CONFIRM_PASSWORD);
         Map<String, String> params = new HashMap<>(); // FIXME: 17.04.2022
-        params.put(ParameterType.NAME, name);
-        params.put(ParameterType.SURNAME, surname);
-        params.put(ParameterType.LOGIN, login);
-        params.put(ParameterType.PASSWORD, password);
-        params.put(ParameterType.CONFIRM_PASSWORD, confirmPassword);
+        params.put(ParameterType.USER_NAME, name);
+        params.put(ParameterType.USER_SURNAME, surname);
+        params.put(ParameterType.USER_LOGIN, login);
+        params.put(ParameterType.USER_PASSWORD, password);
+        params.put(ParameterType.USER_CONFIRM_PASSWORD, confirmPassword);
         CustomValidator validator = new CustomValidatorImpl();
         try {
             Router route = new Router();
@@ -59,6 +59,7 @@ public class AddUserCommand implements Command {
                 CustomerService customerService = CustomerServiceImpl.getInstance();
                 if (!customerService.register(customer)) {
                     route.setPage(PagePath.REGISTRATION);
+                    route.setType(Router.Type.FORWARD);
                     request.setAttribute(ParameterType.REGISTRATION_VALIDATION_MESSAGE, REGISTRATION_USER_EXISTS_MESSAGE);
                 } else {
                     request.getSession().setAttribute(ParameterType.USER, customer);
