@@ -48,11 +48,11 @@
     <label>
         Ingredient picture :
         <br/>
-        <input name="ingredient-picture" type="file" accept="image/jpeg,image/png,image/jpg">
+        <input name="ingredient-picture" type="file" accept="image/png">
     </label>
     <br/>
     <input type="submit" name="sub" value="add">
 </form>
-${ingredient-add-msg}
+${requestScope.ingredient_add_msg}
 </body>
 </html>

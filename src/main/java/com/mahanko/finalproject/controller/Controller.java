@@ -53,7 +53,7 @@ public class Controller extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        response.setContentType("multipart/form-data");
+        response.setContentType("text/html");
         String commandStr = request.getParameter(ParameterType.COMMAND);
         Command command = CommandType.define(commandStr);
         try {

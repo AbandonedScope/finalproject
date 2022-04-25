@@ -18,67 +18,104 @@
     <label>
         Meal name:
         <br/>
-        <input type="text" name="name" value="">
+        <input type="text" name="menu-item-name" value="">
     </label>
     <br/>
     <label>
         Meal cost:
         <br/>
-        <input type="number" name="cost" value="">
+        <input type="number" name="menu-item-cost" value="">
     </label>
     <br/>
     <label>
         Meal cal:
         <br/>
-        <input type="number" name="cal-amount" value="">
+        <input type="number" name="menu-item-calories" value="">
     </label>
     <br/>
     <label>
         Meal fats:
         <br/>
-        <input type="number" name="fats-amount" value="">
-    </label>
-    <br/>
-    <label>
-        Meal carbonates:
-        <br/>
-        <input type="number" name="carbonates-amount" value="">
+        <input type="number" name="menu-item-fats" value="">
     </label>
     <br/>
     <label>
         Meal proteins:
         <br/>
-        <input type="number" name="proteins-amount" value="">
+        <input type="number" name="menu-item-proteins" value="">
     </label>
     <br/>
     <label>
-        Meal weight:
+        Meal carbohydrates:
         <br/>
-        <input type="number" name="weight" value="">
+        <input type="number" name="menu-item-carbohydrates" value="">
     </label>
+    <br/>
     <label>
         Photo :
         <br/>
         <input type="file" accept="image/jpeg,image/png,image/jpg">
     </label>
     <br/>
-    <label>
-        Ingredients :
-        <ul>
-            <c:forEach var="ingredient" items="${requestScope.ingredients}">
-                <li>
-                    <div>
-                        <label>
-                                ${ingredient.name}
-                            <input type="checkbox" name="ingredient">
-                        </label>
-                    </div>
-                </li>
-            </c:forEach>
-        </ul>
-    </label>
+    <div style="display: flex">
+        <div>
+            Ingredients :
+            <ul id="ingredients" style="max-height: 200px;
+        max-width: 200px;
+            overflow-y:auto;
+display: block;">
+                <c:forEach var="ingredient" items="${requestScope.ingredients}">
+                    <li>
+                        <img id="ingredient-image" style="max-width: 30px;
+max-height: 30px" src="data:image/png;base64, ${ingredient.getPicture()}" alt="">
+                            ${ingredient.name}
+                        <input type="checkbox" name="ingredient">
+                        <input class="weight_option" style="display: none;" type="number" name="weight">
+                    </li>
+                </c:forEach>
+            </ul>
+        </div>
+        <div>
+            Chosen Ingredients :
+            <ul id="chosen-ingredients" style="max-height: 200px;
+        max-width: 200px;
+            overflow-y:auto;
+display: block;">
+            </ul>
+        </div>
+    </div>
     <br/>
     <input type="submit" name="sub" value="add">
 </form>
+<script>
+    const $list = document.getElementById("ingredients");
+    const $li = $list.getElementsByTagName("li");
+    for (let i = 0; i < $li.length; i++) {
+        $li[i].addEventListener("change", toChosen.bind($li[i]));
+    }
+
+    function toChosen(event) {
+        console.log(event.target);
+        if (event.target.getAttribute("type") === "checkbox") {
+            const $ul = document.getElementById("chosen-ingredients");
+            this.getElementsByClassName("weight_option")[0].style.display = "block";
+            $ul.append(this);
+            this.removeEventListener("change", toChosen.bind(this));
+            this.addEventListener("change", toUnChosen.bind(this));
+        }
+    }
+
+    function toUnChosen(event) {
+        console.log(event.target);
+        if (event.target.getAttribute("type") === "checkbox") {
+            const $list = document.getElementById("ingredients");
+            console.log(this.getElementsByClassName("weight_option"));
+            this.getElementsByClassName("weight_option")[0].style.display = "none"
+            $list.append(this);
+            this.removeEventListener("change", toUnChosen.bind(this));
+            this.addEventListener("change", toChosen.bind(this));
+        }
+    }
+</script>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.controller.command.impl;
 
+import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.exception.CommandException;
@@ -17,8 +18,8 @@ public class AddMenuItemCommand implements Command {
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         MenuItemComposite menuItem = new MenuItemComposite(MenuItemCompositeLevel.MENU_ITEM);
         // FIXME: 22.04.2022 Into constants
-        menuItem.setName(request.getParameter("name"));
-        menuItem.setCost(BigDecimal.valueOf(Double.parseDouble(request.getParameter("cost"))));
+        menuItem.setName(request.getParameter(ParameterType.MENU_ITEM_NAME));
+        menuItem.setCost(BigDecimal.valueOf(Double.parseDouble(request.getParameter(ParameterType.MENU_ITEM_COST))));
         MenuItemService menuItemService = new MenuItemServiceImpl();
         return null;
     }
