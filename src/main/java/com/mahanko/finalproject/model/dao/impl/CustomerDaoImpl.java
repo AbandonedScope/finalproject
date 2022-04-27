@@ -59,6 +59,7 @@ public class CustomerDaoImpl implements CustomerDao {
         return customer;
     }
 
+    @Override
     public boolean checkExistence(String login) throws DaoException {
         boolean isExist = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
@@ -77,6 +78,10 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
 
+    @Override
+    public Optional<CustomerEntity> findById(Long id) throws DaoException {
+        return Optional.empty();
+    }
 
     @Override
     public boolean insert(CustomerEntity entity) throws DaoException {

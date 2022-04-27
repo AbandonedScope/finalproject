@@ -13,9 +13,16 @@ public final class ColumnName {
     public static final String INGREDIENT_PROTEINS = "ingr_proteins";
     public static final String INGREDIENT_FATS = "ingr_fats";
     public static final String INGREDIENT_CARBOHYDRATES = "ingr_carbohydrates";
-    public static final String INGREDIENT_COST = "ingr_cost";
     public static final String INGREDIENT_CALORIES = "ingr_calories";
     public static final String INGREDIENT_PICTURE = "ingr_picture";
+    public static final String INGREDIENT_WEIGHT = "ingr_weight";
+    public static final String MENU_ITEM_ID = "mi_id";
+    public static final String MENU_ITEM_SECTION = "mi_section";
+    public static final String MENU_ITEM_NAME = "mi_name";
+    public static final String MENU_ITEM_DESCRIPTION = "mi_description";
+    public static final String MENU_ITEM_PICTURE = "mi_picture";
+    public static final String SECTION_ID = "s_id";
+    public static final String SECTION_NAME = "s_name";
 
     private ColumnName() {
     }

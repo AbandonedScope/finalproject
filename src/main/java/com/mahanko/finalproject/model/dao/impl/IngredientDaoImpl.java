@@ -13,9 +13,11 @@ import org.apache.logging.log4j.Logger;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 public class IngredientDaoImpl implements IngredientDao {
     private static final Logger logger = LogManager.getLogger();
+    private static final String SELECT_BY_ID = "SELECT * FROM ingredients WHERE ingr_id = ?";
     private static final String SELECT_ALL_INGREDIENTS = "SELECT * FROM ingredients";
     private static final String SELECT_EXISTS_INGREDIENT_BY_NAME = "SELECT EXISTS (SELECT ingr_id FROM ingredients WHERE ingr_name = ?)";
     private static final String INSERT_NEW_INGREDIENTS =
@@ -47,6 +49,25 @@ public class IngredientDaoImpl implements IngredientDao {
         }
 
         return exists;
+    }
+
+    @Override
+    public Optional<IngredientComponent> findById(Long id) throws DaoException {
+        Optional<IngredientComponent> ingredientOptional = Optional.empty();
+        try(Connection connection = ConnectionPool.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                IngredientRowMapper mapper = new IngredientRowMapper();
+                ingredientOptional = mapper.map(resultSet);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return ingredientOptional;
     }
 
     // FIXME: 22.04.2022 equal names

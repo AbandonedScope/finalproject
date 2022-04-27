@@ -42,7 +42,7 @@ public class Controller extends HttpServlet {
             String page = route.getPage();
             if (route.getType() == Router.Type.FORWARD) {
                 request.getRequestDispatcher(page).forward(request, response);
-            } else if(route.getType() == Router.Type.REDIRECT) {
+            } else if (route.getType() == Router.Type.REDIRECT) {
                 response.sendRedirect(page);
             }
         } catch (CommandException e) { // FIXME: 14.04.2022 logging, what type of exception?
@@ -54,14 +54,13 @@ public class Controller extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
-        String commandStr = request.getParameter(ParameterType.COMMAND);
-        Command command = CommandType.define(commandStr);
+        Command command = CommandType.define(request.getParameter(ParameterType.COMMAND));
         try {
             Router route = command.execute(request, response);
             String page = route.getPage();
             if (route.getType() == Router.Type.FORWARD) {
                 request.getRequestDispatcher(page).forward(request, response);
-            } else if(route.getType() == Router.Type.REDIRECT) {
+            } else if (route.getType() == Router.Type.REDIRECT) {
                 response.sendRedirect(page);
             }
         } catch (CommandException e) { // FIXME: 14.04.2022 logging, what type of exception?

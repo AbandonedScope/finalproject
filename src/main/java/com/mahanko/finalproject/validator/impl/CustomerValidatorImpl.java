@@ -1,12 +1,12 @@
 package com.mahanko.finalproject.validator.impl;
 
 import com.mahanko.finalproject.controller.ParameterType;
-import com.mahanko.finalproject.validator.CustomValidator;
+import com.mahanko.finalproject.validator.CustomerValidator;
 
 import java.util.Map;
 import java.util.regex.Pattern;
 
-public class CustomValidatorImpl implements CustomValidator {
+public class CustomerValidatorImpl implements CustomerValidator {
     private static final String NAME_SURNAME_REGEX = "^[A-Za-zА-Яа-я]{3,45}$";
     private static final String LOGIN_REGEX = "^[\\w&&\\D]\\w{4,15}$";
     private static final String PASSWORD_REGEX = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[\\w@$!%*?&]{8,20}$";

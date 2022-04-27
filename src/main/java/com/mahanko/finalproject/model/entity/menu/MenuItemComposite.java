@@ -10,12 +10,13 @@ public class MenuItemComposite extends AbstractEntity<Long> implements MenuItemC
     private String name;
     private BigDecimal cost;
     private String description;
-    private String pictureBse64;
+    private String pictureBase64;
     private MenuSection section;
     private HashSet<MenuItemComponent> ingredients;
 
     public MenuItemComposite(MenuItemCompositeLevel level) {
         this.level = level;
+        ingredients = new HashSet<>();
     }
 
     public void setSection(MenuSection section) {
@@ -58,12 +59,12 @@ public class MenuItemComposite extends AbstractEntity<Long> implements MenuItemC
         this.description = description;
     }
 
-    public String getPictureBse64() {
-        return pictureBse64;
+    public String getPictureBase64() {
+        return pictureBase64;
     }
 
-    public void setPictureBse64(String pictureBse64) {
-        this.pictureBse64 = pictureBse64;
+    public void setPictureBase64(String pictureBase64) {
+        this.pictureBase64 = pictureBase64;
     }
 
     public HashSet<MenuItemComponent> getIngredients() {

@@ -11,4 +11,7 @@ public abstract class AbstractEntity<K> {
     public K getId() {
         return id;
     }
+    public void setId(K id) {
+        this.id = id;
+    }
 }

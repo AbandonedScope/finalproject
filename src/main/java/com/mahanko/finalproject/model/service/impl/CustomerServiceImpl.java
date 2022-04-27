@@ -7,8 +7,8 @@ import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.service.CustomerService;
 import com.mahanko.finalproject.util.PasswordEncryptor;
-import com.mahanko.finalproject.validator.CustomValidator;
-import com.mahanko.finalproject.validator.impl.CustomValidatorImpl;
+import com.mahanko.finalproject.validator.CustomerValidator;
+import com.mahanko.finalproject.validator.impl.CustomerValidatorImpl;
 
 public class CustomerServiceImpl implements CustomerService {
     private static final CustomerServiceImpl instance = new CustomerServiceImpl();
@@ -22,7 +22,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public CustomerEntity authenticate(String login, String password) throws ServiceException {
-        CustomValidator validator = new CustomValidatorImpl();
+        CustomerValidator validator = new CustomerValidatorImpl();
         CustomerEntity customer = null;
         if (validator.validateLogin(login)) {
             CustomerDao customerDao = CustomerDaoImpl.getInstance();

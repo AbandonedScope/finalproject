@@ -18,37 +18,39 @@
     <label>
         Ingredient name:
         <br/>
-        <input type="text" name="ingredient-name" value="" required>
+        <input type="text" name="ingredient-name" required>
     </label>
     <br/>
     <label>
         Ingredient calories:
         <br/>
-        <input type="number" name="ingredient-calories" value="" step="0.1" min="0" required>
+        <input type="number" name="ingredient-calories" step="0.1" min="0" max="5000" required>
     </label>
     <br/>
     <label>
         Ingredient fats:
         <br/>
-        <input type="number" name="ingredient-fats" value="" step="0.1" min="0" required>
+        <input type="number" name="ingredient-fats" step="0.1" min="0" max="5000" required>
     </label>
     <br/>
     <label>
         Ingredient carbohydrates:
         <br/>
-        <input type="number" name="ingredient-carbohydrates" value="" step="0.1" min="0" required>
+        <input type="number" name="ingredient-carbohydrates" step="0.1" min="0" max="5000" required>
     </label>
     <br/>
     <label>
         Ingredient proteins:
         <br/>
-        <input type="number" name="ingredient-proteins" value="" step="0.1" min="0" required>
+        <input type="number" name="ingredient-proteins" step="0.1" min="0" max="5000" required>
     </label>
     <br/>
     <label>
         Ingredient picture :
         <br/>
-        <input name="ingredient-picture" type="file" accept="image/png">
+        <input name="ingredient-picture" type="file" accept="image/png" required>
+        <br/>
+        Can be .png and no more than 512*512
     </label>
     <br/>
     <input type="submit" name="sub" value="add">

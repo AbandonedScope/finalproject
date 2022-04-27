@@ -5,15 +5,14 @@ import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.exception.CommandException;
-import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.exception.ServiceException;
-import com.mahanko.finalproject.model.dao.IngredientDao;
-import com.mahanko.finalproject.model.dao.impl.IngredientDaoImpl;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
 import com.mahanko.finalproject.model.service.CustomerService;
+import com.mahanko.finalproject.model.service.MenuItemService;
 import com.mahanko.finalproject.model.service.impl.CustomerServiceImpl;
-import com.mahanko.finalproject.validator.CustomValidator;
-import com.mahanko.finalproject.validator.impl.CustomValidatorImpl;
+import com.mahanko.finalproject.model.service.impl.MenuItemServiceImpl;
+import com.mahanko.finalproject.validator.CustomerValidator;
+import com.mahanko.finalproject.validator.impl.CustomerValidatorImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
@@ -33,26 +32,23 @@ public class LoginCommand implements Command {
         String page;
         HttpSession session = request.getSession();
         Router route = new Router();
-        CustomValidator validator = new CustomValidatorImpl();
+        CustomerValidator validator = new CustomerValidatorImpl();
         // FIXME: 22.04.2022
-        IngredientDao ingredientDao = IngredientDaoImpl.getInstance();
         try {
             CustomerEntity customer;
             if (validator.validateLogin(login)
                     && validator.validatePassword(password)
                     && (customer = customerService.authenticate(login, password)) != null) {
-
                 session.setAttribute(ParameterType.USER, customer);
                 page = PagePath.MAIN;
-                // FIXME: 22.04.2022
-                ingredientDao.findAll();
+                MenuItemService service = new MenuItemServiceImpl();
+                session.setAttribute("menuItems", service.findAll());
             } else {
                 request.setAttribute(ParameterType.LOGIN_VALIDATION_MESSAGE, LOGIN_FAILED_MESSAGE);
                 page = PagePath.INDEX;
                 route.setType(Router.Type.FORWARD);
             }
-            // FIXME: 22.04.2022 dao exception remove
-        } catch (ServiceException | DaoException e) {
+        } catch (ServiceException e) {
             logger.log(Level.ERROR, e);
             throw new CommandException(e);
         }

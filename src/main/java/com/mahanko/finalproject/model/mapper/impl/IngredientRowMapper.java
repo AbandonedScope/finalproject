@@ -16,7 +16,7 @@ import java.sql.SQLException;
 import java.util.Optional;
 
 public class IngredientRowMapper implements CustomRowMapper<IngredientComponent> {
-    private static Logger logger = LogManager.getLogger();
+    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Optional<IngredientComponent> map(ResultSet resultSet) throws DaoException {

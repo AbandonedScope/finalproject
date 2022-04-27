@@ -11,8 +11,8 @@ import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.service.CustomerService;
 import com.mahanko.finalproject.model.service.impl.CustomerServiceImpl;
 import com.mahanko.finalproject.util.PasswordEncryptor;
-import com.mahanko.finalproject.validator.CustomValidator;
-import com.mahanko.finalproject.validator.impl.CustomValidatorImpl;
+import com.mahanko.finalproject.validator.CustomerValidator;
+import com.mahanko.finalproject.validator.impl.CustomerValidatorImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.logging.log4j.Level;
@@ -40,7 +40,7 @@ public class AddUserCommand implements Command {
         params.put(ParameterType.USER_LOGIN, login);
         params.put(ParameterType.USER_PASSWORD, password);
         params.put(ParameterType.USER_CONFIRM_PASSWORD, confirmPassword);
-        CustomValidator validator = new CustomValidatorImpl();
+        CustomerValidator validator = new CustomerValidatorImpl();
         try {
             Router route = new Router();
             if (!validator.validateRegistration(params)) {
