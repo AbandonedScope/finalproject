@@ -17,27 +17,27 @@
 <form action="${pageContext.request.contextPath}/controller" method="post">
     <input type="hidden" name="command" value="${CommandType.ADD_USER}"/>
     <label>
-        <fmt:message key="label.name"/> :
+        <fmt:message key="label.user.name"/> :
         <input type="text" value="${pageContext.request.getParameter(ParameterType.USER_NAME)}" name="name" maxlength="20"/>
     </label>
     <br/>
     <label>
-        <fmt:message key="label.surname"/> :
+        <fmt:message key="label.user.surname"/> :
         <input type="text" name="surname" value="${pageContext.request.getParameter(ParameterType.USER_SURNAME)}" maxlength="20"/>
     </label>
     <br/>
     <label>
-        <fmt:message key="label.login"/> :
+        <fmt:message key="label.user.login"/> :
         <input type="text" name="login" value="${pageContext.request.getParameter(ParameterType.USER_LOGIN)}" maxlength="16" minlength="8"/>
     </label>
     <br/>
     <label>
-        <fmt:message key="label.password"/> :
+        <fmt:message key="label.user.password"/> :
         <input type="password" name="password" value="${pageContext.request.getParameter(ParameterType.USER_PASSWORD)}" minlength="8" maxlength="20"/>
     </label>
     <br/>
     <label>
-        <fmt:message key="label.password.confirm"/> :
+        <fmt:message key="label.user.password.confirm"/> :
         <input type="password" name="confirm-password" value="${pageContext.request.getParameter(ParameterType.USER_CONFIRM_PASSWORD)}" minlength="8" maxlength="20"/>
     </label>
     <br/>

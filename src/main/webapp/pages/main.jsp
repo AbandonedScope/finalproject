@@ -14,6 +14,7 @@
     <title>Main</title>
 </head>
 <body>
+<c:import url="header.jsp"/>
 <ul>
 <c:forEach var="menuItem" items="${sessionScope.menuItems}">
     <li>
@@ -47,5 +48,6 @@
         <input type="submit" value="<fmt:message key="action.admin.add.ingredient.button.text"/>"/>
     </form>
 </c:if>
+<c:import url="footer.jsp"/>
 </body>
 </html>

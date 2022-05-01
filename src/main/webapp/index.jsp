@@ -15,12 +15,12 @@
 <form action="controller" method="post">
     <input type="hidden" name="command" value="login"/>
     <label>
-        <fmt:message key="label.login"/> :
+        <fmt:message key="label.user.login"/> :
         <input type="text" name="login" value="${sessionScope.user.getLogin()}"/>
     </label>
     <br/>
     <label>
-        <fmt:message key="label.password"/> :
+        <fmt:message key="label.user.password"/> :
         <input type="password" name="password" value=""/>
     </label>
     <br/>

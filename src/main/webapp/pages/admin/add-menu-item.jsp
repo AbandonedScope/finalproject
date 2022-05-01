@@ -1,40 +1,40 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: AbandonedScope
-  Date: 19.04.2022
-  Time: 12:19
-  To change this template use File | Settings | File Templates.
---%>
-<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" %>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:choose>
+    <c:when test="${not empty language}"><fmt:setLocale value="${language}"/></c:when>
+    <c:when test="${empty language}"><fmt:setLocale value="${language = 'ru_RU'}"/></c:when>
+</c:choose>
+<fmt:setBundle basename="language"/>
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
     <title>Title</title>
 </head>
 <body>
+<c:import url="../header.jsp"/>
 <form id="form" action="${pageContext.request.contextPath}/controller" method="post" enctype="multipart/form-data">
     <input type="hidden" name="command" value="add-menu-item"/>
     <label>
-        Meal name:
+        <fmt:message key="label.menuitem.name"/> :
         <br/>
         <input type="text" name="menu-item-name" required>
     </label>
     <br/>
     <label>
-        Meal cost:
+        <fmt:message key="label.menuitem.cost"/> :
         <br/>
         <input type="number" name="menu-item-cost" min="0.01" step="0.01" required>
     </label>
     <br/>
     <label>
-        Meal description:
+        <fmt:message key="label.menuitem.description"/> :
         <br/>
         <input type="text" name="menu-item-description" required>
     </label>
     <br/>
     <label>
-        Meal section:
+        <fmt:message key="label.menuitem.section"/> :
         <br/>
         <select name="menu-item-section-id" required>
             <c:forEach var="section" items="${sessionScope.sections}">
@@ -44,16 +44,18 @@
     </label>
     <br/>
     <label>
-        Meal picture :
+        <fmt:message key="label.menuitem.picture"/> :
         <br/>
         <input name="menu-item-picture" type="file" accept="image/png" required>
         <br/>
-        Can be only .png and no more than 1024*1024
+        <p>
+            <fmt:message key="label.menuitem.picture.condition"/>
+        </p>
     </label>
     <br/>
     <div style="display: flex">
         <div>
-            Ingredients :
+            <fmt:message key="label.ingredients"/> :
             <ul id="ingredients" style="max-height: 200px;
         max-width: 200px;
             overflow-y:auto;
@@ -61,7 +63,7 @@ display: block;">
             </ul>
         </div>
         <div>
-            Chosen Ingredients :
+            <fmt:message key="label.menuitem.ingredients"/> :
             <ul id="chosen-ingredients" style="max-height: 200px;
         max-width: 200px;
             overflow-y:auto;
@@ -70,7 +72,7 @@ display: block;">
         </div>
     </div>
     <br/>
-    <input type="submit" name="sub" value="add">
+    <input type="submit" name="sub" value="<fmt:message key="action.admin.add.menuitem.button.text"/>">
 </form>
 ${sessionScope.menu_item_add_msg}
 <script>
@@ -179,5 +181,6 @@ ${sessionScope.menu_item_add_msg}
 
     window.addEventListener('load', renderHTMLIngredientList);
 </script>
+<c:import url="../footer.jsp"/>
 </body>
 </html>
