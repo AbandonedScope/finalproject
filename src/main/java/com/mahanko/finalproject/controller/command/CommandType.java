@@ -1,9 +1,10 @@
 package com.mahanko.finalproject.controller.command;
 
 import com.mahanko.finalproject.controller.command.impl.*;
+import com.mysql.cj.util.StringUtils;
 
 public enum CommandType {
-    REGISTER(new RegisterCommand()),
+    REGISTER(new OnRegisterPageCommand()),
     LOGIN(new LoginCommand()),
     LOGOUT(new LogoutCommand()),
     DEFAULT(new DefaultCommand()),
@@ -19,7 +20,12 @@ public enum CommandType {
     }
 
     public static Command define(String commandStr) {
-        CommandType current = CommandType.valueOf(commandStr.toUpperCase().replace('-', '_'));
+        // FIXME: 01.05.2022 throw exception?
+        CommandType current = DEFAULT;
+        if (!StringUtils.isNullOrEmpty(commandStr)) {
+            current = CommandType.valueOf(commandStr.toUpperCase().replace('-', '_'));
+        }
+
         return current.command;
     }
 }

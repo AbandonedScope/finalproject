@@ -5,7 +5,7 @@ import com.mahanko.finalproject.model.dao.IngredientDao;
 import com.mahanko.finalproject.model.entity.menu.IngredientComponent;
 import com.mahanko.finalproject.model.mapper.impl.IngredientRowMapper;
 import com.mahanko.finalproject.model.pool.ConnectionPool;
-import com.mahanko.finalproject.util.CustomStringEncoder;
+import com.mahanko.finalproject.util.CustomPictureEncoder;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -77,7 +77,7 @@ public class IngredientDaoImpl implements IngredientDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_NEW_INGREDIENTS)) {
             String base64String = ingredientComponent.getPicture();
-            byte[] data = CustomStringEncoder.decodeString(base64String);
+            byte[] data = CustomPictureEncoder.decodeString(base64String);
             Blob blob = connection.createBlob();
             blob.setBytes(1, data);
             statement.setString(1, ingredientComponent.getName());

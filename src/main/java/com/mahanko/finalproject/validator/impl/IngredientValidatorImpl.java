@@ -31,4 +31,15 @@ public class IngredientValidatorImpl implements IngredientValidator {
                 && StringUtils.endsWithIgnoreCase(pictureName, PICTURE_PNG_EXTENSION)
                 && size <= MAXIMAL_INGREDIENT_PICTURE_SIZE;
     }
+
+    @Override
+    public boolean validatePictureExtension(String pictureName) {
+        return !StringUtils.isEmptyOrWhitespaceOnly(pictureName)
+                && StringUtils.endsWithIgnoreCase(pictureName, PICTURE_PNG_EXTENSION);
+    }
+
+    @Override
+    public boolean validatePictureSize(long size) {
+        return size <= MAXIMAL_INGREDIENT_PICTURE_SIZE;
+    }
 }

@@ -20,6 +20,8 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.util.Optional;
+
 public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     private static final String LOGIN_FAILED_MESSAGE = "Wrong login or password.";
@@ -28,18 +30,15 @@ public class LoginCommand implements Command {
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String login = request.getParameter(ParameterType.USER_LOGIN);
         String password = request.getParameter(ParameterType.USER_PASSWORD);
-        CustomerService customerService = CustomerServiceImpl.getInstance();
+        CustomerService customerService = new CustomerServiceImpl(new CustomerValidatorImpl());
         String page;
         HttpSession session = request.getSession();
         Router route = new Router();
-        CustomerValidator validator = new CustomerValidatorImpl();
-        // FIXME: 22.04.2022
+        // FIXME: 22.04.2022 validation messages?
         try {
-            CustomerEntity customer;
-            if (validator.validateLogin(login)
-                    && validator.validatePassword(password)
-                    && (customer = customerService.authenticate(login, password)) != null) {
-                session.setAttribute(ParameterType.USER, customer);
+            Optional<CustomerEntity> optionalCustomer = customerService.authenticate(login, password);
+            if (optionalCustomer.isPresent()) {
+                session.setAttribute(ParameterType.USER, optionalCustomer.get());
                 page = PagePath.MAIN;
                 MenuItemService service = new MenuItemServiceImpl();
                 session.setAttribute("menuItems", service.findAll());

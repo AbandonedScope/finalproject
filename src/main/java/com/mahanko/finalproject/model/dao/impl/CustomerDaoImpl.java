@@ -37,8 +37,8 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public CustomerEntity authenticate(String login, String password) throws DaoException {
-        CustomerEntity customer = null;
+    public Optional<CustomerEntity> authenticate(String login, String password) throws DaoException {
+        Optional<CustomerEntity> optionalCustomer = Optional.empty();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_PASSWORD_LOGIN)) {
             statement.setString(1, login);
@@ -46,17 +46,14 @@ public class CustomerDaoImpl implements CustomerDao {
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 CustomerRowMapper mapper = new CustomerRowMapper();
-                Optional<CustomerEntity> optionalCustomer = mapper.map(resultSet);
-                if (optionalCustomer.isPresent()) {
-                    customer = optionalCustomer.get();
-                }
+                optionalCustomer = mapper.map(resultSet);
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
             throw new DaoException(e);
         }
 
-        return customer;
+        return optionalCustomer;
     }
 
     @Override

@@ -7,12 +7,11 @@ import com.mahanko.finalproject.model.entity.menu.MenuItemComponent;
 import com.mahanko.finalproject.model.entity.menu.MenuItemComposite;
 import com.mahanko.finalproject.model.mapper.impl.MenuItemRowMapper;
 import com.mahanko.finalproject.model.pool.ConnectionPool;
-import com.mahanko.finalproject.util.CustomStringEncoder;
+import com.mahanko.finalproject.util.CustomPictureEncoder;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.awt.*;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -24,7 +23,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
             "INSERT INTO menu_items(mi_section, mi_name, mi_description, mi_picture) " +
                     "VALUE (?, ?, ?, ?)";
     private static final String SELECT_ID_BY_NAME = "SELECT mi_id FROM menu_items WHERE mi_name = ?";
-    private static final String INSERT_MENU_ITEM_INGREDIENTS_CONNECTION =
+    private static final String INSERT_MENU_ITEM_INGREDIENTS_MERGE =
             "INSERT INTO m2m_menuitems_ingredients(mi_id, ingr_id, ingr_weight) " +
                     "VALUE (?, ?, ?)";
     private static final String SELECT_ALL_MENU_ITEMS_JOIN_INGREDIENTS =
@@ -58,9 +57,9 @@ public class MenuItemDaoImpl implements MenuItemDao {
              PreparedStatement statement = connection.prepareStatement(INSERT_NEW_MENU_ITEM);
              PreparedStatement idStatement = connection.prepareStatement(SELECT_ID_BY_NAME)) {
             Blob pictureBlob = connection.createBlob();
-            byte[] pictureBytes = CustomStringEncoder.decodeString(menuItem.getPictureBase64());
+            byte[] pictureBytes = CustomPictureEncoder.decodeString(menuItem.getPictureBase64());
             pictureBlob.setBytes(1, pictureBytes);
-            statement.setInt(1, 1);
+            statement.setInt(1, menuItem.getSection().getId());
             statement.setString(2, menuItem.getName());
             statement.setString(3, menuItem.getDescription());
             statement.setBlob(4, pictureBlob);
@@ -73,7 +72,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
                 menuItem.setId(resultSet.getLong("mi_id"));
             }
             // FIXME: 22.04.2022
-            try (PreparedStatement newStatement = connection.prepareStatement(INSERT_MENU_ITEM_INGREDIENTS_CONNECTION)) {
+            try (PreparedStatement newStatement = connection.prepareStatement(INSERT_MENU_ITEM_INGREDIENTS_MERGE)) {
                 for (MenuItemComponent component : menuItem.getIngredients()) {
                     IngredientComponent ingredient = (IngredientComponent) component;
                     newStatement.setLong(1, menuItem.getId());

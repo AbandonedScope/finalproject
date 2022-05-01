@@ -2,6 +2,7 @@ package com.mahanko.finalproject.controller.command.impl;
 
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.ParameterType;
+import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
@@ -21,50 +22,36 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Optional;
 
 public class AddUserCommand implements Command {
+    
     private static final Logger logger = LogManager.getLogger();
+    
     private static final String REGISTRATION_VALIDATION_FAILED_MESSAGE = "Some field(s) is(are) wrong.";
+    
     private static final String REGISTRATION_USER_EXISTS_MESSAGE = "Such user is already exists.";
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        String name = request.getParameter(ParameterType.USER_NAME);
-        String surname = request.getParameter(ParameterType.USER_SURNAME);
-        String login = request.getParameter(ParameterType.USER_LOGIN);
-        String password = request.getParameter(ParameterType.USER_PASSWORD);
-        String confirmPassword = request.getParameter(ParameterType.USER_CONFIRM_PASSWORD);
-        Map<String, String> params = new HashMap<>(); // FIXME: 17.04.2022
-        params.put(ParameterType.USER_NAME, name);
-        params.put(ParameterType.USER_SURNAME, surname);
-        params.put(ParameterType.USER_LOGIN, login);
-        params.put(ParameterType.USER_PASSWORD, password);
-        params.put(ParameterType.USER_CONFIRM_PASSWORD, confirmPassword);
-        CustomerValidator validator = new CustomerValidatorImpl();
+        RequestParameters params = new RequestParameters();
+        params.put(ParameterType.USER_NAME, request.getParameter(ParameterType.USER_NAME));
+        params.put(ParameterType.USER_SURNAME, request.getParameter(ParameterType.USER_SURNAME));
+        params.put(ParameterType.USER_LOGIN, request.getParameter(ParameterType.USER_LOGIN));
+        params.put(ParameterType.USER_PASSWORD, request.getParameter(ParameterType.USER_PASSWORD));
+        params.put(ParameterType.USER_CONFIRM_PASSWORD, request.getParameter(ParameterType.USER_CONFIRM_PASSWORD));
+        // FIXME: 01.05.2022 validation messages
         try {
             Router route = new Router();
-            if (!validator.validateRegistration(params)) {
+            CustomerService customerService = new CustomerServiceImpl(new CustomerValidatorImpl());
+            Optional<CustomerEntity> optionalCustomer = customerService.register(params);
+            if (optionalCustomer.isEmpty()) {
                 route.setPage(PagePath.REGISTRATION);
                 route.setType(Router.Type.FORWARD);
-                request.setAttribute(ParameterType.REGISTRATION_VALIDATION_MESSAGE, REGISTRATION_VALIDATION_FAILED_MESSAGE);
+                request.setAttribute(ParameterType.REGISTRATION_VALIDATION_MESSAGE, REGISTRATION_USER_EXISTS_MESSAGE);
             } else {
-                String encryptedPassword = PasswordEncryptor.encrypt(password);
-                CustomerEntity customer = CustomerEntity.newBuilder()
-                        .setName(name)
-                        .setSurname(surname)
-                        .setLogin(login)
-                        .setPassword(encryptedPassword)
-                        .setRole(RoleType.CUSTOMER)
-                        .build();
-                CustomerService customerService = CustomerServiceImpl.getInstance();
-                if (!customerService.register(customer)) {
-                    route.setPage(PagePath.REGISTRATION);
-                    route.setType(Router.Type.FORWARD);
-                    request.setAttribute(ParameterType.REGISTRATION_VALIDATION_MESSAGE, REGISTRATION_USER_EXISTS_MESSAGE);
-                } else {
-                    request.getSession().setAttribute(ParameterType.USER, customer);
-                    route.setPage(PagePath.MAIN);
-                }
+                request.getSession().setAttribute(ParameterType.USER, optionalCustomer.get());
+                route.setPage(PagePath.MAIN);
             }
 
             return route;

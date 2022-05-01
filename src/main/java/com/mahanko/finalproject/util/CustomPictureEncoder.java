@@ -2,8 +2,8 @@ package com.mahanko.finalproject.util;
 
 import java.util.Base64;
 
-public class CustomStringEncoder {
-    private CustomStringEncoder() {
+public class CustomPictureEncoder {
+    private CustomPictureEncoder() {
     }
 
     public static String arrayToBase64(byte[] bytes) {

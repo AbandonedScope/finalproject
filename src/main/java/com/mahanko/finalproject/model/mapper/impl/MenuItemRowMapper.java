@@ -6,7 +6,7 @@ import com.mahanko.finalproject.model.entity.menu.MenuItemComposite;
 import com.mahanko.finalproject.model.entity.menu.MenuItemCompositeLevel;
 import com.mahanko.finalproject.model.mapper.ColumnName;
 import com.mahanko.finalproject.model.mapper.CustomRowMapper;
-import com.mahanko.finalproject.util.CustomStringEncoder;
+import com.mahanko.finalproject.util.CustomPictureEncoder;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -26,7 +26,7 @@ public class MenuItemRowMapper implements CustomRowMapper<MenuItemComposite> {
         Optional<MenuItemComposite> menuItemOptional;
         try {
             Blob blob = resultSet.getBlob(ColumnName.MENU_ITEM_PICTURE);
-            String menuItemPictureString = CustomStringEncoder.arrayToBase64(blob.getBinaryStream().readAllBytes());
+            String menuItemPictureString = CustomPictureEncoder.arrayToBase64(blob.getBinaryStream().readAllBytes());
             menuItem.setId(resultSet.getLong(ColumnName.MENU_ITEM_ID));
             menuItem.setName(resultSet.getString(ColumnName.MENU_ITEM_NAME));
             menuItem.setDescription(resultSet.getString(ColumnName.MENU_ITEM_DESCRIPTION));

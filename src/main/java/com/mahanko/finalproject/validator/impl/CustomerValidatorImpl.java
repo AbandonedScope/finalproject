@@ -1,7 +1,9 @@
 package com.mahanko.finalproject.validator.impl;
 
 import com.mahanko.finalproject.controller.ParameterType;
+import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.validator.CustomerValidator;
+import com.mysql.cj.util.StringUtils;
 
 import java.util.Map;
 import java.util.regex.Pattern;
@@ -14,29 +16,28 @@ public class CustomerValidatorImpl implements CustomerValidator {
     @Override
     public boolean validateLogin(String login) {
         Pattern pattern = Pattern.compile(LOGIN_REGEX);
-        return pattern.matcher(login).matches();
+        return !StringUtils.isEmptyOrWhitespaceOnly(login)
+                && pattern.matcher(login).matches();
     }
 
     @Override
-    public boolean validatePassword(String password) {
+    public boolean validatePassword(String password, String confirmPassword) {
         Pattern pattern = Pattern.compile(PASSWORD_REGEX);
-        return pattern.matcher(password).matches();
+        return !StringUtils.isEmptyOrWhitespaceOnly(password)
+                && pattern.matcher(password).matches()
+                && password.equals(confirmPassword);
     }
 
     @Override
     public boolean validateName(String name) {
         Pattern pattern = Pattern.compile(NAME_SURNAME_REGEX);
-        return pattern.matcher(name).matches();
+        return !StringUtils.isEmptyOrWhitespaceOnly(name)
+                && pattern.matcher(name).matches();
     }
 
     @Override
-    public boolean validateRegistration(Map<String, String> params) {
+    public boolean validateRegistration(RequestParameters params) {
         boolean isValid = true;
-        for (String value : params.values()) {
-            if (value == null || value.isBlank()) {
-                return false;
-            }
-        }
 
         String name = params.get(ParameterType.USER_NAME);
         String surname = params.get(ParameterType.USER_SURNAME);
@@ -52,8 +53,7 @@ public class CustomerValidatorImpl implements CustomerValidator {
             isValid = false;
         }
 
-        if (!validatePassword(password) ||
-                !password.equals(confirmPassword)) {
+        if (!validatePassword(password, confirmPassword)) {
             isValid = false;
         }
 

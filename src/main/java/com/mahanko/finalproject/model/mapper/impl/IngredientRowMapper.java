@@ -4,7 +4,7 @@ import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.model.entity.menu.IngredientComponent;
 import com.mahanko.finalproject.model.mapper.ColumnName;
 import com.mahanko.finalproject.model.mapper.CustomRowMapper;
-import com.mahanko.finalproject.util.CustomStringEncoder;
+import com.mahanko.finalproject.util.CustomPictureEncoder;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -23,7 +23,7 @@ public class IngredientRowMapper implements CustomRowMapper<IngredientComponent>
         Optional<IngredientComponent> ingredientOptional = Optional.empty();
         try { // FIXME: 22.04.2022 picture
             Blob blob = resultSet.getBlob(ColumnName.INGREDIENT_PICTURE);
-            String picture = CustomStringEncoder.arrayToBase64(blob.getBinaryStream().readAllBytes());
+            String picture = CustomPictureEncoder.arrayToBase64(blob.getBinaryStream().readAllBytes());
             IngredientComponent ingredient = IngredientComponent.newBuilder()
                     .setId(resultSet.getLong(ColumnName.INGREDIENT_ID))
                     .setName(resultSet.getString(ColumnName.INGREDIENT_NAME))

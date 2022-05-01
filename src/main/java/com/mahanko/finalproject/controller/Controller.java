@@ -20,51 +20,44 @@ import java.io.IOException;
 @MultipartConfig
 public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();
-    private static final String CONNECTION_POOL_CLASS_NAME = "com.mahanko.finalproject.model.pool.ConnectionPool";
 
     @Override
     public void init() {
         logger.log(Level.INFO, "Servlet '{}' initialization.", this.getServletName());
-        try {
-            Class.forName(CONNECTION_POOL_CLASS_NAME);
-        } catch (ClassNotFoundException e) {
-            throw new ExceptionInInitializerError(e.getMessage());
-        }
+        ConnectionPool.getInstance();
     }
 
     @Override
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
-        response.setContentType("text/html");
-        String commandStr = request.getParameter(ParameterType.COMMAND);
-        Command command = CommandType.define(commandStr);
-        try {
-            Router route = command.execute(request, response);
-            String page = route.getPage();
-            if (route.getType() == Router.Type.FORWARD) {
-                request.getRequestDispatcher(page).forward(request, response);
-            } else if (route.getType() == Router.Type.REDIRECT) {
-                response.sendRedirect(page);
-            }
-        } catch (CommandException e) { // FIXME: 14.04.2022 logging, what type of exception?
-            e.printStackTrace();
-        }
-
+        process(request, response);
     }
+
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        process(request, response);
+    }
+
+    private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        // FIXME: 27.04.2022 to filter
         response.setContentType("text/html");
         Command command = CommandType.define(request.getParameter(ParameterType.COMMAND));
         try {
             Router route = command.execute(request, response);
             String page = route.getPage();
+            if (!route.isCacheAllowed()) {
+                response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+                response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
+                response.setDateHeader("Expires", 0); // Proxies.
+            }
             if (route.getType() == Router.Type.FORWARD) {
                 request.getRequestDispatcher(page).forward(request, response);
             } else if (route.getType() == Router.Type.REDIRECT) {
                 response.sendRedirect(page);
             }
-        } catch (CommandException e) { // FIXME: 14.04.2022 logging, what type of exception?
-            e.printStackTrace();
+        } catch (CommandException e) {
+            logger.log(Level.FATAL, e);
+            throw  new ServletException(e);
         }
     }
 

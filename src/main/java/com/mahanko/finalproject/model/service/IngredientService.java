@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.model.service;
 
+import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.entity.menu.IngredientComponent;
 
@@ -9,5 +10,7 @@ import java.util.Optional;
 public interface IngredientService {
     Optional<IngredientComponent> findById(Long id) throws ServiceException;
     List<IngredientComponent> findAll() throws ServiceException;
-    boolean insert(IngredientComponent ingredient) throws ServiceException;
+
+    // FIXME: 27.04.2022 parameters
+    boolean insert(RequestParameters parameters) throws ServiceException;
 }
