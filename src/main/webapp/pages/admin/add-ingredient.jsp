@@ -11,8 +11,10 @@
 <html lang="en">
 <head>
     <title>Title</title>
+
 </head>
 <body>
+
 <form action="${pageContext.request.contextPath}/controller" method="post" enctype="multipart/form-data">
     <input type="hidden" name="command" value="add-ingredient"/>
     <label>

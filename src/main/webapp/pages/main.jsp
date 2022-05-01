@@ -1,7 +1,13 @@
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page contentType="text/html;charset=UTF-8"
          import="com.mahanko.finalproject.model.entity.RoleType"
          import="com.mahanko.finalproject.controller.command.CommandType"%>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<c:choose>
+    <c:when test="${not empty language}"> <fmt:setLocale value="${language}" scope="session"/></c:when>
+    <c:when test="${empty language}"> <fmt:setLocale value="${language = 'ru_RU'}" scope="session"/></c:when>
+</c:choose>
+<fmt:setBundle basename="language"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,17 +34,17 @@
 <br/>
 <form action="${pageContext.request.contextPath}/controller">
     <input type="hidden" name="command" value="${CommandType.LOGOUT}"/>
-    <input type="submit" value="logout"/>
+    <input type="submit" value="<fmt:message key="action.user.logout.button.text"/>"/>
 </form>
 <hr/>
 <c:if test="${sessionScope.user != null && sessionScope.user.getRole() == RoleType.ADMIN}">
-    <form action="${pageContext.request.contextPath}/controller">
+    <form action="${pageContext.request.contextPath}/controller" method="post">
         <input type="hidden" name="command" value="${CommandType.ON_ADD_MENU_ITEM}"/>
-        <input type="submit" value="add item"/>
+        <input type="submit" value="<fmt:message key="action.admin.add.menuitem.button.text"/>"/>
     </form>
     <br/>
-    <form action="${pageContext.request.contextPath}/pages/admin/add-ingredient.jsp">
-        <input type="submit" value="add ingredient"/>
+    <form action="${pageContext.request.contextPath}/pages/admin/add-ingredient.jsp" method="post">
+        <input type="submit" value="<fmt:message key="action.admin.add.ingredient.button.text"/>"/>
     </form>
 </c:if>
 </body>

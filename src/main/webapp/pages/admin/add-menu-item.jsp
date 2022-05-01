@@ -13,7 +13,7 @@
     <title>Title</title>
 </head>
 <body>
-<form id="form" action="controller" method="post" enctype="multipart/form-data">
+<form id="form" action="${pageContext.request.contextPath}/controller" method="post" enctype="multipart/form-data">
     <input type="hidden" name="command" value="add-menu-item"/>
     <label>
         Meal name:
@@ -36,8 +36,8 @@
     <label>
         Meal section:
         <br/>
-        <select name="menu-item-section" required>
-            <c:forEach var="section" items="${requestScope.sections}">
+        <select name="menu-item-section-id" required>
+            <c:forEach var="section" items="${sessionScope.sections}">
                 <option value="${section.id}">${section.name}</option>
             </c:forEach>
         </select>
@@ -72,15 +72,16 @@ display: block;">
     <br/>
     <input type="submit" name="sub" value="add">
 </form>
-${requestScope.menu_item_add_msg}
+${sessionScope.menu_item_add_msg}
 <script>
     const $form = document.getElementById("form");
     const $list = document.getElementById("ingredients");
     const $chosenList = document.getElementById("chosen-ingredients");
-    const ingredients = ${requestScope.ingredients}
+    const ingredients =
+    ${sessionScope.ingredients}
     const chosenIngredients = [];
 
-    const createListItemElement = (ingr) => {
+    const createListItemElement = (ingr, name) => {
         const $listItem = document.createElement('li');
         const $image = document.createElement('img');
         const $input = document.createElement('input');
@@ -95,7 +96,12 @@ ${requestScope.menu_item_add_msg}
         $image.setAttribute('src', imgSrc);
 
         $input.setAttribute('type', 'checkbox');
-        $input.name = "ingredient";
+        $input.name = name;
+        $input.checked = false;
+        $input.readOnly = true;
+        $input.onfocus = () => {
+            $input.readOnly = false;
+        };
         $input.classList.add('ingredient-checkbox');
 
         $listItem.appendChild($image);
@@ -105,43 +111,54 @@ ${requestScope.menu_item_add_msg}
         return $listItem;
     }
 
+    const createChosenListItemElement = (ingr, name) => {
+        const $listItem = createListItemElement(ingr, name);
+        const weightInput = document.createElement('input');
+        const idInput = document.createElement('input');
+
+        weightInput.setAttribute('type', 'number');
+        weightInput.name = "ingredient-weight";
+        weightInput.required = true;
+        if (ingr.weight) weightInput.value = ingr.weight;
+
+        idInput.setAttribute('type', 'hidden');
+        idInput.name = "ingredient-id";
+        idInput.value = ingr.id;
+
+        $listItem.appendChild(weightInput);
+        $listItem.appendChild(idInput);
+
+        return $listItem;
+    }
+
     const renderHTMLIngredientList = () => {
         $list.innerHTML = '';
         for (let ingr of ingredients) {
-            $list.appendChild(createListItemElement(ingr));
+            $list.appendChild(createListItemElement(ingr, 'ingredient'));
         }
     }
 
     const renderHTMLChosenIngredientList = () => {
         $chosenList.innerHTML = '';
         for (let ingr of chosenIngredients) {
-            const $listItem = createListItemElement(ingr);
-            const $input = document.createElement('input');
+            const $listItem = createChosenListItemElement(ingr, 'chosen-ingredient');
 
-            $input.setAttribute('type', 'number');
-            $input.name = "weight";
-            if(ingr.weight) $input.value = ingr.weight;
-
-            $listItem.appendChild($input);
-
-            $listItem.children.namedItem('ingredient').checked = true;
+            $listItem.children.namedItem('chosen-ingredient').checked = true;
 
             $chosenList.appendChild($listItem);
         }
 
     }
 
-    renderHTMLIngredientList();
-
     $list.addEventListener('change', (event) => {
         const ingrId = +event.target.parentElement.dataset.ingr;
         const ingredient = ingredients.find(ingr => ingr.id === ingrId);
         if (event.target.checked) {
-
             chosenIngredients.unshift(ingredient);
         } else {
             chosenIngredients.splice(chosenIngredients.indexOf(ingredient), 1);
         }
+
         renderHTMLChosenIngredientList();
     });
 
@@ -153,47 +170,14 @@ ${requestScope.menu_item_add_msg}
             $listItem.children.namedItem('ingredient').checked = false;
             chosenIngredients.splice(chosenIngredients.indexOf(ingredient), 1);
             renderHTMLChosenIngredientList();
-        }
-        else {
-            if(event.target.value>0){
+        } else {
+            if (event.target.value > 0) {
                 ingredient.weight = event.target.value;
             }
         }
     });
 
-    $form.addEventListener('submit', (event) => {
-        event.preventDefault();
-        let request = {
-            command: $form["command"].value,
-            "menu-item-name": $form["menu-item-name"].value,
-            "menu-item-cost": +$form["menu-item-cost"].value,
-            "menu-item-description": $form["menu-item-description"].value,
-            "menu-item-picture": $form["menu-item-picture"].files[0],
-            "menu-item-section" : $form["menu-item-section"].value,
-            ingredients: chosenIngredients
-        }
-
-        console.log($form["menu-item-section"].value);
-        let formData = new FormData();
-        for (let param in request) {
-            if (param === "ingredients") {
-                for (let ingr of request[param]) {
-                    formData.append('ingredient-id', ingr.id);
-                    formData.append('ingredient-weight', ingr.weight);
-                }
-            } else {
-                formData.append(param, request[param]);
-            }
-
-        }
-
-        fetch($form.getAttribute("action"),
-            {
-                method: $form.getAttribute("method"),
-                body: formData
-            });
-    });
-
+    window.addEventListener('load', renderHTMLIngredientList);
 </script>
 </body>
 </html>
