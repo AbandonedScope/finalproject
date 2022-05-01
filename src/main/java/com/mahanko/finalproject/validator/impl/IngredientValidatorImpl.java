@@ -11,7 +11,7 @@ public class IngredientValidatorImpl implements IngredientValidator {
     private static final Double MINIMAL_NUMERIC_FIELD_VALUE = 0d;
     private static final Double MAXIMAL_NUMERIC_FIELD_VALUE = 5000d;
     private static final String PICTURE_PNG_EXTENSION = ".png";
-    private static final int MAXIMAL_INGREDIENT_PICTURE_SIZE = 512 * 512;
+    private static final int MAXIMAL_INGREDIENT_PICTURE_SIZE = 1024 * 1024;
 
     @Override
     public boolean validateName(String name) {
