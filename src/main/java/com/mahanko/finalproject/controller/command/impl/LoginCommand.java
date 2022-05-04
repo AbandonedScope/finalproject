@@ -8,10 +8,7 @@ import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
 import com.mahanko.finalproject.model.service.CustomerService;
-import com.mahanko.finalproject.model.service.MenuItemService;
 import com.mahanko.finalproject.model.service.impl.CustomerServiceImpl;
-import com.mahanko.finalproject.model.service.impl.MenuItemServiceImpl;
-import com.mahanko.finalproject.validator.CustomerValidator;
 import com.mahanko.finalproject.validator.impl.CustomerValidatorImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -40,11 +37,9 @@ public class LoginCommand implements Command {
             if (optionalCustomer.isPresent()) {
                 session.setAttribute(ParameterType.USER, optionalCustomer.get());
                 page = PagePath.MAIN;
-                MenuItemService service = new MenuItemServiceImpl();
-                session.setAttribute("menuItems", service.findAll());
             } else {
                 request.setAttribute(ParameterType.LOGIN_VALIDATION_MESSAGE, LOGIN_FAILED_MESSAGE);
-                page = PagePath.INDEX;
+                page = PagePath.LOGIN;
                 route.setType(Router.Type.FORWARD);
             }
         } catch (ServiceException e) {

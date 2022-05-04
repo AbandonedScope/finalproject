@@ -11,7 +11,12 @@ public enum CommandType {
     ADD_USER(new AddUserCommand()),
     ADD_INGREDIENT(new AddIngredientCommand()),
     ADD_MENU_ITEM(new AddMenuItemCommand()),
-    ON_ADD_MENU_ITEM(new OnAddMenuItemPageCommand());
+    ADD_MENU_SECTION(new AddMenuSectionCommand()),
+    ON_ADD_MENU_ITEM(new OnAddMenuItemPageCommand()),
+    SET_LOCALIZATION_TO_ENGLISH(new SetLocalizationToEnglishCommand()),
+    SET_LOCALIZATION_TO_RUSSIAN(new SetLocalizationToRussianCommand());
+
+
 
     private final Command command;
 

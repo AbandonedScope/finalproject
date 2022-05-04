@@ -31,6 +31,7 @@ public class MenuItemRowMapper implements CustomRowMapper<MenuItemComposite> {
             menuItem.setName(resultSet.getString(ColumnName.MENU_ITEM_NAME));
             menuItem.setDescription(resultSet.getString(ColumnName.MENU_ITEM_DESCRIPTION));
             menuItem.setPictureBase64(menuItemPictureString);
+            menuItem.setCost(resultSet.getBigDecimal(ColumnName.MENU_ITEM_COST));
             // FIXME: 27.04.2022 add section
             IngredientRowMapper ingredientMapper = new IngredientRowMapper();
             do {

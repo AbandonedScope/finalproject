@@ -3,9 +3,10 @@ package com.mahanko.finalproject.validator;
 import com.mahanko.finalproject.controller.RequestParameters;
 
 
-public interface CustomerValidator {
+public interface CustomerValidator extends NameValidator {
     boolean validateLogin(String login);
+
     boolean validatePassword(String password, String confirmPassword);
-    boolean validateName(String name);
+
     boolean validateRegistration(RequestParameters values);
 }

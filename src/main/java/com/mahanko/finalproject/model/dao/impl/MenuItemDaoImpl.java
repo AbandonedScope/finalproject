@@ -1,10 +1,10 @@
 package com.mahanko.finalproject.model.dao.impl;
 
 import com.mahanko.finalproject.exception.DaoException;
-import com.mahanko.finalproject.model.dao.MenuItemDao;
 import com.mahanko.finalproject.model.entity.menu.IngredientComponent;
-import com.mahanko.finalproject.model.entity.menu.MenuItemComponent;
 import com.mahanko.finalproject.model.entity.menu.MenuItemComposite;
+import com.mahanko.finalproject.model.dao.MenuItemDao;
+import com.mahanko.finalproject.model.entity.menu.MenuItemComponent;
 import com.mahanko.finalproject.model.mapper.impl.MenuItemRowMapper;
 import com.mahanko.finalproject.model.pool.ConnectionPool;
 import com.mahanko.finalproject.util.CustomPictureEncoder;
@@ -20,14 +20,14 @@ import java.util.Optional;
 public class MenuItemDaoImpl implements MenuItemDao {
     private static final Logger logger = LogManager.getLogger();
     private static final String INSERT_NEW_MENU_ITEM =
-            "INSERT INTO menu_items(mi_section, mi_name, mi_description, mi_picture) " +
-                    "VALUE (?, ?, ?, ?)";
+            "INSERT INTO menu_items(mi_section, mi_name, mi_description, mi_picture, mi_cost) " +
+                    "VALUE (?, ?, ?, ?, ?)";
     private static final String SELECT_ID_BY_NAME = "SELECT mi_id FROM menu_items WHERE mi_name = ?";
     private static final String INSERT_MENU_ITEM_INGREDIENTS_MERGE =
             "INSERT INTO m2m_menuitems_ingredients(mi_id, ingr_id, ingr_weight) " +
                     "VALUE (?, ?, ?)";
     private static final String SELECT_ALL_MENU_ITEMS_JOIN_INGREDIENTS =
-            "SELECT menu_items.mi_id, mi_section, mi_name, mi_description, mi_picture," +
+            "SELECT menu_items.mi_id, mi_section, mi_name, mi_description, mi_picture, mi_cost, " +
                     "m2m_menuitems_ingredients.ingr_weight," +
                     "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, ingr_carbohydrates, ingr_calories, ingr_picture " +
                     "FROM menu_items " +
@@ -63,6 +63,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
             statement.setString(2, menuItem.getName());
             statement.setString(3, menuItem.getDescription());
             statement.setBlob(4, pictureBlob);
+            statement.setBigDecimal(5, menuItem.getCost());
             if (statement.executeUpdate() != 0) {
                 isInserted = true;
             }

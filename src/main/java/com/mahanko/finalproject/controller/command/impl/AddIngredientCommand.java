@@ -30,7 +30,7 @@ public class AddIngredientCommand implements Command {
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        Router rote = new Router(PagePath.ADD_INGREDIENT, Router.Type.FORWARD);
+        Router route = new Router(PagePath.ADD_INGREDIENT, Router.Type.FORWARD);
         try {
             Part filePart = request.getPart(ParameterType.INGREDIENT_PICTURE);
             String pictureName = filePart.getSubmittedFileName();
@@ -62,6 +62,6 @@ public class AddIngredientCommand implements Command {
             throw new CommandException(e);
         }
 
-        return rote;
+        return route;
     }
 }

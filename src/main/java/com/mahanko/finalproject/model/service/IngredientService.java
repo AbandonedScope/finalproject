@@ -9,8 +9,8 @@ import java.util.Optional;
 
 public interface IngredientService {
     Optional<IngredientComponent> findById(Long id) throws ServiceException;
+
     List<IngredientComponent> findAll() throws ServiceException;
 
-    // FIXME: 27.04.2022 parameters
     boolean insert(RequestParameters parameters) throws ServiceException;
 }

@@ -1,19 +1,16 @@
 package com.mahanko.finalproject.model.service.impl;
 
-import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.RequestParameters;
-import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.model.dao.CustomerDao;
 import com.mahanko.finalproject.model.dao.impl.CustomerDaoImpl;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
-import com.mahanko.finalproject.exception.DaoException;
-import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.entity.RoleType;
 import com.mahanko.finalproject.model.service.CustomerService;
+import com.mahanko.finalproject.exception.DaoException;
+import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.util.PasswordEncryptor;
 import com.mahanko.finalproject.validator.CustomerValidator;
-import com.mahanko.finalproject.validator.impl.CustomerValidatorImpl;
 
 import java.util.ArrayList;
 import java.util.List;

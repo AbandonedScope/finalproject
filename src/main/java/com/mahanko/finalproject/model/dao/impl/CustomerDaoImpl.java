@@ -1,9 +1,9 @@
 package com.mahanko.finalproject.model.dao.impl;
 
 import com.mahanko.finalproject.model.dao.CustomerDao;
+import com.mahanko.finalproject.model.mapper.impl.CustomerRowMapper;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
 import com.mahanko.finalproject.exception.DaoException;
-import com.mahanko.finalproject.model.mapper.impl.CustomerRowMapper;
 import com.mahanko.finalproject.model.pool.ConnectionPool;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;

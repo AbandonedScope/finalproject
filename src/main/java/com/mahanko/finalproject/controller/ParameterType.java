@@ -24,6 +24,7 @@ public final class ParameterType {
     public static final String INGREDIENT_PICTURE_NAME = "ingredient-picture-name";
     public static final String INGREDIENT_PICTURE_SIZE = "ingredient-picture-size";
     public static final String INGREDIENTS = "ingredients";
+    public static final String MENU_ITEMS = "menuItems";
     public static final String MENU_ITEM_NAME = "menu-item-name";
     public static final String MENU_ITEM_COST = "menu-item-cost";
     public static final String MENU_ITEM_CALORIES = "menu-item-calories";
@@ -37,6 +38,7 @@ public final class ParameterType {
     public static final String MENU_ITEM_PICTURE_SIZE = "menu-item-picture-size";
     public static final String MENU_ITEM_SECTION_ID = "menu-item-section-id";
     public static final String SECTIONS = "sections";
+    public static final String MENU_SECTION_NAME = "menu-section-name";
 
     private ParameterType() {
     }

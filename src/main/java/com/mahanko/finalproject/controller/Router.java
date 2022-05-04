@@ -1,7 +1,7 @@
 package com.mahanko.finalproject.controller;
 
 public class Router {
-    private String page = PagePath.INDEX;
+    private String page = PagePath.LOGIN;
     private Type type = Type.REDIRECT;
     private boolean cacheAllowed = false;
 

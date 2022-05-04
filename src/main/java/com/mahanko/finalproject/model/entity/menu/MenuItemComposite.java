@@ -98,5 +98,4 @@ public class MenuItemComposite extends AbstractEntity<Long> implements MenuItemC
     public double getCarbohydrates() {
         return ingredients.stream().map(MenuItemComponent::getCarbohydrates).reduce(0d, Double::sum);
     }
-
 }

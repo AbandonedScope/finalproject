@@ -5,13 +5,13 @@
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <c:choose>
     <c:when test="${not empty language}"> <fmt:setLocale value="${language}" scope="session"/></c:when>
-    <c:when test="${empty language}"> <fmt:setLocale value="${language = 'ru_RU'}" scope="session"/></c:when>
+    <c:when test="${empty language}"> <fmt:setLocale value="${language = 'en_US'}" scope="session"/></c:when>
 </c:choose>
 <fmt:setBundle basename="language"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Title</title>
+    <title><fmt:message key="navigation.guest.registration"/></title>
 </head>
 <body>
 <form action="${pageContext.request.contextPath}/controller" method="post">

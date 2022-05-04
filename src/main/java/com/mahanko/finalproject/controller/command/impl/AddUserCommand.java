@@ -6,13 +6,10 @@ import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
-import com.mahanko.finalproject.model.entity.RoleType;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.service.CustomerService;
 import com.mahanko.finalproject.model.service.impl.CustomerServiceImpl;
-import com.mahanko.finalproject.util.PasswordEncryptor;
-import com.mahanko.finalproject.validator.CustomerValidator;
 import com.mahanko.finalproject.validator.impl.CustomerValidatorImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -20,8 +17,6 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.HashMap;
-import java.util.Map;
 import java.util.Optional;
 
 public class AddUserCommand implements Command {

@@ -1,18 +1,61 @@
 <%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.model.entity.RoleType"%>
+         import="com.mahanko.finalproject.model.entity.RoleType" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
+<c:choose>
+    <c:when test="${not empty language}"><fmt:setLocale value="${language}" scope="session"/></c:when>
+    <c:when test="${empty language}"><fmt:setLocale value="${language = 'en_US'}" scope="session"/></c:when>
+</c:choose>
+<fmt:setBundle basename="language"/>
 <html>
 <head>
+    <title></title>
 </head>
 <body>
 <div style="display: flex;
 justify-content: space-between;">
-    <a href="${pageContext.request.contextPath}/pages/main.jsp">Main</a>
+        <a href="${pageContext.request.contextPath}/index.jsp">
+            <fmt:message key="navigation.guest.main"/>
+        </a>
     <c:if test="${sessionScope.user != null && sessionScope.user.getRole() == RoleType.ADMIN}">
-        <a href="${pageContext.request.contextPath}/pages/admin/add-ingredient.jsp">Add ingredient</a>
-        <a href="${pageContext.request.contextPath}/pages/admin/add-menu-item.jsp">Add menu item</a>
+        <form action="${pageContext.request.contextPath}/controller">
+            <input type="hidden" name="command" value="on-add-menu-item"/>
+            <input type="submit" value="<fmt:message key="navigation.admin.menuitem"/>"/>
+        </form>
+        <form action="${pageContext.request.contextPath}/pages/admin/add-ingredient.jsp">
+            <input type="submit" value="<fmt:message key="navigation.admin.ingredient"/>"/>
+        </form>
+        <form action="${pageContext.request.contextPath}/pages/admin/add-sections.jsp">
+            <input type="submit" value="<fmt:message key="navigation.admin.section"/>"/>
+        </form>
     </c:if>
-    <a href="${pageContext.request.contextPath}/pages/registration.jsp">Registration</a>
+    <c:choose>
+        <c:when test="${sessionScope.user != null && sessionScope.user.getRole() == RoleType.GUEST}">
+            <a href="${pageContext.request.contextPath}/pages/login.jsp">
+                <fmt:message key="navigation.guest.login"/>
+            </a>
+            <a href="${pageContext.request.contextPath}/pages/registration.jsp">
+                <fmt:message key="navigation.guest.registration"/>
+            </a>
+        </c:when>
+        <c:when test="${sessionScope.user != null && sessionScope.user.getRole() != RoleType.GUEST}">
+            <a href="${pageContext.request.contextPath}/pages/profile.jsp">
+                <fmt:message key="navigation.user.profile"/>
+            </a>
+        </c:when>
+    </c:choose>
+    <div style="display: flex;">
+        <form action="${pageContext.request.contextPath}/controller" method="get">
+            <input type="hidden" name="command" value="set-localization-to-english">
+            <input type="hidden" name="path" value="${pageContext.request.requestURI}">
+            <input type="submit" name="en" value="en">
+        </form>
+        <form action="${pageContext.request.contextPath}/controller" method="get">
+            <input type="hidden" name="command" value="set-localization-to-russian">
+            <input type="hidden" name="path" value="${pageContext.request.requestURI}">
+            <input type="submit" name="en" value="ru">
+        </form>
+    </div>
 </div>
 </body>
 </html>

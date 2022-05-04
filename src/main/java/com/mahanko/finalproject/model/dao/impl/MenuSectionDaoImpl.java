@@ -22,6 +22,7 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_ALL_SECTIONS = "SELECT s_id, s_name FROM sections";
     private static final String SELECT_SECTION_BY_ID = "SELECT s_id, s_name FROM sections WHERE s_id = ?";
+    private static final String INSERT_SECTION = "INSERT INTO sections(s_name) VALUE ?";
     private static final MenuSectionDaoImpl instance = new MenuSectionDaoImpl();
 
 
@@ -36,7 +37,7 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     public Optional<MenuSection> findById(Long id) throws DaoException {
         Optional<MenuSection> sectionOptional = Optional.empty();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(SELECT_SECTION_BY_ID)) {
+             PreparedStatement statement = connection.prepareStatement(SELECT_SECTION_BY_ID)) {
             statement.setInt(1, id.intValue());
             ResultSet resultSet = statement.executeQuery();;
             if (resultSet.next()) {
@@ -52,7 +53,19 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
 
     @Override
     public boolean insert(MenuSection menuSection) throws DaoException {
-        return false;
+        boolean isInserted = false;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(INSERT_SECTION)) {
+            statement.setString(1, menuSection.getName());
+            if (statement.executeUpdate() != 0) {
+                isInserted = true;
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return isInserted;
     }
 
     @Override

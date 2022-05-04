@@ -1,7 +1,6 @@
 package com.mahanko.finalproject.model.mapper.impl;
 
 import com.mahanko.finalproject.exception.DaoException;
-import com.mahanko.finalproject.model.entity.menu.MenuItemComposite;
 import com.mahanko.finalproject.model.entity.menu.MenuSection;
 import com.mahanko.finalproject.model.mapper.ColumnName;
 import com.mahanko.finalproject.model.mapper.CustomRowMapper;

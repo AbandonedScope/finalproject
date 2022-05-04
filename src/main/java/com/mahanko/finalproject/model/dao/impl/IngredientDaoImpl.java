@@ -1,9 +1,9 @@
 package com.mahanko.finalproject.model.dao.impl;
 
 import com.mahanko.finalproject.exception.DaoException;
+import com.mahanko.finalproject.model.mapper.impl.IngredientRowMapper;
 import com.mahanko.finalproject.model.dao.IngredientDao;
 import com.mahanko.finalproject.model.entity.menu.IngredientComponent;
-import com.mahanko.finalproject.model.mapper.impl.IngredientRowMapper;
 import com.mahanko.finalproject.model.pool.ConnectionPool;
 import com.mahanko.finalproject.util.CustomPictureEncoder;
 import org.apache.logging.log4j.Level;

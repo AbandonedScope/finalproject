@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface MenuItemService {
     List<MenuItemComposite> findAll() throws ServiceException;
+
     boolean insertNew(RequestParameters parameters) throws ServiceException;
 }

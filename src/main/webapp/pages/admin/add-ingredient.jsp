@@ -2,14 +2,14 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:choose>
-    <c:when test="${not empty language}"><fmt:setLocale value="${language}"/></c:when>
-    <c:when test="${empty language}"><fmt:setLocale value="${language = 'ru_RU'}"/></c:when>
+    <c:when test="${not empty language}"><fmt:setLocale value="${language}" scope="session"/></c:when>
+    <c:when test="${empty language}"><fmt:setLocale value="${language = 'en_US'}" scope="session"/></c:when>
 </c:choose>
 <fmt:setBundle basename="language"/>
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Title</title>
+    <title><fmt:message key="navigation.admin.ingredient"/></title>
 
 </head>
 <body>

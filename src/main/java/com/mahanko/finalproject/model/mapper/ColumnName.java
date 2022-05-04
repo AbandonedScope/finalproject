@@ -21,6 +21,7 @@ public final class ColumnName {
     public static final String MENU_ITEM_NAME = "mi_name";
     public static final String MENU_ITEM_DESCRIPTION = "mi_description";
     public static final String MENU_ITEM_PICTURE = "mi_picture";
+    public static final String MENU_ITEM_COST ="mi_cost";
     public static final String SECTION_ID = "s_id";
     public static final String SECTION_NAME = "s_name";
 

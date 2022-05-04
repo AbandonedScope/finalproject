@@ -1,10 +1,10 @@
 package com.mahanko.finalproject.model.mapper.impl;
 
 import com.mahanko.finalproject.exception.DaoException;
+import com.mahanko.finalproject.model.mapper.CustomRowMapper;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
 import com.mahanko.finalproject.model.entity.RoleType;
 import com.mahanko.finalproject.model.mapper.ColumnName;
-import com.mahanko.finalproject.model.mapper.CustomRowMapper;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
