@@ -39,7 +39,7 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_SECTION_BY_ID)) {
             statement.setInt(1, id.intValue());
-            ResultSet resultSet = statement.executeQuery();;
+            ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
                 CustomRowMapper<MenuSection> mapper = new MenuSectionRowMapper();
                 sectionOptional = mapper.map(resultSet);
