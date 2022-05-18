@@ -2,7 +2,8 @@ package com.mahanko.finalproject.model.entity;
 
 import com.mahanko.finalproject.model.entity.menu.MenuItem;
 
-import java.sql.Time;
+import java.time.LocalDateTime;
+import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -10,7 +11,8 @@ import java.util.Set;
 
 public class OrderEntity extends AbstractEntity<Long> {
     private Long userId;
-    private Time servingTime;
+    private LocalDateTime servingTime;
+    private ZonedDateTime creationTime;
     private final Map<MenuItem, Integer> items;
 
     public OrderEntity() {
@@ -49,12 +51,20 @@ public class OrderEntity extends AbstractEntity<Long> {
         this.userId = userId;
     }
 
-    public Time getServingTime() {
+    public LocalDateTime getServingTime() {
         return servingTime;
     }
 
-    public void setServingTime(Time servingTime) {
+    public void setServingTime(LocalDateTime servingTime) {
         this.servingTime = servingTime;
+    }
+
+    public ZonedDateTime getCreationTime() {
+        return creationTime;
+    }
+
+    public void setCreationTime(ZonedDateTime creationTime) {
+        this.creationTime = creationTime;
     }
 
     @Override

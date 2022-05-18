@@ -30,10 +30,17 @@ public class AddOrderCommand implements Command {
         params.put(ORDER_TIME, request.getParameter(ORDER_TIME));
         OrderService service = new OrderServiceImpl();
         try {
-            service.insertNew(params, order);
+            if (!service.insertNew(params, order)) {
+                params.fillRequestWithValidations(request);
+                route.setType(Router.Type.FORWARD);
+                route.setPage(PagePath.ORDER);
+            } else {
+                session.setAttribute(ORDER_CART, new OrderEntity());
+            }
         } catch (ServiceException e) {
             throw  new CommandException(e);
         }
+
         return route;
     }
 }

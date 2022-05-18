@@ -3,15 +3,13 @@
          import="com.mahanko.finalproject.controller.command.CommandType" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<fmt:setLocale value="${sessionScope.language}" scope="session"/>
-<fmt:setBundle basename="language"/>
+<%@include file="/pages/header.jsp"%>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title><fmt:message key="navigation.guest.main"/></title>
 </head>
 <body>
-<c:import url="pages/header.jsp"/>
 <ul>
     <c:forEach var="menuItem" items="${sessionScope.menuItems}">
         <li>

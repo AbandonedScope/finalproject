@@ -18,6 +18,7 @@ public final class ParameterType {
     public static final String INGREDIENT_PICTURE_VALIDATION_MESSAGE = "ingredient-picture";
     public static final String SECTION_NAME_VALIDATION_MESSAGE = "section-name";
     public static final String REGISTRATION_USER_EXISTS_MESSAGE = "user-exists";
+    public static final String SERVING_DATETIME_VALIDATION_MESSAGE = "incorrect-datetime";
     public static final String VALIDATION_MESSAGES = "validation_msg";
     public static final String LOGIN_VALIDATION_MESSAGE = "login_msg";
     public static final String SECTION_ADD_SUCCESSFULLY_MESSAGE = "section-add-success";

@@ -8,6 +8,7 @@ public final class PagePath {
     public static final String LOGIN = "pages/login.jsp";
     public static final String REGISTRATION = "pages/registration.jsp";
     public static final String SHOPPING_CART = "pages/cart.jsp";
+    public static final String ORDER = "pages/order.jsp";
 
     private PagePath() {
     }
