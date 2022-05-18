@@ -3,7 +3,7 @@ package com.mahanko.finalproject.model.dao.impl;
 import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.model.mapper.impl.IngredientRowMapper;
 import com.mahanko.finalproject.model.dao.IngredientDao;
-import com.mahanko.finalproject.model.entity.menu.IngredientComponent;
+import com.mahanko.finalproject.model.entity.menu.Ingredient;
 import com.mahanko.finalproject.model.pool.ConnectionPool;
 import com.mahanko.finalproject.util.CustomPictureEncoder;
 import org.apache.logging.log4j.Level;
@@ -52,8 +52,8 @@ public class IngredientDaoImpl implements IngredientDao {
     }
 
     @Override
-    public Optional<IngredientComponent> findById(Long id) throws DaoException {
-        Optional<IngredientComponent> ingredientOptional = Optional.empty();
+    public Optional<Ingredient> findById(Long id) throws DaoException {
+        Optional<Ingredient> ingredientOptional = Optional.empty();
         try(Connection connection = ConnectionPool.getInstance().getConnection();
         PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
             statement.setLong(1, id);
@@ -72,19 +72,19 @@ public class IngredientDaoImpl implements IngredientDao {
 
     // FIXME: 22.04.2022 equal names
     @Override
-    public boolean insert(IngredientComponent ingredientComponent) throws DaoException {
+    public boolean insert(Ingredient ingredient) throws DaoException {
         boolean isInserted = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_NEW_INGREDIENTS)) {
-            String base64String = ingredientComponent.getPicture();
+            String base64String = ingredient.getPicture();
             byte[] data = CustomPictureEncoder.decodeString(base64String);
             Blob blob = connection.createBlob();
             blob.setBytes(1, data);
-            statement.setString(1, ingredientComponent.getName());
-            statement.setDouble(2, ingredientComponent.getProteins());
-            statement.setDouble(3, ingredientComponent.getFats());
-            statement.setDouble(4, ingredientComponent.getCarbohydrates());
-            statement.setDouble(5, ingredientComponent.getCalories());
+            statement.setString(1, ingredient.getName());
+            statement.setDouble(2, ingredient.getProteins());
+            statement.setDouble(3, ingredient.getFats());
+            statement.setDouble(4, ingredient.getCarbohydrates());
+            statement.setDouble(5, ingredient.getCalories());
             statement.setBlob(6, blob);
             if (statement.executeUpdate() != 0) {
                 isInserted = true;
@@ -98,13 +98,13 @@ public class IngredientDaoImpl implements IngredientDao {
     }
 
     @Override
-    public boolean remove(IngredientComponent ingredientComponent) throws DaoException {
+    public boolean remove(Ingredient ingredient) throws DaoException {
         return false;
     }
 
     @Override
-    public List<IngredientComponent> findAll() throws DaoException {
-        List<IngredientComponent> ingredients = new ArrayList<>();
+    public List<Ingredient> findAll() throws DaoException {
+        List<Ingredient> ingredients = new ArrayList<>();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL_INGREDIENTS)) {
             ResultSet result = statement.executeQuery();
@@ -121,7 +121,7 @@ public class IngredientDaoImpl implements IngredientDao {
     }
 
     @Override
-    public IngredientComponent update(long id, IngredientComponent ingredientComponent) throws DaoException {
+    public Ingredient update(long id, Ingredient ingredient) throws DaoException {
         return null;
     }
 }

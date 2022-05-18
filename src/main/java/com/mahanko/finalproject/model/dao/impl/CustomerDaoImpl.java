@@ -19,7 +19,7 @@ import java.util.Optional;
 public class CustomerDaoImpl implements CustomerDao {
     private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_BY_PASSWORD_LOGIN =
-            "SELECT * " +
+            "SELECT u_id, u_name, u_surname, u_password, u_login, u_loyaltypoints, u_blocked, u_role " +
             "FROM users " +
             "WHERE u_login = ? AND u_password = ? ";
     private static final String SELECT_EXISTS_BY_LOGIN =

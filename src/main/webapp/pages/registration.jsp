@@ -3,10 +3,7 @@
          import="com.mahanko.finalproject.controller.ParameterType" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<c:choose>
-    <c:when test="${not empty language}"> <fmt:setLocale value="${language}" scope="session"/></c:when>
-    <c:when test="${empty language}"> <fmt:setLocale value="${language = 'en_US'}" scope="session"/></c:when>
-</c:choose>
+<fmt:setLocale value="${sessionScope.language}" scope="session"/>
 <fmt:setBundle basename="language"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -14,11 +11,15 @@
     <title><fmt:message key="navigation.guest.registration"/></title>
 </head>
 <body>
+<c:import url="header.jsp"/>
 <form action="${pageContext.request.contextPath}/controller" method="post">
     <input type="hidden" name="command" value="${CommandType.ADD_USER}"/>
     <label>
         <fmt:message key="label.user.name"/> :
         <input type="text" value="${pageContext.request.getParameter(ParameterType.USER_NAME)}" name="name" maxlength="20"/>
+        <c:if test="${not empty requestScope.get(ParameterType.USERNAME_VALIDATION_MESSAGE)}">
+            <fmt:message key="message.validation.username"/>
+        </c:if>
     </label>
     <br/>
     <label>
@@ -34,6 +35,9 @@
     <label>
         <fmt:message key="label.user.password"/> :
         <input type="password" name="password" value="${pageContext.request.getParameter(ParameterType.USER_PASSWORD)}" minlength="8" maxlength="20"/>
+        <c:if test="${not empty requestScope.get(ParameterType.PASSWORD_VALIDATION_MESSAGE)}">
+            <fmt:message key="message.validation.password"/>
+        </c:if>
     </label>
     <br/>
     <label>
@@ -41,8 +45,10 @@
         <input type="password" name="confirm-password" value="${pageContext.request.getParameter(ParameterType.USER_CONFIRM_PASSWORD)}" minlength="8" maxlength="20"/>
     </label>
     <br/>
-    <input type="submit" name="sub" value="<fmt:message key="action.guest.login.button.text"/>">
+    <input type="submit" name="sub" value="<fmt:message key="action.guest.login"/>">
+    <c:if test="${not empty requestScope.get(ParameterType.REGISTRATION_USER_EXISTS_MESSAGE)}">
+        <fmt:message key="message.registration.user-exists"/>
+    </c:if>
 </form>
-${register_msg}
 </body>
 </html>

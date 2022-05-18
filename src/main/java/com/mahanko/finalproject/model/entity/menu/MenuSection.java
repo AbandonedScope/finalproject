@@ -6,7 +6,7 @@ import java.util.List;
 
 public class MenuSection extends AbstractEntity<Integer> {
     private String name;
-    private List<MenuItemComposite> menuItems;
+    private List<MenuItem> menuItems;
 
     public String getName() {
         return name;

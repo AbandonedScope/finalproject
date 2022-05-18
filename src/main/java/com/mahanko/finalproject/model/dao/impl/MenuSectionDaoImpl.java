@@ -22,7 +22,7 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_ALL_SECTIONS = "SELECT s_id, s_name FROM sections";
     private static final String SELECT_SECTION_BY_ID = "SELECT s_id, s_name FROM sections WHERE s_id = ?";
-    private static final String INSERT_SECTION = "INSERT INTO sections(s_name) VALUE ?";
+    private static final String INSERT_SECTION = "INSERT INTO sections(s_name) VALUES (?)";
     private static final MenuSectionDaoImpl instance = new MenuSectionDaoImpl();
 
 

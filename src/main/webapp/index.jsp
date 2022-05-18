@@ -3,10 +3,7 @@
          import="com.mahanko.finalproject.controller.command.CommandType" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<c:choose>
-    <c:when test="${not empty language}"> <fmt:setLocale value="${language}" scope="session"/></c:when>
-    <c:when test="${empty language}"> <fmt:setLocale value="${language = 'en_US'}" scope="session"/></c:when>
-</c:choose>
+<fmt:setLocale value="${sessionScope.language}" scope="session"/>
 <fmt:setBundle basename="language"/>
 <!DOCTYPE html>
 <html lang="en">
@@ -34,25 +31,31 @@ justify-content: space-between">
                             </div>
                         </c:forEach>
                     </div>
-                    <p>Cost ${menuItem.cost}</p>
-                    <p>Calories ${menuItem.calories}</p>
-                    <p>Proteins ${menuItem.proteins}</p>
-                    <p>Carbohydrates ${menuItem.carbohydrates}</p>
-                    <p>Weight ${menuItem.weight}</p>
+                    <p><fmt:message key="label.menuitem.cost"/> ${menuItem.cost}</p>
+                    <p><fmt:message key="label.menuItem.calories"/> ${menuItem.calories}</p>
+                    <p><fmt:message key="label.menuItem.proteins"/> ${menuItem.proteins}</p>
+                    <p><fmt:message key="label.menuItem.carbohydrates"/> ${menuItem.carbohydrates}</p>
+                    <p><fmt:message key="label.menuItem.weight"/> ${menuItem.weight}</p>
                 </div>
             </div>
         </li>
+        <form action="${pageContext.request.contextPath}/controller" method="post">
+            <input type="hidden" name="command" value="add-item-to-cart">
+            <input type="hidden" name="menu-item-id" value="${menuItem.id}">
+            <input type="number" name="menu-item-count" value="1" min="1" step="1" required>
+            <input type="submit" name="submit-button" value="<fmt:message key="action.guest.cart.add-to-cart"/>"/>
+        </form>
     </c:forEach>
 </ul>
 <hr/>
 <c:if test="${sessionScope.user != null && sessionScope.user.getRole() == RoleType.ADMIN}">
     <form action="${pageContext.request.contextPath}/controller" method="post">
         <input type="hidden" name="command" value="${CommandType.ON_ADD_MENU_ITEM}"/>
-        <input type="submit" value="<fmt:message key="action.admin.add.menuitem.button.text"/>"/>
+        <input type="submit" value="<fmt:message key="action.admin.add.menuitem"/>"/>
     </form>
     <br/>
     <form action="${pageContext.request.contextPath}/pages/admin/add-ingredient.jsp" method="post">
-        <input type="submit" value="<fmt:message key="action.admin.add.ingredient.button.text"/>"/>
+        <input type="submit" value="<fmt:message key="action.admin.add.ingredient"/>"/>
     </form>
 </c:if>
 <c:import url="pages/footer.jsp"/>

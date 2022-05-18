@@ -3,7 +3,6 @@ package com.mahanko.finalproject.controller;
 public class Router {
     private String page = PagePath.LOGIN;
     private Type type = Type.REDIRECT;
-    private boolean cacheAllowed = false;
 
     public enum Type {
         FORWARD,
@@ -36,14 +35,6 @@ public class Router {
 
     public void setType(Type type) {
         this.type = type;
-    }
-
-    public boolean isCacheAllowed() {
-        return cacheAllowed;
-    }
-
-    public void setCacheAllowed(boolean isAllowed) {
-        cacheAllowed = isAllowed;
     }
 
 }

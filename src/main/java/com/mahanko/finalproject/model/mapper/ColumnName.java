@@ -1,6 +1,7 @@
 package com.mahanko.finalproject.model.mapper;
 
 public final class ColumnName {
+    public static final String USER_ID = "u_id";
     public static final String USER_NAME = "u_name";
     public static final String USER_SURNAME = "u_surname";
     public static final String USER_LOGIN = "u_login";

@@ -22,9 +22,9 @@ public class MenuSectionRowMapper implements CustomRowMapper<MenuSection> {
         try {
             section.setId(resultSet.getInt(ColumnName.SECTION_ID));
             section.setName(resultSet.getString(ColumnName.SECTION_NAME));
-//            CustomRowMapper<MenuItemComposite> menuItemMapper = new MenuItemRowMapper();
+//            CustomRowMapper<MenuItem> menuItemMapper = new MenuItemRowMapper();
 //            do {
-//                Optional<MenuItemComposite> menuItemOptional = menuItemMapper.map(resultSet);
+//                Optional<MenuItem> menuItemOptional = menuItemMapper.map(resultSet);
 //                if (menuItemOptional.isPresent()) {
 //
 //                }

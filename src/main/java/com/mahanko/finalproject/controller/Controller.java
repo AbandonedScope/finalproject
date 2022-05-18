@@ -32,28 +32,28 @@ public class Controller extends HttpServlet {
         process(request, response);
     }
 
-
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         process(request, response);
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // FIXME: 27.04.2022 to filter
-        response.setContentType("text/html");
         Command command = CommandType.define(request.getParameter(ParameterType.COMMAND));
         try {
             Router route = command.execute(request, response);
             String page = route.getPage();
-            if (!route.isCacheAllowed()) {
-                response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
-                response.setHeader("Pragma", "no-cache"); // HTTP 1.0.
-                response.setDateHeader("Expires", 0); // Proxies.
-            }
-            if (route.getType() == Router.Type.FORWARD) {
-                request.getRequestDispatcher(page).forward(request, response);
-            } else if (route.getType() == Router.Type.REDIRECT) {
-                response.sendRedirect(page);
+            switch (route.getType()) {
+                case FORWARD: {
+                    request.getRequestDispatcher(page).forward(request, response);
+                    break;
+                }
+                case REDIRECT: {
+                    response.sendRedirect(page);
+                    break;
+                }
+                default: {
+                    throw new ServletException("No such command exists");
+                }
             }
         } catch (CommandException e) {
             logger.log(Level.FATAL, e);

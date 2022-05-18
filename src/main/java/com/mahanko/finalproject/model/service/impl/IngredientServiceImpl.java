@@ -6,26 +6,23 @@ import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.dao.IngredientDao;
 import com.mahanko.finalproject.model.dao.impl.IngredientDaoImpl;
-import com.mahanko.finalproject.model.entity.menu.IngredientComponent;
+import com.mahanko.finalproject.model.entity.menu.Ingredient;
 import com.mahanko.finalproject.model.service.IngredientService;
 import com.mahanko.finalproject.validator.IngredientValidator;
+import com.mahanko.finalproject.validator.impl.IngredientValidatorImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mahanko.finalproject.controller.ParameterType.*;
+
 public class IngredientServiceImpl implements IngredientService {
 
-    private IngredientValidator validator;
-
-    public IngredientServiceImpl(IngredientValidator validator) {
-        this.validator = validator;
-    }
-
     @Override
-    public Optional<IngredientComponent> findById(Long id) throws ServiceException {
-        IngredientComponent ingredient;
-        Optional<IngredientComponent> ingredientOptional = Optional.empty();
+    public Optional<Ingredient> findById(Long id) throws ServiceException {
+        Ingredient ingredient;
+        Optional<Ingredient> ingredientOptional = Optional.empty();
         try {
             ingredientOptional = IngredientDaoImpl.getInstance().findById(id);
         } catch (DaoException e) {
@@ -36,8 +33,8 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public List<IngredientComponent> findAll() throws ServiceException {
-        List<IngredientComponent> ingredients;
+    public List<Ingredient> findAll() throws ServiceException {
+        List<Ingredient> ingredients;
         try {
             ingredients = IngredientDaoImpl.getInstance().findAll();
         } catch (DaoException e) {
@@ -61,40 +58,36 @@ public class IngredientServiceImpl implements IngredientService {
         double carbohydrates = Double.parseDouble(params.get(ParameterType.INGREDIENT_CARBOHYDRATES));
         double calories = Double.parseDouble(params.get(ParameterType.INGREDIENT_CALORIES));
         // FIXME: 01.05.2022 validation messages?
+        IngredientValidator validator = new IngredientValidatorImpl();
         List<String> validationMessages = new ArrayList<>();
         if (!validator.validateName(ingredientName)) {
             isValid = false;
-            validationMessages.add("Name error");
+            validationMessages.add(INGREDIENT_NAME_VALIDATION_MESSAGE);
         }
 
-        if (!validator.validatePictureExtension(pictureName)) {
+        if (!validator.validatePicture(pictureName, pictureSize)) {
             isValid = false;
-            validationMessages.add("Picture extension error");
-        }
-
-        if (!validator.validatePictureSize(pictureSize)) {
-            isValid = false;
-            validationMessages.add("Picture size error");
+            validationMessages.add(INGREDIENT_PICTURE_VALIDATION_MESSAGE);
         }
 
         if (!validator.validateNumericField(proteins)) {
             isValid = false;
-            validationMessages.add("Proteins error");
+            validationMessages.add(INGREDIENT_PROTEINS_VALIDATION_MESSAGE);
         }
 
         if (!validator.validateNumericField(fats)) {
             isValid = false;
-            validationMessages.add("Fats error");
+            validationMessages.add(INGREDIENT_FATS_VALIDATION_MESSAGE);
         }
 
         if (!validator.validateNumericField(carbohydrates)) {
             isValid = false;
-            validationMessages.add("Carbohydrates error");
+            validationMessages.add(INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE);
         }
 
         if (isValid) {
             try {
-                IngredientComponent ingredient = IngredientComponent.newBuilder()
+                Ingredient ingredient = Ingredient.newBuilder()
                         .setName(ingredientName)
                         .setCalories(calories)
                         .setProteins(proteins)

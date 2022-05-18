@@ -3,6 +3,8 @@ package com.mahanko.finalproject.controller.command;
 import com.mahanko.finalproject.controller.command.impl.*;
 import com.mysql.cj.util.StringUtils;
 
+import java.util.Arrays;
+
 public enum CommandType {
     REGISTER(new OnRegisterPageCommand()),
     LOGIN(new LoginCommand()),
@@ -14,8 +16,9 @@ public enum CommandType {
     ADD_MENU_SECTION(new AddMenuSectionCommand()),
     ON_ADD_MENU_ITEM(new OnAddMenuItemPageCommand()),
     SET_LOCALIZATION_TO_ENGLISH(new SetLocalizationToEnglishCommand()),
-    SET_LOCALIZATION_TO_RUSSIAN(new SetLocalizationToRussianCommand());
-
+    SET_LOCALIZATION_TO_RUSSIAN(new SetLocalizationToRussianCommand()),
+    ADD_ITEM_TO_CART(new AddItemToCartCommand()),
+    ADD_ORDER(new AddOrderCommand());
 
 
     private final Command command;
@@ -25,10 +28,12 @@ public enum CommandType {
     }
 
     public static Command define(String commandStr) {
-        // FIXME: 01.05.2022 throw exception?
         CommandType current = DEFAULT;
         if (!StringUtils.isNullOrEmpty(commandStr)) {
-            current = CommandType.valueOf(commandStr.toUpperCase().replace('-', '_'));
+            String commandName = commandStr.toUpperCase().replace('-', '_');
+            if (Arrays.stream(CommandType.values()).anyMatch(type -> type.name().equals(commandName))) {
+                current = CommandType.valueOf(commandName);
+            }
         }
 
         return current.command;

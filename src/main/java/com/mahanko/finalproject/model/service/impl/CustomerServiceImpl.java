@@ -1,6 +1,5 @@
 package com.mahanko.finalproject.model.service.impl;
 
-import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.model.dao.CustomerDao;
 import com.mahanko.finalproject.model.dao.impl.CustomerDaoImpl;
@@ -11,22 +10,24 @@ import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.util.PasswordEncryptor;
 import com.mahanko.finalproject.validator.CustomerValidator;
+import com.mahanko.finalproject.validator.impl.CustomerValidatorImpl;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import static com.mahanko.finalproject.controller.ParameterType.*;
+import static com.mahanko.finalproject.controller.ParameterType.PASSWORD_VALIDATION_MESSAGE;
+import static com.mahanko.finalproject.controller.ParameterType.USERNAME_VALIDATION_MESSAGE;
+
 public class CustomerServiceImpl implements CustomerService {
-
-    private CustomerValidator validator;
-
-    public CustomerServiceImpl(CustomerValidator validator) {
-        this.validator = validator;
-    }
 
     @Override
     public Optional<CustomerEntity> authenticate(String login, String password) throws ServiceException {
         Optional<CustomerEntity> optionalCustomer = Optional.empty();
+        CustomerValidator validator = new CustomerValidatorImpl();
+
+        // FIXME: 11.05.2022
         if (validator.validateLogin(login)) {
             CustomerDao customerDao = CustomerDaoImpl.getInstance();
             try {
@@ -44,27 +45,33 @@ public class CustomerServiceImpl implements CustomerService {
     public Optional<CustomerEntity> register(RequestParameters parameters) throws ServiceException {
         Optional<CustomerEntity> optionalCustomer = Optional.empty();
         CustomerDao customerDao = CustomerDaoImpl.getInstance();
-        String name = parameters.get(ParameterType.USER_NAME);
-        String surname = parameters.get(ParameterType.USER_SURNAME);
-        String login = parameters.get(ParameterType.USER_LOGIN);
-        String password = parameters.get(ParameterType.USER_PASSWORD);
-        String confirmPassword = parameters.get(ParameterType.USER_CONFIRM_PASSWORD);
+        String name = parameters.get(USER_NAME);
+        String surname = parameters.get(USER_SURNAME);
+        String login = parameters.get(USER_LOGIN);
+        String password = parameters.get(USER_PASSWORD);
+        String confirmPassword = parameters.get(USER_CONFIRM_PASSWORD);
 
         boolean isValid = true;
+        CustomerValidator validator = new CustomerValidatorImpl();
         List<String> validationMassages = new ArrayList<>();
         if (!validator.validateName(name)) {
             isValid = false;
-            validationMassages.add("Name error");
+            validationMassages.add(USERNAME_VALIDATION_MESSAGE);
+        }
+
+        if (!validator.validateName(surname)) {
+            isValid = false;
+            validationMassages.add(USER_SURNAME_VALIDATION_MESSAGE);
         }
 
         if (!validator.validateLogin(login)) {
             isValid = false;
-            validationMassages.add("Login error");
+            validationMassages.add(LOGIN_VALIDATION_MESSAGE);
         }
 
         if (!validator.validatePassword(password, confirmPassword)) {
             isValid = false;
-            validationMassages.add("Password error");
+            validationMassages.add(PASSWORD_VALIDATION_MESSAGE);
         }
 
         if (isValid) {
@@ -77,16 +84,15 @@ public class CustomerServiceImpl implements CustomerService {
                     .setRole(RoleType.CUSTOMER)
                     .build();
             try {
-                if (!customerDao.checkExistence(customer.getLogin())) {
-                    if (customerDao.insert(customer)) {
-                        optionalCustomer = Optional.of(customer);
-                    }
+                if (!customerDao.checkExistence(customer.getLogin())
+                        && customerDao.insert(customer)) {
+                    optionalCustomer = Optional.of(customer);
                 }
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
         } else {
-            parameters.put(ParameterType.VALIDATION_MESSAGES, validationMassages);
+            parameters.put(VALIDATION_MESSAGES, validationMassages);
         }
 
         return optionalCustomer;

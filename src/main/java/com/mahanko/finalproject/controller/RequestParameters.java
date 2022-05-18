@@ -1,5 +1,7 @@
 package com.mahanko.finalproject.controller;
 
+import jakarta.servlet.http.HttpServletRequest;
+
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,5 +24,17 @@ public class RequestParameters {
 
     public List<String> getMultiple(String parameterName) {
         return multipleParameters.get(parameterName);
+    }
+
+    public boolean fillRequestWithValidations(HttpServletRequest request) {
+        List<String> messages = getMultiple(ParameterType.VALIDATION_MESSAGES);
+        boolean isNotEmpty = messages != null && !messages.isEmpty();
+        if (isNotEmpty) {
+            for (String message : messages) {
+                request.setAttribute(message, message);
+            }
+        }
+
+        return isNotEmpty;
     }
 }

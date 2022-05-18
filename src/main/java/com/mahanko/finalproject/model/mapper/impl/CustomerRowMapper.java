@@ -21,6 +21,7 @@ public class CustomerRowMapper implements CustomRowMapper<CustomerEntity> {
         CustomerEntity customer = new CustomerEntity();
         Optional<CustomerEntity> optionalCustomer = Optional.empty();
         try {
+            customer.setId(resultSet.getLong(ColumnName.USER_ID));
             customer.setName(resultSet.getString(ColumnName.USER_NAME));
             customer.setSurname(resultSet.getString(ColumnName.USER_SURNAME));
             customer.setLogin(resultSet.getString(ColumnName.USER_LOGIN));

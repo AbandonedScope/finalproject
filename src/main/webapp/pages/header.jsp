@@ -2,10 +2,7 @@
          import="com.mahanko.finalproject.model.entity.RoleType" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:choose>
-    <c:when test="${not empty language}"><fmt:setLocale value="${language}" scope="session"/></c:when>
-    <c:when test="${empty language}"><fmt:setLocale value="${language = 'en_US'}" scope="session"/></c:when>
-</c:choose>
+<fmt:setLocale value="${sessionScope.language}" scope="session"/>
 <fmt:setBundle basename="language"/>
 <html>
 <head>
@@ -17,15 +14,18 @@ justify-content: space-between;">
         <a href="${pageContext.request.contextPath}/index.jsp">
             <fmt:message key="navigation.guest.main"/>
         </a>
+    <form action="${pageContext.request.contextPath}/pages/cart.jsp">
+        <input type="submit" value="<fmt:message key="navigation.guest.cart"/>"/>
+    </form>
     <c:if test="${sessionScope.user != null && sessionScope.user.getRole() == RoleType.ADMIN}">
         <form action="${pageContext.request.contextPath}/controller">
             <input type="hidden" name="command" value="on-add-menu-item"/>
             <input type="submit" value="<fmt:message key="navigation.admin.menuitem"/>"/>
         </form>
-        <form action="${pageContext.request.contextPath}/pages/admin/add-ingredient.jsp">
+        <form action="${pageContext.request.contextPath}/pages/authorized/admin/add-ingredient.jsp">
             <input type="submit" value="<fmt:message key="navigation.admin.ingredient"/>"/>
         </form>
-        <form action="${pageContext.request.contextPath}/pages/admin/add-sections.jsp">
+        <form action="${pageContext.request.contextPath}/pages/authorized/admin/add-sections.jsp">
             <input type="submit" value="<fmt:message key="navigation.admin.section"/>"/>
         </form>
     </c:if>
@@ -39,7 +39,7 @@ justify-content: space-between;">
             </a>
         </c:when>
         <c:when test="${sessionScope.user != null && sessionScope.user.getRole() != RoleType.GUEST}">
-            <a href="${pageContext.request.contextPath}/pages/profile.jsp">
+            <a href="${pageContext.request.contextPath}/pages/authorized/profile.jsp">
                 <fmt:message key="navigation.user.profile"/>
             </a>
         </c:when>

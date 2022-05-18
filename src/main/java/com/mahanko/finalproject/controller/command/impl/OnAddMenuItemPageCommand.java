@@ -20,7 +20,7 @@ import jakarta.servlet.http.HttpSession;
 public class OnAddMenuItemPageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        IngredientService service = new IngredientServiceImpl(new IngredientValidatorImpl());
+        IngredientService service = new IngredientServiceImpl();
         Router router = new Router(PagePath.ADD_MENU_ITEM, Router.Type.REDIRECT);
         try {
             Gson gson = new GsonBuilder().create();

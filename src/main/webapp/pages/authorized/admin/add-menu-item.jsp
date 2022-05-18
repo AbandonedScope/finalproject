@@ -1,10 +1,8 @@
-<%@ page contentType="text/html;charset=UTF-8" %>
+<%@ page contentType="text/html;charset=UTF-8"
+import="com.mahanko.finalproject.controller.ParameterType" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<c:choose>
-    <c:when test="${not empty language}"><fmt:setLocale value="${language}" scope="session"/></c:when>
-    <c:when test="${empty language}"><fmt:setLocale value="${language = 'en_US'}" scope="session"/></c:when>
-</c:choose>
+<fmt:setLocale value="${sessionScope.language}" scope="session"/>
 <fmt:setBundle basename="language"/>
 <!DOCTYPE html>
 <html>
@@ -12,25 +10,34 @@
     <title><fmt:message key="navigation.admin.menuitem"/></title>
 </head>
 <body>
-<c:import url="../header.jsp"/>
+<c:import url="../../header.jsp"/>
 <form id="form" action="${pageContext.request.contextPath}/controller" method="post" enctype="multipart/form-data">
     <input type="hidden" name="command" value="add-menu-item"/>
     <label>
         <fmt:message key="label.menuitem.name"/> :
         <br/>
         <input type="text" name="menu-item-name" required>
+        <c:if test="${not empty requestScope.get(ParameterType.MEAL_NAME_VALIDATION_MESSAGE)}">
+            <fmt:message key="message.validation.meal-name"/>
+        </c:if>
     </label>
     <br/>
     <label>
         <fmt:message key="label.menuitem.cost"/> :
         <br/>
         <input type="number" name="menu-item-cost" min="0.01" step="0.01" required>
+        <c:if test="${not empty requestScope.get(ParameterType.MEAL_COST_VALIDATION_MESSAGE)}">
+            <fmt:message key="message.validation.meal-cost"/>
+        </c:if>
     </label>
     <br/>
     <label>
         <fmt:message key="label.menuitem.description"/> :
         <br/>
         <input type="text" name="menu-item-description" required>
+        <c:if test="${not empty requestScope.get(ParameterType.MEAL_DESCRIPTION_VALIDATION_MESSAGE)}">
+            <fmt:message key="message.validation.meal-description"/>
+        </c:if>
     </label>
     <br/>
     <label>
@@ -51,6 +58,9 @@
         <p>
             <fmt:message key="label.menuitem.picture.condition"/>
         </p>
+        <c:if test="${not empty requestScope.get(ParameterType.MEAL_PICTURE_VALIDATION_MESSAGE)}">
+            <fmt:message key="message.validation.meal-picture"/>
+        </c:if>
     </label>
     <br/>
     <div style="display: flex">
@@ -72,9 +82,11 @@ display: block;">
         </div>
     </div>
     <br/>
-    <input type="submit" name="sub" value="<fmt:message key="action.admin.add.menuitem.button.text"/>">
+    <input type="submit" name="sub" value="<fmt:message key="action.admin.add.menuitem"/>">
 </form>
-${sessionScope.menu_item_add_msg}
+<c:if test="${not empty requestScope.get(ParameterType.MEAL_ADDED_SUCCESSFULLY_MESSAGE)}">
+    <fmt:message key="message.add.meal.success"/>
+</c:if>
 <script>
     const $form = document.getElementById("form");
     const $list = document.getElementById("ingredients");
@@ -181,6 +193,6 @@ ${sessionScope.menu_item_add_msg}
 
     window.addEventListener('load', renderHTMLIngredientList);
 </script>
-<c:import url="../footer.jsp"/>
+<c:import url="../../footer.jsp"/>
 </body>
 </html>
