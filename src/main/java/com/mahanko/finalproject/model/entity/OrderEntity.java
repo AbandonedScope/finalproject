@@ -3,7 +3,6 @@ package com.mahanko.finalproject.model.entity;
 import com.mahanko.finalproject.model.entity.menu.MenuItem;
 
 import java.time.LocalDateTime;
-import java.time.ZonedDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
@@ -12,7 +11,9 @@ import java.util.Set;
 public class OrderEntity extends AbstractEntity<Long> {
     private Long userId;
     private LocalDateTime servingTime;
-    private ZonedDateTime creationTime;
+    private LocalDateTime creationTime;
+    private boolean isTaken;
+    private PaymentType paymentType;
     private final Map<MenuItem, Integer> items;
 
     public OrderEntity() {
@@ -59,12 +60,28 @@ public class OrderEntity extends AbstractEntity<Long> {
         this.servingTime = servingTime;
     }
 
-    public ZonedDateTime getCreationTime() {
+    public LocalDateTime getCreationTime() {
         return creationTime;
     }
 
-    public void setCreationTime(ZonedDateTime creationTime) {
+    public void setCreationTime(LocalDateTime creationTime) {
         this.creationTime = creationTime;
+    }
+
+    public boolean isTaken() {
+        return isTaken;
+    }
+
+    public void setTaken(boolean taken) {
+        isTaken = taken;
+    }
+
+    public PaymentType getPaymentType() {
+        return paymentType;
+    }
+
+    public void setPaymentType(PaymentType paymentType) {
+        this.paymentType = paymentType;
     }
 
     @Override

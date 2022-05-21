@@ -19,7 +19,7 @@ public class CustomerRowMapper implements CustomRowMapper<CustomerEntity> {
     @Override
     public Optional<CustomerEntity> map(ResultSet resultSet) throws DaoException {
         CustomerEntity customer = new CustomerEntity();
-        Optional<CustomerEntity> optionalCustomer = Optional.empty();
+        Optional<CustomerEntity> optionalCustomer;
         try {
             customer.setId(resultSet.getLong(ColumnName.USER_ID));
             customer.setName(resultSet.getString(ColumnName.USER_NAME));
@@ -35,6 +35,7 @@ public class CustomerRowMapper implements CustomRowMapper<CustomerEntity> {
             logger.log(Level.ERROR, e);
             throw new DaoException(e);
         }
+
         return optionalCustomer;
     }
 }

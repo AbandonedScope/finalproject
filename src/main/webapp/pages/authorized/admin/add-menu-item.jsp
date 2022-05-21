@@ -1,92 +1,92 @@
 <%@ page contentType="text/html;charset=UTF-8"
-import="com.mahanko.finalproject.controller.ParameterType" %>
+         import="com.mahanko.finalproject.controller.ParameterType" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<fmt:setLocale value="${sessionScope.language}" scope="session"/>
-<fmt:setBundle basename="language"/>
+<%@include file="../../header.jsp" %>
 <!DOCTYPE html>
 <html>
 <head>
     <title><fmt:message key="navigation.admin.menuitem"/></title>
 </head>
 <body>
-<c:import url="../../header.jsp"/>
-<form id="form" action="${pageContext.request.contextPath}/controller" method="post" enctype="multipart/form-data">
-    <input type="hidden" name="command" value="add-menu-item"/>
-    <label>
-        <fmt:message key="label.menuitem.name"/> :
-        <br/>
-        <input type="text" name="menu-item-name" required>
-        <c:if test="${not empty requestScope.get(ParameterType.MEAL_NAME_VALIDATION_MESSAGE)}">
-            <fmt:message key="message.validation.meal-name"/>
+<div class="mx-5 mt-2">
+    <h2><fmt:message key="navigation.admin.menuitem"/></h2>
+    <div class="justify-content-center mx-5">
+        <form id="form" action="${pageContext.request.contextPath}/controller" method="post"
+              enctype="multipart/form-data">
+            <input type="hidden" name="command" value="add-menu-item"/>
+            <div class="form-floating my-5">
+                <input class="form-control" id="name" type="text" name="menu-item-name" placeholder="Name" required>
+                <c:if test="${not empty requestScope.get(ParameterType.MEAL_NAME_VALIDATION_MESSAGE)}">
+                    <fmt:message key="message.validation.meal-name"/>
+                </c:if>
+                <label for="name"><fmt:message key="label.menuitem.name"/></label>
+            </div>
+            <div class="form-floating my-5">
+                <input class="form-control" id="cost" type="number" name="menu-item-cost" min="0.01" step="0.01"
+                       placeholder="10" required>
+                <c:if test="${not empty requestScope.get(ParameterType.MEAL_COST_VALIDATION_MESSAGE)}">
+                    <fmt:message key="message.validation.meal-cost"/>
+                </c:if>
+                <label for="cost"><fmt:message key="label.menuitem.cost"/></label>
+            </div>
+            <div class="form-floating my-5">
+                <input class="form-control" id="description" type="text" name="menu-item-description" maxlength="600"
+                       placeholder="description" required>
+                <c:if test="${not empty requestScope.get(ParameterType.MEAL_DESCRIPTION_VALIDATION_MESSAGE)}">
+                    <fmt:message key="message.validation.meal-description"/>
+                </c:if>
+                <label for="description"><fmt:message key="label.menuitem.description"/></label>
+            </div>
+            <div class="form-floating my-5">
+                <select class="form-select" id="section" name="menu-item-section-id" required>
+                    <c:forEach var="section" items="${sessionScope.sections}">
+                        <option value="${section.id}">${section.name}</option>
+                    </c:forEach>
+                </select>
+                <label for="section"><fmt:message key="label.menuitem.section"/></label>
+            </div>
+            <div class="col-sm-8 my-5">
+                <label for="picture"><fmt:message key="label.menuitem.picture"/></label>
+                <input id="picture" class="form-control mb-2" name="menu-item-picture" type="file" accept="image/png"
+                       required>
+                <p class="mb-2">
+                    <fmt:message key="label.menuitem.picture.condition"/>
+                </p>
+                <p>
+                    <c:if test="${not empty requestScope.get(ParameterType.MEAL_PICTURE_VALIDATION_MESSAGE)}">
+                        <fmt:message key="message.validation.meal-picture"/>
+                    </c:if>
+                </p>
+            </div>
+            <div class="justify-content-evenly my-5" style="display: flex">
+                <div>
+                    <fmt:message key="label.ingredients"/>
+                    <ul class="list-group">
+                        <div style="max-height: 250px;
+                                    width: 450px;
+                                    max-width: 500px;" class="d-inline-block overflow-auto" id="ingredients">
+                        </div>
+                    </ul>
+                </div>
+                <div>
+                    <fmt:message key="label.menuitem.ingredients"/>
+                    <ul class="list-group">
+                        <div style="max-height: 250px;
+                                    width: 450px;
+                                    max-width: 500px;" class="d-inline-block overflow-auto" id="chosen-ingredients">
+                        </div>
+                    </ul>
+                </div>
+            </div>
+            <br/>
+            <input class="btn btn-outline-primary" type="submit" name="sub" value="<fmt:message key="action.admin.add.menuitem"/>">
+        </form>
+        <c:if test="${not empty requestScope.get(ParameterType.MEAL_ADDED_SUCCESSFULLY_MESSAGE)}">
+            <fmt:message key="message.add.meal.success"/>
         </c:if>
-    </label>
-    <br/>
-    <label>
-        <fmt:message key="label.menuitem.cost"/> :
-        <br/>
-        <input type="number" name="menu-item-cost" min="0.01" step="0.01" required>
-        <c:if test="${not empty requestScope.get(ParameterType.MEAL_COST_VALIDATION_MESSAGE)}">
-            <fmt:message key="message.validation.meal-cost"/>
-        </c:if>
-    </label>
-    <br/>
-    <label>
-        <fmt:message key="label.menuitem.description"/> :
-        <br/>
-        <input type="text" name="menu-item-description" required>
-        <c:if test="${not empty requestScope.get(ParameterType.MEAL_DESCRIPTION_VALIDATION_MESSAGE)}">
-            <fmt:message key="message.validation.meal-description"/>
-        </c:if>
-    </label>
-    <br/>
-    <label>
-        <fmt:message key="label.menuitem.section"/> :
-        <br/>
-        <select name="menu-item-section-id" required>
-            <c:forEach var="section" items="${sessionScope.sections}">
-                <option value="${section.id}">${section.name}</option>
-            </c:forEach>
-        </select>
-    </label>
-    <br/>
-    <label>
-        <fmt:message key="label.menuitem.picture"/> :
-        <br/>
-        <input name="menu-item-picture" type="file" accept="image/png" required>
-        <br/>
-        <p>
-            <fmt:message key="label.menuitem.picture.condition"/>
-        </p>
-        <c:if test="${not empty requestScope.get(ParameterType.MEAL_PICTURE_VALIDATION_MESSAGE)}">
-            <fmt:message key="message.validation.meal-picture"/>
-        </c:if>
-    </label>
-    <br/>
-    <div style="display: flex">
-        <div>
-            <fmt:message key="label.ingredients"/> :
-            <ul id="ingredients" style="max-height: 200px;
-        max-width: 200px;
-            overflow-y:auto;
-display: block;">
-            </ul>
-        </div>
-        <div>
-            <fmt:message key="label.menuitem.ingredients"/> :
-            <ul id="chosen-ingredients" style="max-height: 200px;
-        max-width: 200px;
-            overflow-y:auto;
-display: block;">
-            </ul>
-        </div>
     </div>
-    <br/>
-    <input type="submit" name="sub" value="<fmt:message key="action.admin.add.menuitem"/>">
-</form>
-<c:if test="${not empty requestScope.get(ParameterType.MEAL_ADDED_SUCCESSFULLY_MESSAGE)}">
-    <fmt:message key="message.add.meal.success"/>
-</c:if>
+</div>
 <script>
     const $form = document.getElementById("form");
     const $list = document.getElementById("ingredients");
@@ -104,6 +104,7 @@ display: block;">
         const imgSrc = "data:image/png;base64," + ingr.pictureBase64;
 
         $listItem.dataset.ingr = ingr.id;
+        $listItem.classList.add('list-group-item', 'd-flex', 'justify-content-between', 'wx-1');
 
         $image.style.maxWidth = imgSize;
         $image.style.maxHeight = imgSize;
@@ -116,7 +117,7 @@ display: block;">
         $input.onfocus = () => {
             $input.readOnly = false;
         };
-        $input.classList.add('ingredient-checkbox');
+        $input.classList.add('ingredient-checkbox', 'form-check-input');
 
         $listItem.appendChild($image);
         $listItem.append(ingr.name);
@@ -133,6 +134,8 @@ display: block;">
         weightInput.setAttribute('type', 'number');
         weightInput.name = "ingredient-weight";
         weightInput.required = true;
+        weightInput.style.maxWidth = '70px';
+        weightInput.style.maxHeight = '30px';
         if (ingr.weight) weightInput.value = ingr.weight;
 
         idInput.setAttribute('type', 'hidden');

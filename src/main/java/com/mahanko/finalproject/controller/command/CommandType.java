@@ -18,7 +18,9 @@ public enum CommandType {
     SET_LOCALIZATION_TO_ENGLISH(new SetLocalizationToEnglishCommand()),
     SET_LOCALIZATION_TO_RUSSIAN(new SetLocalizationToRussianCommand()),
     ADD_ITEM_TO_CART(new AddItemToCartCommand()),
-    ADD_ORDER(new AddOrderCommand());
+    ADD_ORDER(new AddOrderCommand()),
+    ON_ORDERS_PAGE(new OnOrdersPageCommand()),
+    CHANGE_ITEM_IN_CART_AMOUNT(new ChangeItemInCartAmountCommand());
 
 
     private final Command command;

@@ -25,6 +25,13 @@ public final class ColumnName {
     public static final String MENU_ITEM_COST ="mi_cost";
     public static final String SECTION_ID = "s_id";
     public static final String SECTION_NAME = "s_name";
+    public static final String ORDER_ID = "or_id";
+    public static final String ORDER_COST = "or_cost";
+    public static final String ORDER_USER_ID = "or_user";
+    public static final String ORDER_CREATION_DATE = "or_creation_date";
+    public static final String ORDER_SERVING_DATE = "or_serving_date";
+    public static final String ORDER_PAYMENT_TYPE = "or_payment_type";
+    public static final String ORDER_IS_TAKEN = "or_taken";
 
     private ColumnName() {
     }

@@ -16,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
-@WebServlet(name = "helloServlet", urlPatterns = "/controller")
+@WebServlet(name = "mainServlet", urlPatterns = "/controller")
 @MultipartConfig
 public class Controller extends HttpServlet {
     private static final Logger logger = LogManager.getLogger();

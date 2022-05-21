@@ -1,61 +1,53 @@
-<%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.model.entity.RoleType"
-         import="com.mahanko.finalproject.controller.command.CommandType" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@include file="/pages/header.jsp"%>
+<%@include file="/pages/header.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title><fmt:message key="navigation.guest.main"/></title>
 </head>
 <body>
-<ul>
+
+<div class="row row-cols-4 row-cols-md-4 g-3 mx-5 my-3">
     <c:forEach var="menuItem" items="${sessionScope.menuItems}">
-        <li>
-            <h3>${menuItem.name}</h3>
-            <div style="display: flex;">
-                <img style="max-width: 150px; max-height: 150px;" src="data:image/png;base64,${menuItem.pictureBase64}"
-                     alt="${menuItem.name}">
-                <div style="display: block;">
-                    <p>${menuItem.description}</p>
-                    <div style="display: flex;
-justify-content: space-between">
-                        <c:forEach var="ingredient" items="${menuItem.ingredients}">
-                            <div style="display: block;">
-                                <p>${ingredient.name}</p>
-                                <img style="max-width: 30px; max-height: 30px;"
-                                     src="data:image/png;base64,${ingredient.picture}" alt="${menuItem.name}">
-                            </div>
-                        </c:forEach>
-                    </div>
-                    <p><fmt:message key="label.menuitem.cost"/> ${menuItem.cost}</p>
-                    <p><fmt:message key="label.menuItem.calories"/> ${menuItem.calories}</p>
-                    <p><fmt:message key="label.menuItem.proteins"/> ${menuItem.proteins}</p>
-                    <p><fmt:message key="label.menuItem.carbohydrates"/> ${menuItem.carbohydrates}</p>
-                    <p><fmt:message key="label.menuItem.weight"/> ${menuItem.weight}</p>
+        <div class="col">
+            <div style="width: 18rem;" class="card bg-light h-100">
+                <div class="p-3">
+                    <img src="data:image/png;base64,${menuItem.pictureBase64}" class="card-img-top"
+                         alt="${menuItem.name}">
                 </div>
+                <div class="card-body p-1 ps-3">
+                    <h5 class="card-title">${menuItem.name}</h5>
+                </div>
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item" style="height: 2.5rem">
+                        <div class="d-flex justify-content-between">
+                            <p><fmt:message key="label.menuItem.calories"/></p>
+                            <p>${menuItem.calories}</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item" style="height: 2.5rem">
+                        <div class="d-flex justify-content-between">
+                            <p><fmt:message key="label.menuitem.cost"/></p>
+                            <p>${menuItem.cost}</p>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <form action="${pageContext.request.contextPath}/controller" method="post">
+                            <input type="hidden" name="command" value="add-item-to-cart">
+                            <input type="hidden" name="menu-item-id" value="${menuItem.id}">
+                            <div class="input-group">
+                            <input class="form-control" type="number" name="menu-item-count" value="1" min="1" step="1" required>
+                            <input class="btn btn-outline-primary" type="submit" name="submit-button" value="<fmt:message key="action.guest.cart.add-to-cart"/>"/>
+                            </div>
+                        </form>
+                    </li>
+                </ul>
             </div>
-        </li>
-        <form action="${pageContext.request.contextPath}/controller" method="post">
-            <input type="hidden" name="command" value="add-item-to-cart">
-            <input type="hidden" name="menu-item-id" value="${menuItem.id}">
-            <input type="number" name="menu-item-count" value="1" min="1" step="1" required>
-            <input type="submit" name="submit-button" value="<fmt:message key="action.guest.cart.add-to-cart"/>"/>
-        </form>
+        </div>
     </c:forEach>
-</ul>
-<hr/>
-<c:if test="${sessionScope.user != null && sessionScope.user.getRole() == RoleType.ADMIN}">
-    <form action="${pageContext.request.contextPath}/controller" method="post">
-        <input type="hidden" name="command" value="${CommandType.ON_ADD_MENU_ITEM}"/>
-        <input type="submit" value="<fmt:message key="action.admin.add.menuitem"/>"/>
-    </form>
-    <br/>
-    <form action="${pageContext.request.contextPath}/pages/admin/add-ingredient.jsp" method="post">
-        <input type="submit" value="<fmt:message key="action.admin.add.ingredient"/>"/>
-    </form>
-</c:if>
+</div>
 <c:import url="pages/footer.jsp"/>
 </body>
 </html>

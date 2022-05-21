@@ -3,15 +3,13 @@
          import="com.mahanko.finalproject.controller.ParameterType" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
-<fmt:setLocale value="${sessionScope.language}" scope="session"/>
-<fmt:setBundle basename="language"/>
+<%@include file="header.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <title><fmt:message key="navigation.guest.registration"/></title>
 </head>
 <body>
-<c:import url="header.jsp"/>
 <form action="${pageContext.request.contextPath}/controller" method="post">
     <input type="hidden" name="command" value="${CommandType.ADD_USER}"/>
     <label>
