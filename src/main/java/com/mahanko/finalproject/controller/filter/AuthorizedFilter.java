@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.controller.filter;
 
+import com.mahanko.finalproject.controller.AttributeType;
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
@@ -30,7 +31,7 @@ public class AuthorizedFilter implements Filter {
         String loginURI = httpServletRequest.getContextPath().concat("/").concat(PagePath.LOGIN);
         String registrationURI = httpServletRequest.getContextPath().concat("/").concat(PagePath.REGISTRATION);
         String shoppingCartURI = httpServletRequest.getContextPath().concat("/").concat(PagePath.SHOPPING_CART);
-        CustomerEntity user = (CustomerEntity) session.getAttribute(ParameterType.USER);
+        CustomerEntity user = (CustomerEntity) session.getAttribute(AttributeType.USER);
         boolean loggedIn = user != null && user.getRole() != RoleType.GUEST;
         boolean loginRequest = httpServletRequest.getRequestURI().equals(loginURI);
         boolean registrationRequest = httpServletRequest.getRequestURI().equals(registrationURI);

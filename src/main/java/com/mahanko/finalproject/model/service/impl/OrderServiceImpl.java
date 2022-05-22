@@ -1,6 +1,5 @@
 package com.mahanko.finalproject.model.service.impl;
 
-import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.exception.ServiceException;
@@ -9,8 +8,8 @@ import com.mahanko.finalproject.model.dao.impl.OrderDaoImpl;
 import com.mahanko.finalproject.model.entity.OrderEntity;
 import com.mahanko.finalproject.model.entity.menu.MenuItem;
 import com.mahanko.finalproject.model.service.OrderService;
-import com.mahanko.finalproject.validator.OrderValidator;
-import com.mahanko.finalproject.validator.impl.OrderValidatorImpl;
+import com.mahanko.finalproject.model.service.validator.OrderValidator;
+import com.mahanko.finalproject.model.service.validator.impl.OrderValidatorImpl;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -18,7 +17,7 @@ import org.apache.logging.log4j.Logger;
 import java.time.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+import java.util.Map;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
 
@@ -71,19 +70,20 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderEntity> findOrdersByCustomerId(Long id) throws ServiceException {
-        // TODO: 21.05.2022  
+        // TODO: 21.05.2022
+        List<OrderEntity> orders;
         try {
             OrderDao orderDao = OrderDaoImpl.getInstance();
-            orderDao.findByCustomerId(id);
+            orders = orderDao.findByCustomerId(id);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
 
-        return null;
+        return orders;
     }
 
     @Override
-    public void setItemAmount(OrderEntity order, String itemId, String amount) throws ServiceException {
+    public boolean setItemAmount(OrderEntity order, String itemId, String amount) throws ServiceException {
         // FIXME: 21.05.2022 validation
         long id;
         int itemAmount;
@@ -95,14 +95,45 @@ public class OrderServiceImpl implements OrderService {
             throw new ServiceException(e);
         }
 
+        OrderValidator validator = new OrderValidatorImpl();
+        boolean isValid = validator.validateItemAmount(itemAmount);
+
+        if (isValid) {
+            var orderEntry = getOrderItemAmountPairById(order, id);
+            orderEntry.setValue(itemAmount);
+        }
+
+        return isValid;
+    }
+
+    @Override
+    public boolean removeItem(OrderEntity order, String itemId) throws ServiceException {
+        if (order == null) {
+            logger.log(Level.ERROR, "Order was null");
+            throw new ServiceException("Order was null");
+        }
+
+        long menuItemId;
+        try {
+            menuItemId = Long.parseLong(itemId);
+        } catch (NumberFormatException e) {
+            logger.log(Level.ERROR, e);
+            throw  new ServiceException(e);
+        }
+
+        var orderEntry = getOrderItemAmountPairById(order, menuItemId);
+        return order.removeItem(orderEntry.getKey()) != null;
+    }
+
+    private Map.Entry<MenuItem, Integer> getOrderItemAmountPairById(OrderEntity order, long itemId) throws ServiceException {
         var optionalEntry = order.getItems().stream()
-                .filter(entry -> entry.getKey().getId().equals(id))
+                .filter(entry -> entry.getKey().getId().equals(itemId))
                 .findFirst();
         if (optionalEntry.isEmpty()) {
             logger.log(Level.ERROR, "The was no meal with id {} in order with id {}", itemId, order.getId());
             throw new ServiceException("The was no meal with id " + itemId + " in order with id " + order.getId());
         }
 
-        optionalEntry.get().setValue(itemAmount);
+        return optionalEntry.get();
     }
 }

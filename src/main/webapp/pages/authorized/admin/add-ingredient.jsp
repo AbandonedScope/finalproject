@@ -77,8 +77,10 @@
                 </c:if>
                 </p>
             </div>
-            <input class="btn btn-outline-primary" type="submit" name="sub"
+            <div class="d-flex justify-content-end">
+            <input class="btn btn-outline-primary fs-5" type="submit" name="sub"
                    value="<fmt:message key="action.admin.add.ingredient"/>">
+            </div>
         </form>
         ${requestScope.ingredient_add_msg}
     </div>

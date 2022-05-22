@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.controller.command.impl;
 
+import com.mahanko.finalproject.controller.AttributeType;
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
@@ -44,7 +45,7 @@ public class AddUserCommand implements Command {
                     request.setAttribute(REGISTRATION_USER_EXISTS_MESSAGE, REGISTRATION_USER_EXISTS_MESSAGE);
                 }
             } else {
-                request.getSession().setAttribute(USER, optionalCustomer.get());
+                request.getSession().setAttribute(AttributeType.USER, optionalCustomer.get());
                 route.setPage(PagePath.MAIN);
             }
 

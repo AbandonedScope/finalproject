@@ -12,7 +12,6 @@ import com.mahanko.finalproject.model.service.IngredientService;
 import com.mahanko.finalproject.model.service.MenuSectionService;
 import com.mahanko.finalproject.model.service.impl.IngredientServiceImpl;
 import com.mahanko.finalproject.model.service.impl.MenuSectionServiceImpl;
-import com.mahanko.finalproject.validator.impl.IngredientValidatorImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;

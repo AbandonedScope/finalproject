@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.controller.command.impl;
 
+import com.mahanko.finalproject.controller.AttributeType;
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
@@ -25,7 +26,7 @@ public class AddOrderCommand implements Command {
         HttpSession session = request.getSession();
         RequestParameters params = new RequestParameters();
         OrderEntity order = (OrderEntity)session.getAttribute(ORDER_CART);
-        CustomerEntity customer = (CustomerEntity)session.getAttribute(USER);
+        CustomerEntity customer = (CustomerEntity)session.getAttribute(AttributeType.USER);
         params.put(USER_ID, customer.getId().toString());
         params.put(ORDER_TIME, request.getParameter(ORDER_TIME));
         OrderService service = new OrderServiceImpl();

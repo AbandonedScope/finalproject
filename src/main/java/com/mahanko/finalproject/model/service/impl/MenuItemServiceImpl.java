@@ -12,13 +12,12 @@ import com.mahanko.finalproject.model.dao.impl.MenuItemDaoImpl;
 import com.mahanko.finalproject.model.dao.impl.MenuSectionDaoImpl;
 import com.mahanko.finalproject.model.service.IngredientService;
 import com.mahanko.finalproject.model.service.MenuItemService;
-import com.mahanko.finalproject.validator.MenuItemValidator;
-import com.mahanko.finalproject.validator.impl.MenuItemValidatorImpl;
+import com.mahanko.finalproject.model.service.validator.MenuItemValidator;
+import com.mahanko.finalproject.model.service.validator.impl.MenuItemValidatorImpl;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

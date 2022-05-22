@@ -18,7 +18,7 @@
                          alt="${menuItem.name}">
                 </div>
                 <div class="card-body p-1 ps-3">
-                    <h5 class="card-title">${menuItem.name}</h5>
+                    <h5 class="card-title m-0">${menuItem.name}</h5>
                 </div>
                 <ul class="list-group list-group-flush">
                     <li class="list-group-item" style="height: 2.5rem">
@@ -33,8 +33,8 @@
                             <p>${menuItem.cost}</p>
                         </div>
                     </li>
-                    <li class="list-group-item">
-                        <form action="${pageContext.request.contextPath}/controller" method="post">
+                    <li class="list-group-item p-0">
+                        <form class="m-0" action="${pageContext.request.contextPath}/controller" method="post">
                             <input type="hidden" name="command" value="add-item-to-cart">
                             <input type="hidden" name="menu-item-id" value="${menuItem.id}">
                             <div class="input-group">

@@ -1,4 +1,4 @@
-package com.mahanko.finalproject.validator;
+package com.mahanko.finalproject.model.service.validator;
 
 public interface IngredientValidator extends NameValidator {
     boolean validateNumericField(double value);

@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.controller.command.impl;
 
+import com.mahanko.finalproject.controller.AttributeType;
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
@@ -35,7 +36,7 @@ public class LoginCommand implements Command {
         try {
             Optional<CustomerEntity> optionalCustomer = customerService.authenticate(login, password);
             if (optionalCustomer.isPresent()) {
-                session.setAttribute(USER, optionalCustomer.get());
+                session.setAttribute(AttributeType.USER, optionalCustomer.get());
                 page = PagePath.MAIN;
             } else {
                 // FIXME: 11.05.2022

@@ -8,8 +8,8 @@ import com.mahanko.finalproject.model.dao.IngredientDao;
 import com.mahanko.finalproject.model.dao.impl.IngredientDaoImpl;
 import com.mahanko.finalproject.model.entity.menu.Ingredient;
 import com.mahanko.finalproject.model.service.IngredientService;
-import com.mahanko.finalproject.validator.IngredientValidator;
-import com.mahanko.finalproject.validator.impl.IngredientValidatorImpl;
+import com.mahanko.finalproject.model.service.validator.IngredientValidator;
+import com.mahanko.finalproject.model.service.validator.impl.IngredientValidatorImpl;
 
 import java.util.ArrayList;
 import java.util.List;

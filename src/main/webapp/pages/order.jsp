@@ -23,5 +23,6 @@
     <p>Minimum value now + 30 minutes</p>
     <input type="submit" value="<fmt:message key="action.guest.make-order"/>"/>
 </form>
+<c:import url="footer.jsp"/>
 </body>
 </html>

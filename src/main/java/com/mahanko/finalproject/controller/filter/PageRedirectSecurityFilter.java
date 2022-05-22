@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.controller.filter;
 
+import com.mahanko.finalproject.controller.AttributeType;
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
@@ -24,7 +25,7 @@ public class PageRedirectSecurityFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpSession session = httpServletRequest.getSession(false);
-        boolean isAdmin = session != null && ((CustomerEntity)session.getAttribute(ParameterType.USER)).getRole() == RoleType.ADMIN;
+        boolean isAdmin = session != null && ((CustomerEntity)session.getAttribute(AttributeType.USER)).getRole() == RoleType.ADMIN;
         if (isAdmin) {
             chain.doFilter(request, response);
         } else {

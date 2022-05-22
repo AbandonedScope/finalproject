@@ -79,8 +79,10 @@
                     </ul>
                 </div>
             </div>
-            <br/>
-            <input class="btn btn-outline-primary" type="submit" name="sub" value="<fmt:message key="action.admin.add.menuitem"/>">
+            <div class="d-flex justify-content-end">
+                <input class="btn btn-outline-primary fs-5" type="submit" name="sub"
+                       value="<fmt:message key="action.admin.add.menuitem"/>">
+            </div>
         </form>
         <c:if test="${not empty requestScope.get(ParameterType.MEAL_ADDED_SUCCESSFULLY_MESSAGE)}">
             <fmt:message key="message.add.meal.success"/>

@@ -32,7 +32,6 @@ public final class ParameterType {
     public static final String USER_PASSWORD = "password";
     public static final String USER_CONFIRM_PASSWORD = "confirm-password";
     public static final String COMMAND = "command";
-    public static final String USER = "user";
     public static final String INGREDIENT_ID = "ingredient-id";
     public static final String INGREDIENT_NAME = "ingredient-name";
     public static final String INGREDIENT_FATS = "ingredient-fats";
@@ -61,6 +60,8 @@ public final class ParameterType {
     public static final String MENU_ITEM_SECTION_ID = "menu-item-section-id";
     public static final String SECTIONS = "sections";
     public static final String MENU_SECTION_NAME = "menu-section-name";
+    public static final String ORDERS = "orders";
+    public static final String USER_ORDERS = "userOrders";
     public static final String ORDER_TIME = "order-time";
     public static final String ORDER_ITEMS = "order-ITEMS";
 

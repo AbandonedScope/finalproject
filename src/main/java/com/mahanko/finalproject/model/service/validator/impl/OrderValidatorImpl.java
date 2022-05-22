@@ -1,10 +1,9 @@
-package com.mahanko.finalproject.validator.impl;
+package com.mahanko.finalproject.model.service.validator.impl;
 
-import com.mahanko.finalproject.validator.OrderValidator;
+import com.mahanko.finalproject.model.service.validator.OrderValidator;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
-import java.time.temporal.ChronoField;
 import java.time.temporal.ChronoUnit;
 
 public class OrderValidatorImpl implements OrderValidator {
@@ -25,5 +24,10 @@ public class OrderValidatorImpl implements OrderValidator {
         }
 
         return isValid;
+    }
+
+    @Override
+    public boolean validateItemAmount(int amount) {
+        return amount > 0;
     }
 }

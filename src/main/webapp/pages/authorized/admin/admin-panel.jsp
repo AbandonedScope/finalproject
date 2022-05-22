@@ -9,5 +9,6 @@
     <title><fmt:message key="navigation.admin.panel"/></title>
 </head>
 <body>
+<c:import url="../../footer.jsp"/>
 </body>
 </html>

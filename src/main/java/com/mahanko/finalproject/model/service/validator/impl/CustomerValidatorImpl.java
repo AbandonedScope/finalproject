@@ -1,11 +1,10 @@
-package com.mahanko.finalproject.validator.impl;
+package com.mahanko.finalproject.model.service.validator.impl;
 
 import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.RequestParameters;
-import com.mahanko.finalproject.validator.CustomerValidator;
+import com.mahanko.finalproject.model.service.validator.CustomerValidator;
 import com.mysql.cj.util.StringUtils;
 
-import java.util.Map;
 import java.util.regex.Pattern;
 
 public class CustomerValidatorImpl implements CustomerValidator {

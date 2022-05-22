@@ -13,34 +13,20 @@ import com.mahanko.finalproject.model.service.impl.OrderServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.logging.log4j.Level;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
-import static com.mahanko.finalproject.controller.AttributeType.ORDER_CART;
-
-public class ChangeItemInCartAmountCommand implements Command {
-    private static final Logger logger = LogManager.getLogger();
-
+public class RemoveItemFromCartCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        HttpSession session = request.getSession();
-        String amount = request.getParameter(ParameterType.MENU_ITEM_COUNT);
-        String id = request.getParameter(ParameterType.MENU_ITEM_ID);
         Router route = new Router(PagePath.SHOPPING_CART);
-        OrderEntity order = (OrderEntity) session.getAttribute(ORDER_CART);
-        if (order == null) {
-            logger.log(Level.ERROR, "The order was null");
-            throw new CommandException("The order was null");
-        }
-
+        HttpSession session = request.getSession();
         OrderService service = new OrderServiceImpl();
+        OrderEntity order = (OrderEntity) session.getAttribute(AttributeType.ORDER_CART);
+        String menuItemId = request.getParameter(ParameterType.MENU_ITEM_ID);
         try {
-            service.setItemAmount(order, id, amount);
+            service.removeItem(order, menuItemId);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-
         return route;
     }
 }

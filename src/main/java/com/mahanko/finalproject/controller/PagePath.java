@@ -10,6 +10,7 @@ public final class PagePath {
     public static final String SHOPPING_CART = "pages/cart.jsp";
     public static final String ORDER = "pages/order.jsp";
     public static final String ORDERS = "pages/authorized/admin/orders.jsp";
+    public static final String USER_ORDERS = "pages/authorized/orders.jsp";
 
     private PagePath() {
     }

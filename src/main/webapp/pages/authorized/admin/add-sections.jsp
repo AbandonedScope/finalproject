@@ -23,7 +23,10 @@
                     <fmt:message key="label.section.name"/>
                 </label>
             </div>
-            <input class="btn btn-outline-primary" type="submit" name="sub" value="<fmt:message key="action.admin.add.menuitem"/>">
+            <div class="d-flex justify-content-end">
+                <input class="btn btn-outline-primary fs-5" type="submit" name="sub"
+                       value="<fmt:message key="action.admin.add.section"/>">
+            </div>
         </form>
     </div>
 </div>

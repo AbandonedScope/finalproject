@@ -100,7 +100,7 @@ public class OrderDaoImpl implements OrderDao {
             try (ResultSet resultSet = statement.executeQuery()) {
                 CustomRowMapper<OrderEntity> mapper = new OrderMapper();
                 while (resultSet.next()) {
-                    mapper.map(resultSet);
+                    mapper.map(resultSet).ifPresent(customerOrders::add);
                 }
             }
         } catch (SQLException e) {

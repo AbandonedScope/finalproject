@@ -35,11 +35,11 @@ public class BaseFilter implements Filter {
         httpResponse.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
         httpResponse.setHeader("Pragma", "no-cache"); // HTTP 1.0.
         httpResponse.setDateHeader("Expires", 0); // Proxies.
-        if (session.getAttribute(ParameterType.USER) == null) {
+        if (session.getAttribute(AttributeType.USER) == null) {
             CustomerEntity customer = CustomerEntity.newBuilder()
                     .setRole(RoleType.GUEST)
                     .build();
-            session.setAttribute(ParameterType.USER, customer);
+            session.setAttribute(AttributeType.USER, customer);
             Optional<Cookie> cookieOptional = Arrays.stream(cookies)
                     .filter(cookie -> cookie.getName().equals(CookieType.LOCALE))
                     .findFirst();

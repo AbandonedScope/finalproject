@@ -29,8 +29,8 @@ public class OrderEntity extends AbstractEntity<Long> {
         items.putIfAbsent(item, count);
     }
 
-    public void removeItem(MenuItem item) {
-        items.remove(item);
+    public Integer removeItem(MenuItem item) {
+        return items.remove(item);
     }
 
     public int getAmount(MenuItem item) {
@@ -68,7 +68,7 @@ public class OrderEntity extends AbstractEntity<Long> {
         this.creationTime = creationTime;
     }
 
-    public boolean isTaken() {
+    public boolean getTaken() {
         return isTaken;
     }
 

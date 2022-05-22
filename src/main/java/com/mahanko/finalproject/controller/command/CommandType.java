@@ -14,13 +14,14 @@ public enum CommandType {
     ADD_INGREDIENT(new AddIngredientCommand()),
     ADD_MENU_ITEM(new AddMenuItemCommand()),
     ADD_MENU_SECTION(new AddMenuSectionCommand()),
-    ON_ADD_MENU_ITEM(new OnAddMenuItemPageCommand()),
+    //ON_ADD_MENU_ITEM(new OnAddMenuItemPageCommand()),
     SET_LOCALIZATION_TO_ENGLISH(new SetLocalizationToEnglishCommand()),
     SET_LOCALIZATION_TO_RUSSIAN(new SetLocalizationToRussianCommand()),
     ADD_ITEM_TO_CART(new AddItemToCartCommand()),
     ADD_ORDER(new AddOrderCommand()),
     ON_ORDERS_PAGE(new OnOrdersPageCommand()),
-    CHANGE_ITEM_IN_CART_AMOUNT(new ChangeItemInCartAmountCommand());
+    CHANGE_ITEM_IN_CART_AMOUNT(new ChangeItemInCartAmountCommand()),
+    REMOVE_MENU_ITEM_FROM_CART(new RemoveItemFromCartCommand());
 
 
     private final Command command;
