@@ -29,12 +29,13 @@ public class AddOrderCommand implements Command {
         CustomerEntity customer = (CustomerEntity)session.getAttribute(AttributeType.USER);
         params.put(USER_ID, customer.getId().toString());
         params.put(ORDER_TIME, request.getParameter(ORDER_TIME));
+        params.put(ORDER_PAYMENT_TYPE,request.getParameter(ORDER_PAYMENT_TYPE));
         OrderService service = new OrderServiceImpl();
         try {
             if (!service.insertNew(params, order)) {
                 params.fillRequestWithValidations(request);
                 route.setType(Router.Type.FORWARD);
-                route.setPage(PagePath.ORDER);
+                route.setPage(PagePath.SHOPPING_CART);
             } else {
                 session.setAttribute(ORDER_CART, new OrderEntity());
             }

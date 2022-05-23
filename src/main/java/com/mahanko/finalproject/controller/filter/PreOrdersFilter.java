@@ -1,6 +1,5 @@
 package com.mahanko.finalproject.controller.filter;
 
-import com.mahanko.finalproject.controller.AttributeType;
 import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.entity.OrderEntity;
@@ -14,12 +13,6 @@ import java.util.List;
 
 @WebFilter(filterName = "PreOrdersFilter", urlPatterns = "/pages/authorized/admin/orders.jsp")
 public class PreOrdersFilter implements Filter {
-    public void init(FilterConfig config) throws ServletException {
-    }
-
-    public void destroy() {
-    }
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         OrderService service = new OrderServiceImpl();

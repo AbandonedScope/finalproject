@@ -6,6 +6,7 @@ import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.dao.OrderDao;
 import com.mahanko.finalproject.model.dao.impl.OrderDaoImpl;
 import com.mahanko.finalproject.model.entity.OrderEntity;
+import com.mahanko.finalproject.model.entity.PaymentType;
 import com.mahanko.finalproject.model.entity.menu.MenuItem;
 import com.mahanko.finalproject.model.service.OrderService;
 import com.mahanko.finalproject.model.service.validator.OrderValidator;
@@ -43,11 +44,18 @@ public class OrderServiceImpl implements OrderService {
         boolean isValid = true;
         String servingDateTimeString = parameters.get(ORDER_TIME);
         String userId = parameters.get(USER_ID);
+        String paymentString = parameters.get(ORDER_PAYMENT_TYPE);
+        PaymentType paymentType = PaymentType.define(paymentString);
         OrderValidator validator = new OrderValidatorImpl();
         List<String> validationMessages = new ArrayList<>();
         if (!validator.validateServingTime(servingDateTimeString)) {
             isValid = false;
             validationMessages.add(SERVING_DATETIME_VALIDATION_MESSAGE);
+        }
+
+        if (paymentType == null) {
+            logger.log(Level.ERROR, "There is no such payment type '{}'", paymentString);
+            throw new ServiceException("There is no such payment type '" + paymentString + "'");
         }
 
         if (isValid) {
@@ -56,6 +64,7 @@ public class OrderServiceImpl implements OrderService {
                 order.setCreationTime(LocalDateTime.now());
                 order.setServingTime(servingDateTime);
                 order.setUserId(Long.parseLong(userId));
+                order.setPaymentType(paymentType);
                 OrderDao orderDao = OrderDaoImpl.getInstance();
                 isInserted = orderDao.insert(order);
             } catch (DaoException e) {

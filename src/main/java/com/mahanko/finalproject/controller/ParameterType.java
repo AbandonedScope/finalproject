@@ -59,11 +59,13 @@ public final class ParameterType {
     public static final String MENU_ITEM_PICTURE_SIZE = "menu-item-picture-size";
     public static final String MENU_ITEM_SECTION_ID = "menu-item-section-id";
     public static final String SECTIONS = "sections";
+    public static final String PAYMENT_TYPES = "paymentTypes";
     public static final String MENU_SECTION_NAME = "menu-section-name";
     public static final String ORDERS = "orders";
     public static final String USER_ORDERS = "userOrders";
     public static final String ORDER_TIME = "order-time";
     public static final String ORDER_ITEMS = "order-ITEMS";
+    public static final String ORDER_PAYMENT_TYPE = "payment-type";
 
     private ParameterType() {
     }

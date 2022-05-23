@@ -71,9 +71,24 @@
             <h5><fmt:message key="label.shopping-cart.cost"/> : ${cart.cost}</h5>
         </div>
         <!-- Button trigger modal -->
-        <button type="button" class="btn btn-outline-primary fs-5" data-bs-toggle="modal" data-bs-target="#orderModal">
-            <fmt:message key="action.guest.make-order"/>
-        </button>
+        <c:if test="${not empty requestScope.get(ParameterType.SERVING_DATETIME_VALIDATION_MESSAGE)}">
+            <fmt:message key="message.validation.order.serving-date"/>
+        </c:if>
+        <c:choose>
+            <c:when test="${sessionScope.user.role == RoleType.GUEST}">
+                <a href="login.jsp">
+                    <button type="button" class="btn btn-outline-primary fs-5">
+                        <fmt:message key="action.guest.make-order"/>
+                    </button>
+                </a>
+            </c:when>
+            <c:otherwise>
+                <button type="button" class="btn btn-outline-primary fs-5" data-bs-toggle="modal"
+                        data-bs-target="#orderModal">
+                    <fmt:message key="action.guest.make-order"/>
+                </button>
+            </c:otherwise>
+        </c:choose>
 
         <!-- Modal -->
         <div class="modal fade" id="orderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -90,8 +105,17 @@
                                 <p>Name</p>
                             </c:if>
                             <label for="order-time"><fmt:message key="cart.order-modal.serving-date"/></label>
-                            <input class="form-control" onchange="continueButton()" id="order-time" type="datetime-local" name="order-time"
+                            <input class="form-control" onchange="continueButton()" id="order-time"
+                                   type="datetime-local" name="order-time"
                                    required>
+                            <div class="form-floating my-5">
+                                <select class="form-select" id="payment-type-section" name="payment-type" required>
+                                    <c:forEach var="paymentType" items="${requestScope.paymentTypes}">
+                                        <option value="${paymentType}">${paymentType}</option>
+                                    </c:forEach>
+                                </select>
+                                <label for="payment-type-section"><fmt:message key="label.menuitem.section"/></label>
+                            </div>
                             <c:if test="${not empty requestScope.get(ParameterType.SERVING_DATETIME_VALIDATION_MESSAGE)}">
                                 <fmt:message key="message.validation.order.serving-date"/>
                             </c:if>
@@ -99,9 +123,11 @@
 
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-outline-secondary fs-5" data-bs-dismiss="modal"><fmt:message
-                                    key="cart.order-modal.close"/></button>
-                            <button type="submit" id="confirm" class="btn btn-outline-success fs-5" data-bs-dismiss="modal"
+                            <button type="button" class="btn btn-outline-secondary fs-5" data-bs-dismiss="modal">
+                                <fmt:message
+                                        key="cart.order-modal.close"/></button>
+                            <button type="submit" id="confirm" class="btn btn-outline-success fs-5"
+                                    data-bs-dismiss="modal"
                                     disabled><fmt:message
                                     key="cart.order-modal.confirm"/></button>
                         </div>

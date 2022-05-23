@@ -50,11 +50,11 @@ public class OrderDaoImpl implements OrderDao {
             statement.setTimestamp(2, creationTime);
             statement.setTimestamp(3, servingTime);
             statement.setLong(4, orderEntity.getUserId());
-            statement.setString(5, "CASH");
+            statement.setString(5, orderEntity.getPaymentType().name());
             if (statement.executeUpdate() == 1) {
                 ResultSet keys = statement.getGeneratedKeys();
                 keys.next();
-                Long orderId = keys.getLong(1);
+                long orderId = keys.getLong(1);
 
                 for (var entry : orderEntity.getItems()) {
                     MenuItem meal = entry.getKey();
