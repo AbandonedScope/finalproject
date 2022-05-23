@@ -46,7 +46,7 @@
                                 </c:otherwise>
                             </c:choose>
                         </li>
-                        <li class="list-group-item flex-fill" style="width: 27.5rem">${order.paymentType}</li>
+                        <li class="list-group-item flex-fill" style="width: 27.5rem">${order.paymentType.toString()}</li>
                         <li class="list-group-item flex-fill" style="width: 27rem">${order.servingTime}</li>
                     </ul>
                 </c:forEach>
