@@ -130,39 +130,41 @@
     <div class="modal fade" id="ingredientModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <div class="modal-header d-flex">
+                    <div class="form-floating flex-fill">
+                        <input oninput="searchingByName()" class="form-control" id="searching-ingredient-name-input" type="text" name="searching-ingredient-name"
+                               placeholder="Name" required>
+                        <label for="searching-ingredient-name-input"><fmt:message key="label.ingredient.searching-name"/></label>
+                    </div>
+                    <button type="button" class="btn-close ms-1" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body overflow-auto" style="height: 500px">
                     <div id="modal-ingredients">
                         <c:forEach var="ingredient" items="${existingIngredients}">
-                            <div class="d-flex justify-content-between">
+                            <div id="existingIngredientDiv-${ingredient.id}" class="d-flex justify-content-between existingIngredient">
                                 <div class="d-flex flex-wrap align-items-center text-dark m-1 p-2">
                                     <span class="input-group-addon">
                                         <img style="user-select: none; max-width: 40px; max-height: 40px"
                                              src="data:image/png;base64,${ingredient.pictureBase64}"
                                              alt="${ingredient.name}">
+                                        <p id="existingIngredientPictureP-${ingredient.id}"
+                                           class="d-none">${ingredient.pictureBase64}</p>
                                     </span>
-                                    <div class="input-group-addon ms-1 align-middle">
+                                    <div id="existingIngredientNameDiv-${ingredient.id}"
+                                         class="input-group-addon ms-1 align-middle">
                                             ${ingredient.name}
                                     </div>
                                 </div>
                                 <div>
-                                    <button onclick="addNewIngredient(event, '${ingredient.id}', '${ingredient.name}', '${ingredient.pictureBase64}')" id="existingIngredientButton-${ingredient.id}" type="button" class="btn btn-outline-primary ms-auto p-2">
+                                    <button onclick="addNewIngredient(event, '${ingredient.id}', '${ingredient.name}', '${ingredient.pictureBase64}')"
+                                            id="existingIngredientButton-${ingredient.id}" type="button"
+                                            class="btn btn-outline-primary ms-auto p-2">
                                         <em class="bi bi-plus-lg fw-bold"></em>
                                     </button>
                                 </div>
                             </div>
                         </c:forEach>
                     </div>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-outline-secondary fs-5" data-bs-dismiss="modal">
-                        <fmt:message key="cart.order-modal.close"/></button>
-                    <button type="submit" id="confirm" class="btn btn-outline-success fs-5"
-                            data-bs-dismiss="modal"
-                            disabled><fmt:message
-                            key="cart.order-modal.confirm"/></button>
                 </div>
             </div>
         </div>
@@ -176,6 +178,10 @@
         const menuItemIngredientsContainerIdPrefix = 'menuItemIngredients-';
         const menuItemIngredientIdPrefix = 'itemIngredientDiv-';
         const existingIngredientButtonIdPrefix = 'existingIngredientButton-';
+        const existingIngredientNameDivIdPrefix = 'existingIngredientNameDiv-';
+        const existingIngredientPicturePIdPrefix = 'existingIngredientPictureP-';
+        const existingIngredientDivIdPrefix = 'existingIngredientDiv-';
+
         const deleteIngredient = function (removeId) {
             const ingredientDiv = document.getElementById(removeId);
             ingredientDiv.remove();
@@ -186,12 +192,20 @@
         }
 
         const addNewIngredient = function (event, ingredientId, ingredientName, ingredientPicture) {
+            const $itemIngredientsDiv = document.getElementById(menuItemIngredientsContainerIdPrefix + currentMenuItemId);
             const $ingrDiv = document.createElement('div');
             const $ingrIdInput = document.createElement('input');
             const $imgDiv = document.createElement('div');
             const $imgSpan = document.createElement('span');
             const $img = document.createElement('img')
-            $ingrDiv.id = menuItemIngredientIdPrefix+currentMenuItemId+ingredientId;
+            const $ingrNameDiv = document.createElement('div');
+            const $ingrFooterDiv = document.createElement('div');
+            const $ingrWeightDiv = document.createElement('div');
+            const $weightInput = document.createElement('input');
+            const $weightInputLabel = document.createElement('label');
+            const $ingrDeleteButton = document.createElement('button');
+            const $emImage = document.createElement('em');
+            $ingrDiv.id = menuItemIngredientIdPrefix + currentMenuItemId + delimiter + ingredientId;
             $ingrDiv.className = 'w-25 d-flex flex-column justify-content-between p-2';
             $ingrIdInput.type = 'hidden';
             $ingrIdInput.name = 'ingredient-id';
@@ -206,18 +220,71 @@
             $img.alt = ingredientName;
             $imgSpan.appendChild($img);
             $imgDiv.appendChild($imgSpan);
-            const $button = event.target();
+            $ingrNameDiv.className = 'input-group-addon ms-1 align-middle';
+            $ingrNameDiv.innerText = ingredientName;
+            $imgDiv.appendChild($ingrNameDiv);
+            $ingrDiv.appendChild($imgDiv);
+            $ingrFooterDiv.className = 'd-flex align-items-end flex-column';
+            $ingrWeightDiv.className = 'form-floating';
+            $weightInput.id = 'ingredient-' + ingredientId;
+            $weightInput.type = 'number';
+            $weightInput.className = 'form-control';
+            $weightInput.name = 'ingredient-weight';
+            $weightInput.placeholder = "Weight";
+            $weightInput.min = '0.01';
+            $weightInput.step = '0.01';
+            $weightInput.required = true;
+            $ingrWeightDiv.appendChild($weightInput);
+            $weightInputLabel.setAttribute('for', 'ingredient-' + ingredientId);
+            $weightInputLabel.innerText = '<fmt:message key="label.ingredient.weight"/>';
+            $ingrWeightDiv.appendChild($weightInputLabel);
+            $ingrFooterDiv.appendChild($ingrWeightDiv);
+            $ingrDeleteButton.type = 'button';
+            $ingrDeleteButton.className = 'btn btn-outline-danger mt-1 p-1';
+            $ingrDeleteButton.setAttribute('onclick', 'deleteIngredient(\'' + $ingrDiv.id + '\')');
+            $emImage.className = 'bi bi-trash';
+            $ingrDeleteButton.appendChild($emImage);
+            $ingrFooterDiv.appendChild($ingrDeleteButton);
+            $ingrDiv.appendChild($ingrFooterDiv);
+            $itemIngredientsDiv.appendChild($ingrDiv);
+            let $button = event.target;
+            let $em;
+            if (event.target.tagName.toLowerCase() === 'button') {
+                $em = $button.children[0];
+            } else {
+                $em = $button;
+                $button = $em.parentElement;
+            }
+            $button.setAttribute('onclick', 'minusIngredient(event)');
             $button.className = 'btn btn-outline-danger ms-auto p-2';
-            const $em = $button.children[0];
             $em.className = 'bi bi-dash-lg fw-bold';
         }
 
+        const minusIngredient = function (event) {
+            let $button = event.target;
+            let $em;
+            if (event.target.tagName.toLowerCase() === 'button') {
+                $em = $button.children[0];
+            } else {
+                $em = $button;
+                $button = $em.parentElement;
+            }
+            const ingredientId = $button.id.split(delimiter)[1];
+            const removalId = menuItemIngredientIdPrefix + currentMenuItemId + delimiter + ingredientId;
+            deleteIngredient(removalId);
+            const ingredientName = document.getElementById(existingIngredientNameDivIdPrefix + ingredientId).innerText;
+            const pictureBase64 = document.getElementById(existingIngredientPicturePIdPrefix + ingredientId).innerText;
+            $button.setAttribute('onclick', "addNewIngredient(event, '" + ingredientId + "', '" + ingredientName + "', '" + pictureBase64 + "')");
+            $button.className = 'btn btn-outline-primary ms-auto p-2';
+            $em.className = 'bi bi-plus-lg fw-bold';
+        }
+
         const openingIngredientListElements = function () {
-            console.log('open');
             const menuItem = document.getElementById(menuItemIngredientsContainerIdPrefix + currentMenuItemId)
             for (const ingredient of menuItem.children) {
-                const ingredientId = ingredient.id.split('-')[2];
+                const ingredientId = ingredient.id.split(delimiter)[2];
                 const $button = document.getElementById(existingIngredientButtonIdPrefix + ingredientId);
+                $button.setAttribute('onclick', 'minusIngredient(event)');
                 $button.className = 'btn btn-outline-danger ms-auto p-2';
                 const $em = $button.children[0];
                 $em.className = 'bi bi-dash-lg fw-bold';
@@ -225,16 +292,50 @@
         }
 
         const closingIngredientListElements = function () {
-            console.log('close');
             const menuItem = document.getElementById(menuItemIngredientsContainerIdPrefix + currentMenuItemId)
             for (const ingredient of menuItem.children) {
                 const ingredientId = ingredient.id.split('-')[2];
                 const $button = document.getElementById(existingIngredientButtonIdPrefix + ingredientId);
-                $button.className = 'btn-outline-primary ms-auto p-2';
+                const ingredientName = document.getElementById(existingIngredientNameDivIdPrefix + ingredientId).innerText.trim();
+                const pictureBase64 = document.getElementById(existingIngredientPicturePIdPrefix + ingredientId).innerText.trim();
+                $button.setAttribute('onclick', "addNewIngredient(event, '" + ingredientId + "', '" + ingredientName + "', '" + pictureBase64 + "')");
+                $button.className = 'btn btn-outline-primary ms-auto p-2';
                 const $em = $button.children[0];
                 $em.className = 'bi bi-plus-lg fw-bold';
             }
+            const existingList = document.getElementsByClassName('existingIngredient');
+            for (const existingIngredient of existingList) {
+                if (existingIngredient.classList.contains('d-none')) {
+                    existingIngredient.classList.replace('d-none', 'd-flex');
+                }
+            }
         }
+
+        const searchingByName = function () {
+            const $searchingInput = document.getElementById('searching-ingredient-name-input');
+            const name = $searchingInput.value;
+            const existingList = document.getElementsByClassName('existingIngredient');
+            for (const existingIngredient of existingList) {
+                if (name === '' || name == null) {
+                    if (existingIngredient.classList.contains('d-none')) {
+                        existingIngredient.classList.replace('d-none', 'd-flex');
+                    }
+                } else {
+                    const ingredientId = existingIngredient.id.split(delimiter)[1];
+                    const ingredientName = document.getElementById(existingIngredientNameDivIdPrefix + ingredientId).innerText.trim();
+                    if (ingredientName.toLowerCase().includes(name.toLowerCase(), 0)) {
+                        if (existingIngredient.classList.contains('d-none')) {
+                            existingIngredient.classList.replace('d-none', 'd-flex');
+                        }
+                    } else {
+                        if (existingIngredient.classList.contains('d-flex')) {
+                            existingIngredient.classList.replace('d-flex', 'd-none');
+                        }
+                    }
+                }
+            }
+        }
+
 
         $modal.addEventListener('shown.bs.modal', openingIngredientListElements);
         $modal.addEventListener('hidden.bs.modal', closingIngredientListElements);
