@@ -1,6 +1,6 @@
-package com.mahanko.finalproject.model.service.validator.impl;
+package com.mahanko.finalproject.model.validator.impl;
 
-import com.mahanko.finalproject.model.service.validator.MenuItemValidator;
+import com.mahanko.finalproject.model.validator.MenuItemValidator;
 import com.mysql.cj.util.StringUtils;
 
 import java.util.regex.Pattern;
@@ -12,7 +12,7 @@ public class MenuItemValidatorImpl implements MenuItemValidator {
     private static final double MINIMAL_MENU_ITEM_COST = 0.01d;
     private static final double MAXIMAL_MENU_ITEM_COST = 1000d;
     private static final String PICTURE_PNG_EXTENSION = ".png";
-    private static final int MAXIMAL_MENU_ITEM_PICTURE_SIZE = 1024 * 1024 * 4;
+    private static final int MAXIMAL_MENU_ITEM_PICTURE_SIZE = 1080 * 1080 * 4;
 
     @Override
     public boolean validateName(String name) {

@@ -131,12 +131,21 @@
     const createChosenListItemElement = (ingr, name) => {
         const $listItem = createListItemElement(ingr, name);
         const weightInput = document.createElement('input');
+        const weightLabel = document.createElement('label')
+        const weightDiv = document.createElement('div');
         const idInput = document.createElement('input');
 
         weightInput.setAttribute('type', 'number');
-        weightInput.name = "ingredient-weight";
+        weightLabel.setAttribute('for', ingr.id)
+        weightLabel.innerText = '<fmt:message key="label.ingredient.weight"/>';
+        weightDiv.classList.add('form-floating');
+        weightInput.id = ingr.id;
+        weightInput.name = 'ingredient-weight';
+        weightInput.placeholder = 'Weight';
         weightInput.required = true;
-        weightInput.style.maxWidth = '70px';
+        weightInput.step= '0.01';
+        weightInput.min = '0.01';
+        weightInput.style.maxWidth = '90px';
         weightInput.style.maxHeight = '30px';
         if (ingr.weight) weightInput.value = ingr.weight;
 
@@ -144,6 +153,8 @@
         idInput.name = "ingredient-id";
         idInput.value = ingr.id;
 
+        weightDiv.appendChild(weightInput);
+        weightInput.appendChild(weightLabel);
         $listItem.appendChild(weightInput);
         $listItem.appendChild(idInput);
 

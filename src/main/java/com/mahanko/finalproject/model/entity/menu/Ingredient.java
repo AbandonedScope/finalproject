@@ -1,13 +1,11 @@
 package com.mahanko.finalproject.model.entity.menu;
 
 import com.mahanko.finalproject.model.entity.AbstractEntity;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
 public class Ingredient extends AbstractEntity<Long> {
-    private static final Logger logger = LogManager.getLogger();
+    public static final double BASIC_WEIGHT = 100d;
     private String name;
     private double weight;
     private double proteins;
@@ -40,12 +38,20 @@ public class Ingredient extends AbstractEntity<Long> {
         return proteins;
     }
 
+    public double calcProteins() {
+        return proteins * weight / 100;
+    }
+
     public void setProteins(double proteins) {
         this.proteins = proteins;
     }
 
     public double getFats() {
         return fats;
+    }
+
+    public double calcFats() {
+        return fats * weight / 100;
     }
 
     public void setFats(double fats) {
@@ -56,6 +62,10 @@ public class Ingredient extends AbstractEntity<Long> {
         return carbohydrates;
     }
 
+    public double calcCarbohydrates() {
+        return carbohydrates * weight / 100;
+    }
+
     public void setCarbohydrates(double carbohydrates) {
         this.carbohydrates = carbohydrates;
     }
@@ -64,11 +74,15 @@ public class Ingredient extends AbstractEntity<Long> {
         return calories;
     }
 
+    public double calcCalories() {
+        return calories * weight / 100;
+    }
+
     public void setCalories(double calories) {
         this.calories = calories;
     }
 
-    public String getPicture() {
+    public String getPictureBase64() {
         return pictureBase64;
     }
 

@@ -52,6 +52,12 @@
                                     <fmt:message key="navigation.admin.section"/>
                                 </a>
                             </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="${pageContext.request.contextPath}/pages/authorized/admin/modify-item.jsp">
+                                    <fmt:message key="navigation.admin.modify"/>
+                                </a>
+                            </li>
                         </ul>
                     </li>
                     <li class="nav-item">

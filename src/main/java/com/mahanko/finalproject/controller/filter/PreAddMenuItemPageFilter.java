@@ -26,15 +26,15 @@ public class PreAddMenuItemPageFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
-        IngredientService service = new IngredientServiceImpl();
+        IngredientService ingredientService = IngredientServiceImpl.getInstance();
+        MenuSectionService sectionService = new MenuSectionServiceImpl();
         try {
             Gson gson = new GsonBuilder().create();
-            String jsonIngredients = gson.toJson(service.findAll());
-            MenuSectionService sectionService = new MenuSectionServiceImpl();
+            String jsonIngredients = gson.toJson(ingredientService.findAll());
             // FIXME: 27.04.2022
             HttpSession session = httpRequest.getSession(false);
             if (session != null) {
-                session.setAttribute(ParameterType.SECTIONS, sectionService.findAll());
+                session.setAttribute(ParameterType.SECTIONS, sectionService.findAllLazy());
                 session.setAttribute(ParameterType.INGREDIENTS, jsonIngredients);
             }
 

@@ -76,7 +76,7 @@ public class IngredientDaoImpl implements IngredientDao {
         boolean isInserted = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_NEW_INGREDIENTS)) {
-            String base64String = ingredient.getPicture();
+            String base64String = ingredient.getPictureBase64();
             byte[] data = CustomPictureEncoder.decodeString(base64String);
             Blob blob = connection.createBlob();
             blob.setBytes(1, data);

@@ -23,7 +23,7 @@
                     <fmt:message key="label.ingredient.name"/></label>
             </div>
             <div class="form-floating my-5">
-                <input class="form-control" id="calories" type="number" name="ingredient-calories" step="0.1" min="0"
+                <input class="form-control" id="calories" type="number" name="ingredient-calories" step="0.01" min="0"
                        max="5000" placeholder="100" required>
                 <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_CALORIES_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.ingredient-calories"/>
@@ -33,7 +33,7 @@
                 </label>
             </div>
             <div class="form-floating my-5">
-                <input class="form-control" id="proteins" type="number" name="ingredient-proteins" step="0.1" min="0"
+                <input class="form-control" id="proteins" type="number" name="ingredient-proteins" step="0.01" min="0"
                        max="5000" placeholder="20" required>
                 <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_PROTEINS_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.ingredient-proteins"/>
@@ -43,7 +43,7 @@
                 </label>
             </div>
             <div class="form-floating my-5">
-                <input class="form-control" id="fats" type="number" name="ingredient-fats" step="0.1" min="0"
+                <input class="form-control" id="fats" type="number" name="ingredient-fats" step="0.01" min="0"
                        max="5000" placeholder="20" required>
                 <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_FATS_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.ingredient-fats"/>
@@ -53,7 +53,7 @@
                 </label>
             </div>
             <div class="form-floating my-5">
-                <input class="form-control" id="carbohydrates" type="number" name="ingredient-carbohydrates" step="0.1"
+                <input class="form-control" id="carbohydrates" type="number" name="ingredient-carbohydrates" step="0.01"
                        min="0" max="5000" placeholder="20" required>
                 <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.ingredient-carbohydrates"/>

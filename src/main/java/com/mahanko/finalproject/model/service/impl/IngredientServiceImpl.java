@@ -8,8 +8,8 @@ import com.mahanko.finalproject.model.dao.IngredientDao;
 import com.mahanko.finalproject.model.dao.impl.IngredientDaoImpl;
 import com.mahanko.finalproject.model.entity.menu.Ingredient;
 import com.mahanko.finalproject.model.service.IngredientService;
-import com.mahanko.finalproject.model.service.validator.IngredientValidator;
-import com.mahanko.finalproject.model.service.validator.impl.IngredientValidatorImpl;
+import com.mahanko.finalproject.model.validator.IngredientValidator;
+import com.mahanko.finalproject.model.validator.impl.IngredientValidatorImpl;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,14 @@ import java.util.Optional;
 import static com.mahanko.finalproject.controller.ParameterType.*;
 
 public class IngredientServiceImpl implements IngredientService {
+    private final static IngredientServiceImpl instance = new IngredientServiceImpl();
+
+    private IngredientServiceImpl() {
+    }
+
+    public static IngredientServiceImpl getInstance() {
+        return  instance;
+    }
 
     @Override
     public Optional<Ingredient> findById(Long id) throws ServiceException {
@@ -51,7 +59,7 @@ public class IngredientServiceImpl implements IngredientService {
         String ingredientPicture = params.get(ParameterType.INGREDIENT_PICTURE);
         String pictureName = params.get(ParameterType.INGREDIENT_PICTURE_NAME);
         long pictureSize = Long.parseLong(params.get(ParameterType.INGREDIENT_PICTURE_SIZE));
-        String ingredientName = params.get(ParameterType.INGREDIENT_NAME);
+        String ingredientName = params.get(ParameterType.INGREDIENT_NAME).trim();
         // FIXME: 01.05.2022 number format
         double proteins = Double.parseDouble(params.get(ParameterType.INGREDIENT_PROTEINS));
         double fats = Double.parseDouble(params.get(ParameterType.INGREDIENT_FATS));

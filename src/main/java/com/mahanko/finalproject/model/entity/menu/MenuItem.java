@@ -12,7 +12,7 @@ public class MenuItem extends AbstractEntity<Long> {
     private String description;
     private String pictureBase64;
     private MenuSection section;
-    private final HashSet<Ingredient> ingredients;
+    private final Set<Ingredient> ingredients;
 
     public MenuItem() {
         ingredients = new HashSet<>();
@@ -71,7 +71,7 @@ public class MenuItem extends AbstractEntity<Long> {
     }
 
     public double getCalories() {
-        return ingredients.stream().map(Ingredient::getCalories).reduce(0d, Double::sum);
+        return Math.round(ingredients.stream().map(Ingredient::calcCalories).reduce(0d, Double::sum));
     }
 
     public double getWeight() {
@@ -79,15 +79,15 @@ public class MenuItem extends AbstractEntity<Long> {
     }
 
     public double getProteins() {
-        return ingredients.stream().map(Ingredient::getProteins).reduce(0d, Double::sum);
+        return Math.round(ingredients.stream().map(Ingredient::calcProteins).reduce(0d, Double::sum));
     }
 
     public double getFats() {
-        return ingredients.stream().map(Ingredient::getFats).reduce(0d, Double::sum);
+        return Math.round(ingredients.stream().map(Ingredient::calcFats).reduce(0d, Double::sum));
     }
 
     public double getCarbohydrates() {
-        return ingredients.stream().map(Ingredient::getCarbohydrates).reduce(0d, Double::sum);
+        return Math.round(ingredients.stream().map(Ingredient::calcCarbohydrates).reduce(0d, Double::sum));
     }
 
     @Override

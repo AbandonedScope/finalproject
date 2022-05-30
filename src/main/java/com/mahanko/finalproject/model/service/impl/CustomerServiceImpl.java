@@ -9,8 +9,8 @@ import com.mahanko.finalproject.model.service.CustomerService;
 import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.util.PasswordEncryptor;
-import com.mahanko.finalproject.model.service.validator.CustomerValidator;
-import com.mahanko.finalproject.model.service.validator.impl.CustomerValidatorImpl;
+import com.mahanko.finalproject.model.validator.CustomerValidator;
+import com.mahanko.finalproject.model.validator.impl.CustomerValidatorImpl;
 
 import java.util.ArrayList;
 import java.util.List;

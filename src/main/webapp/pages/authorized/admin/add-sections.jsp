@@ -10,7 +10,7 @@
 </head>
 <body>
 <div class="mx-5 mt-2">
-    <h2><fmt:message key="navigation.admin.ingredient"/></h2>
+    <h2><fmt:message key="navigation.admin.section"/></h2>
     <div class="justify-content-center mx-5">
         <form id="form" action="${pageContext.request.contextPath}/controller" method="post">
             <input type="hidden" name="command" value="add-menu-section"/>

@@ -5,6 +5,7 @@ import com.mahanko.finalproject.controller.command.CommandType;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.model.pool.ConnectionPool;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequestAttributeListener;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -38,7 +39,7 @@ public class Controller extends HttpServlet {
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Command command = CommandType.define(request.getParameter(ParameterType.COMMAND));
+        Command command = CommandType.of(request.getParameter(ParameterType.COMMAND));
         try {
             Router route = command.execute(request, response);
             String page = route.getPage();

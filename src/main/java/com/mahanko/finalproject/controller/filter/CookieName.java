@@ -1,8 +1,8 @@
 package com.mahanko.finalproject.controller.filter;
 
-public final class CookieType {
+public final class CookieName {
     public static final String LOCALE = "locale";
 
-    private CookieType() {
+    private CookieName() {
     }
 }

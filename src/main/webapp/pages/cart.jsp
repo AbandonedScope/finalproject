@@ -29,7 +29,7 @@
                     <c:set var="count" value="${entryItem.value}"/>
                     <tr>
                         <td class="align-middle">
-                            <div class="d-flex justify-content-around align-items-center">
+                            <div class="d-flex justify-content-between align-items-center">
                                 <img style="max-width: 5rem; max-height: 5rem;"
                                      src="data:image/png;base64,${item.pictureBase64}"
                                      alt="${item.name}">

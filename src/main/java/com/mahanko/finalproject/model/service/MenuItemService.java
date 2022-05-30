@@ -13,4 +13,6 @@ public interface MenuItemService {
     boolean insertNew(RequestParameters parameters) throws ServiceException;
 
     Optional<MenuItem> findById(Long id) throws ServiceException;
+
+    List<MenuItem> findByName(String name) throws ServiceException;
 }

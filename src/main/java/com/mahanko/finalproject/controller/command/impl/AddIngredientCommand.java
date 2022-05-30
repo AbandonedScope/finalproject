@@ -47,7 +47,7 @@ public class AddIngredientCommand implements Command {
             params.put(INGREDIENT_CARBOHYDRATES, request.getParameter(INGREDIENT_CARBOHYDRATES));
             params.put(INGREDIENT_CALORIES, request.getParameter(INGREDIENT_CALORIES));
 
-            IngredientService ingredientService = new IngredientServiceImpl();
+            IngredientService ingredientService = IngredientServiceImpl.getInstance();
             if (ingredientService.insert(params)) {
                 request.setAttribute(INGREDIENT_ADD_MESSAGE, INGREDIENT_SUCCESSFUL_ADDED_MESSAGE);
             } else {

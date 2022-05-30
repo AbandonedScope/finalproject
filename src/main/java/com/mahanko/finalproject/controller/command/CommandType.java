@@ -21,7 +21,8 @@ public enum CommandType {
     ADD_ORDER(new AddOrderCommand()),
     ON_ORDERS_PAGE(new OnOrdersPageCommand()),
     CHANGE_ITEM_IN_CART_AMOUNT(new ChangeItemInCartAmountCommand()),
-    REMOVE_MENU_ITEM_FROM_CART(new RemoveItemFromCartCommand());
+    REMOVE_MENU_ITEM_FROM_CART(new RemoveItemFromCartCommand()),
+    FIND_MENU_ITEMS_BY_NAME(new FindMenuItemsByName());
 
 
     private final Command command;
@@ -30,7 +31,7 @@ public enum CommandType {
         this.command = command;
     }
 
-    public static Command define(String commandStr) {
+    public static Command of(String commandStr) {
         CommandType current = DEFAULT;
         if (!StringUtils.isNullOrEmpty(commandStr)) {
             String commandName = commandStr.toUpperCase().replace('-', '_');

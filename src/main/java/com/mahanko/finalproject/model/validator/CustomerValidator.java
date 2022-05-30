@@ -1,4 +1,4 @@
-package com.mahanko.finalproject.model.service.validator;
+package com.mahanko.finalproject.model.validator;
 
 import com.mahanko.finalproject.controller.RequestParameters;
 

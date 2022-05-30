@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpSession;
 public class OnAddMenuItemPageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        IngredientService service = new IngredientServiceImpl();
+        IngredientService service = IngredientServiceImpl.getInstance();
         Router router = new Router(PagePath.ADD_MENU_ITEM, Router.Type.REDIRECT);
         try {
             Gson gson = new GsonBuilder().create();
@@ -28,7 +28,7 @@ public class OnAddMenuItemPageCommand implements Command {
             // FIXME: 27.04.2022
             HttpSession session = request.getSession(false);
             if (session != null) {
-                session.setAttribute(ParameterType.SECTIONS, sectionService.findAll());
+                session.setAttribute(ParameterType.SECTIONS, sectionService.findAllLazy());
                 session.setAttribute(ParameterType.INGREDIENTS, jsonIngredients);
             }
 

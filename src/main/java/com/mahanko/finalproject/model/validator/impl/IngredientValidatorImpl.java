@@ -1,6 +1,6 @@
-package com.mahanko.finalproject.model.service.validator.impl;
+package com.mahanko.finalproject.model.validator.impl;
 
-import com.mahanko.finalproject.model.service.validator.IngredientValidator;
+import com.mahanko.finalproject.model.validator.IngredientValidator;
 import com.mysql.cj.util.StringUtils;
 
 import java.util.regex.Pattern;

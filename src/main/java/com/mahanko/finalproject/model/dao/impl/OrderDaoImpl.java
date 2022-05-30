@@ -43,8 +43,8 @@ public class OrderDaoImpl implements OrderDao {
         Connection connection = ConnectionPool.getInstance().getConnection();
         try (PreparedStatement statement = connection.prepareStatement(INSERT_ORDER, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement mergeStatement = connection.prepareStatement(INSERT_ORDER_MENU_ITEMS_MERGE);) {
-            statement.setDouble(1, orderEntity.getCost());
             connection.setAutoCommit(false);
+            statement.setDouble(1, orderEntity.getCost());
             Timestamp servingTime = Timestamp.valueOf(orderEntity.getServingTime());
             Timestamp creationTime = Timestamp.valueOf(orderEntity.getCreationTime());
             statement.setTimestamp(2, creationTime);
@@ -74,17 +74,15 @@ public class OrderDaoImpl implements OrderDao {
                 connection.rollback();
             } catch (SQLException exception) {
                 logger.log(Level.ERROR, exception);
-                throw new DaoException(exception);
             }
+
             logger.log(Level.ERROR, e);
             throw new DaoException(e);
         } finally {
             try {
-                connection.setAutoCommit(true);
                 connection.close();
             } catch (SQLException exception) {
                 logger.log(Level.ERROR, exception);
-                throw new DaoException(exception);
             }
         }
 

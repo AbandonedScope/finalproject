@@ -49,7 +49,7 @@ public class AddMenuItemCommand implements Command {
             parameters.put(MENU_ITEM_DESCRIPTION, request.getParameter(MENU_ITEM_DESCRIPTION));
             parameters.put(MENU_ITEM_SECTION_ID, request.getParameter(MENU_ITEM_SECTION_ID));
 
-            MenuItemService menuItemService = new MenuItemServiceImpl();
+            MenuItemService menuItemService = MenuItemServiceImpl.getInstance();
             if (menuItemService.insertNew(parameters)) {
                 request.setAttribute(MEAL_ADDED_SUCCESSFULLY_MESSAGE, MENU_ITEM_ADD_SUCCESS);
             } else {

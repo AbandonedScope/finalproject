@@ -1,6 +1,6 @@
-package com.mahanko.finalproject.model.service.validator.impl;
+package com.mahanko.finalproject.model.validator.impl;
 
-import com.mahanko.finalproject.model.service.validator.OrderValidator;
+import com.mahanko.finalproject.model.validator.OrderValidator;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;

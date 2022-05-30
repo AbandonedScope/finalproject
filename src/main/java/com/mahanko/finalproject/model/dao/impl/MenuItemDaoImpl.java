@@ -4,6 +4,7 @@ import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.model.entity.menu.Ingredient;
 import com.mahanko.finalproject.model.entity.menu.MenuItem;
 import com.mahanko.finalproject.model.dao.MenuItemDao;
+import com.mahanko.finalproject.model.mapper.CustomRowMapper;
 import com.mahanko.finalproject.model.mapper.impl.MenuItemRowMapper;
 import com.mahanko.finalproject.model.pool.ConnectionPool;
 import com.mahanko.finalproject.util.CustomPictureEncoder;
@@ -27,7 +28,8 @@ public class MenuItemDaoImpl implements MenuItemDao {
                     "ON menu_items.mi_id = m2m_menuitems_ingredients.mi_id " +
                     "INNER JOIN ingredients " +
                     "ON ingredients.ingr_id = m2m_menuitems_ingredients.ingr_id " +
-                    "WHERE menu_items.mi_id = ?";;
+                    "WHERE menu_items.mi_id = ?";
+    ;
     private static final String INSERT_NEW_MENU_ITEM =
             "INSERT INTO menu_items(mi_section, mi_name, mi_description, mi_picture, mi_cost) " +
                     "VALUE (?, ?, ?, ?, ?)";
@@ -44,6 +46,26 @@ public class MenuItemDaoImpl implements MenuItemDao {
                     "ON menu_items.mi_id = m2m_menuitems_ingredients.mi_id " +
                     "INNER JOIN ingredients " +
                     "ON ingredients.ingr_id = m2m_menuitems_ingredients.ingr_id";
+    private static final String SELECT_ALL_JOIN_INGREDIENTS_BY_SECTION_ID =
+            "select menu_items.mi_id, mi_section, mi_name, mi_description, mi_picture, mi_cost, " +
+            "m2m_menuitems_ingredients.ingr_weight, " +
+            "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, ingr_carbohydrates, ingr_calories, ingr_picture " +
+            "FROM menu_items " +
+            "INNER JOIN m2m_menuitems_ingredients " +
+            "ON menu_items.mi_id = m2m_menuitems_ingredients.mi_id " +
+            "INNER JOIN ingredients " +
+            "ON ingredients.ingr_id = m2m_menuitems_ingredients.ingr_id " +
+            "where mi_section = ?";
+    private static final String SELECT_MENU_ITEMS_BY_NAME =
+            "SELECT menu_items.mi_id, mi_section, mi_name, mi_description, mi_picture, mi_cost, " +
+                    "m2m_menuitems_ingredients.ingr_weight," +
+                    "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, ingr_carbohydrates, ingr_calories, ingr_picture " +
+                    "FROM menu_items " +
+                    "INNER JOIN m2m_menuitems_ingredients " +
+                    "ON menu_items.mi_id = m2m_menuitems_ingredients.mi_id " +
+                    "INNER JOIN ingredients " +
+                    "ON ingredients.ingr_id = m2m_menuitems_ingredients.ingr_id " +
+                    "WHERE locate(?, mi_name) > 0";
     private static final MenuItemDaoImpl instance = new MenuItemDaoImpl();
 
     private MenuItemDaoImpl() {
@@ -54,7 +76,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
     }
 
     @Override
-    public Optional<MenuItem> findById(Long id) throws DaoException{
+    public Optional<MenuItem> findById(Long id) throws DaoException {
         Optional<MenuItem> item = Optional.empty();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
@@ -75,7 +97,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
     @Override
     public boolean insert(MenuItem menuItem) throws DaoException {
         boolean isInserted = false;
-        // FIXME: 22.04.2022 transactions or batch?
+        // FIXME: 22.04.2022 transactions
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_NEW_MENU_ITEM);
              PreparedStatement idStatement = connection.prepareStatement(SELECT_ID_BY_NAME)) {
@@ -121,7 +143,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
     public List<MenuItem> findAll() throws DaoException {
         List<MenuItem> menuItems = new ArrayList<>();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(SELECT_ALL_MENU_ITEMS_JOIN_INGREDIENTS)) {
+             PreparedStatement statement = connection.prepareStatement(SELECT_ALL_MENU_ITEMS_JOIN_INGREDIENTS)) {
             ResultSet resultSet = statement.executeQuery();
             resultSet.next();
             MenuItemRowMapper mapper = new MenuItemRowMapper();
@@ -139,5 +161,45 @@ public class MenuItemDaoImpl implements MenuItemDao {
     @Override
     public MenuItem update(long id, MenuItem menuComposite) {
         return null;
+    }
+
+    @Override
+    public List<MenuItem> findBySectionId(long sectionId) throws DaoException {
+        List<MenuItem> items = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(SELECT_ALL_JOIN_INGREDIENTS_BY_SECTION_ID)) {
+            statement.setLong(1, sectionId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                CustomRowMapper<MenuItem> mapper = new MenuItemRowMapper();
+                while (resultSet.next()) {
+                    mapper.map(resultSet).ifPresent(items::add);
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return items;
+    }
+
+    @Override
+    public List<MenuItem> findByName(String name) throws DaoException {
+        List<MenuItem> items = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_MENU_ITEMS_BY_NAME)) {
+            statement.setString(1, name);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                CustomRowMapper<MenuItem> mapper = new MenuItemRowMapper();
+                while (resultSet.next()) {
+                    mapper.map(resultSet).ifPresent(items::add);
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return items;
     }
 }

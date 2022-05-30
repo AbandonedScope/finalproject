@@ -28,14 +28,8 @@ public class AuthorizedFilter implements Filter {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpSession session = httpServletRequest.getSession();
-        String loginURI = httpServletRequest.getContextPath().concat("/").concat(PagePath.LOGIN);
-        String registrationURI = httpServletRequest.getContextPath().concat("/").concat(PagePath.REGISTRATION);
-        String shoppingCartURI = httpServletRequest.getContextPath().concat("/").concat(PagePath.SHOPPING_CART);
         CustomerEntity user = (CustomerEntity) session.getAttribute(AttributeType.USER);
         boolean loggedIn = user != null && user.getRole() != RoleType.GUEST;
-        boolean loginRequest = httpServletRequest.getRequestURI().equals(loginURI);
-        boolean registrationRequest = httpServletRequest.getRequestURI().equals(registrationURI);
-        boolean shoppingCartRequest = httpServletRequest.getRequestURI().equals(shoppingCartURI);
         if (loggedIn) {
             chain.doFilter(request, response);
         } else {

@@ -28,7 +28,7 @@ public class AddItemToCartCommand implements Command {
         }
         Long itemId = Long.parseLong(request.getParameter(ParameterType.MENU_ITEM_ID));
         Integer count = Integer.parseInt(request.getParameter(ParameterType.MENU_ITEM_COUNT));
-        MenuItemService service = new MenuItemServiceImpl();
+        MenuItemService service = MenuItemServiceImpl.getInstance();
         MenuItem item;
         try {
             item = service.findById(itemId).orElseThrow(() -> new CommandException("No such item was found."));

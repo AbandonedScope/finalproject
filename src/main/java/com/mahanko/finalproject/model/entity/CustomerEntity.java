@@ -1,6 +1,7 @@
 package com.mahanko.finalproject.model.entity;
 
 public class CustomerEntity extends AbstractEntity<Long> {
+    // FIXME: 30.05.2022 to property file
     private static final int DEFAULT_LOYALTY_POINTS_AMOUNT = 5;
     private String name;
     private String surname;

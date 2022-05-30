@@ -12,8 +12,8 @@ import com.mahanko.finalproject.model.dao.impl.MenuItemDaoImpl;
 import com.mahanko.finalproject.model.dao.impl.MenuSectionDaoImpl;
 import com.mahanko.finalproject.model.service.IngredientService;
 import com.mahanko.finalproject.model.service.MenuItemService;
-import com.mahanko.finalproject.model.service.validator.MenuItemValidator;
-import com.mahanko.finalproject.model.service.validator.impl.MenuItemValidatorImpl;
+import com.mahanko.finalproject.model.validator.MenuItemValidator;
+import com.mahanko.finalproject.model.validator.impl.MenuItemValidatorImpl;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -27,6 +27,14 @@ import static com.mahanko.finalproject.controller.ParameterType.*;
 
 public class MenuItemServiceImpl implements MenuItemService {
     private static final Logger logger = LogManager.getLogger();
+    private static final MenuItemServiceImpl instance = new MenuItemServiceImpl();
+
+    private MenuItemServiceImpl() {
+    }
+
+    public static MenuItemServiceImpl getInstance() {
+        return instance;
+    }
 
     @Override
     public List<MenuItem> findAll() throws ServiceException {
@@ -46,7 +54,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         boolean isInserted = false;
         boolean isValid = true;
         try {
-            String menuItemName = parameters.get(MENU_ITEM_NAME);
+            String menuItemName = parameters.get(MENU_ITEM_NAME).trim();
             String description = parameters.get(MENU_ITEM_DESCRIPTION);
             String menuItemPicture = parameters.get(MENU_ITEM_PICTURE);
             String pictureName = parameters.get(MENU_ITEM_PICTURE_NAME);
@@ -95,7 +103,7 @@ public class MenuItemServiceImpl implements MenuItemService {
                 menuItem.setPictureBase64(menuItemPicture);
                 menuItem.setDescription(description);
                 menuItem.setSection(section);
-                IngredientService ingredientService = new IngredientServiceImpl();
+                IngredientService ingredientService = IngredientServiceImpl.getInstance();
                 for (int i = 0; i < ingredientIds.size(); i++) {
                     Optional<Ingredient> ingredientOptional = ingredientService.findById(ingredientIds.get(i));
                     if (ingredientOptional.isPresent()) {
@@ -131,5 +139,18 @@ public class MenuItemServiceImpl implements MenuItemService {
             throw new ServiceException(e);
         }
         return optionalItem;
+    }
+
+    @Override
+    public List<MenuItem> findByName(String name) throws ServiceException {
+        List<MenuItem> items;
+        MenuItemDao menuItemDao = MenuItemDaoImpl.getInstance();
+        try {
+            items = menuItemDao.findByName(name);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+
+        return items;
     }
 }

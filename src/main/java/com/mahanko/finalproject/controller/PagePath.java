@@ -11,6 +11,7 @@ public final class PagePath {
     public static final String ORDER = "pages/order.jsp";
     public static final String ORDERS = "pages/authorized/admin/orders.jsp";
     public static final String USER_ORDERS = "pages/authorized/orders.jsp";
+    public static final String MODIFY_MENU_ITEM = "pages/authorized/admin/modify-item.jsp";
 
     private PagePath() {
     }
