@@ -114,7 +114,6 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public CustomerEntity update(long id, CustomerEntity customerEntity) throws DaoException {
-        return null;
+    public void update(long id, CustomerEntity customerEntity) throws DaoException {
     }
 }

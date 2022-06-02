@@ -121,7 +121,6 @@ public class IngredientDaoImpl implements IngredientDao {
     }
 
     @Override
-    public Ingredient update(long id, Ingredient ingredient) throws DaoException {
-        return null;
+    public void update(long id, Ingredient ingredient) throws DaoException {
     }
 }

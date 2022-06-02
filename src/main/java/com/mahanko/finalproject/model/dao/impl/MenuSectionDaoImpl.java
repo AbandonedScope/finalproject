@@ -94,7 +94,6 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     }
 
     @Override
-    public MenuSection update(long id, MenuSection menuSection) throws DaoException {
-        return null;
+    public void update(long id, MenuSection menuSection) throws DaoException {
     }
 }

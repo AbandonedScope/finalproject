@@ -1,13 +1,9 @@
 package com.mahanko.finalproject.controller.filter;
 
 import com.mahanko.finalproject.controller.AttributeType;
-import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.exception.ServiceException;
-import com.mahanko.finalproject.model.entity.menu.MenuItem;
 import com.mahanko.finalproject.model.entity.menu.MenuSection;
-import com.mahanko.finalproject.model.service.MenuItemService;
 import com.mahanko.finalproject.model.service.MenuSectionService;
-import com.mahanko.finalproject.model.service.impl.MenuItemServiceImpl;
 import com.mahanko.finalproject.model.service.impl.MenuSectionServiceImpl;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.*;
@@ -24,7 +20,7 @@ public class PreMainPageFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession();
         ServletContext servletContext = session.getServletContext();
-        MenuSectionService sectionService = new MenuSectionServiceImpl();
+        MenuSectionService sectionService = MenuSectionServiceImpl.getInstance();
         List<MenuSection> sections;
         try {
             sections = sectionService.findAll();

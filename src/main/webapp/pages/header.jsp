@@ -55,7 +55,7 @@
                             <li>
                                 <a class="dropdown-item"
                                    href="${pageContext.request.contextPath}/pages/authorized/admin/modify-item.jsp">
-                                    <fmt:message key="navigation.admin.modify"/>
+                                    <fmt:message key="navigation.admin.modify-item"/>
                                 </a>
                             </li>
                         </ul>

@@ -1,9 +1,9 @@
 package com.mahanko.finalproject.model.validator;
 
-public interface MenuItemValidator extends NameValidator {
-    boolean validateCost(double cost);
+import java.math.BigDecimal;
 
-    boolean validateDescription(String description);
+public interface MenuItemValidator extends NameValidator {
+    boolean validateCost(BigDecimal cost);
 
     boolean validatePicture(String pictureName, long size);
 }

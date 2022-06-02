@@ -24,7 +24,7 @@ public class OnAddMenuItemPageCommand implements Command {
         try {
             Gson gson = new GsonBuilder().create();
             String jsonIngredients = gson.toJson(service.findAll());
-            MenuSectionService sectionService = new MenuSectionServiceImpl();
+            MenuSectionService sectionService = MenuSectionServiceImpl.getInstance();
             // FIXME: 27.04.2022
             HttpSession session = request.getSession(false);
             if (session != null) {

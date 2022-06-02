@@ -17,17 +17,11 @@ import java.io.IOException;
 
 @WebFilter(filterName = "PreAddMenuItemPageFilter", urlPatterns = "/pages/authorized/admin/add-menu-item.jsp")
 public class PreAddMenuItemPageFilter implements Filter {
-    public void init(FilterConfig config) throws ServletException {
-    }
-
-    public void destroy() {
-    }
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         IngredientService ingredientService = IngredientServiceImpl.getInstance();
-        MenuSectionService sectionService = new MenuSectionServiceImpl();
+        MenuSectionService sectionService = MenuSectionServiceImpl.getInstance();
         try {
             Gson gson = new GsonBuilder().create();
             String jsonIngredients = gson.toJson(ingredientService.findAll());

@@ -42,9 +42,9 @@ public class OrderDaoImpl implements OrderDao {
         boolean isInserted = false;
         Connection connection = ConnectionPool.getInstance().getConnection();
         try (PreparedStatement statement = connection.prepareStatement(INSERT_ORDER, Statement.RETURN_GENERATED_KEYS);
-             PreparedStatement mergeStatement = connection.prepareStatement(INSERT_ORDER_MENU_ITEMS_MERGE);) {
+             PreparedStatement mergeStatement = connection.prepareStatement(INSERT_ORDER_MENU_ITEMS_MERGE)) {
             connection.setAutoCommit(false);
-            statement.setDouble(1, orderEntity.getCost());
+            statement.setBigDecimal(1, orderEntity.getCost());
             Timestamp servingTime = Timestamp.valueOf(orderEntity.getServingTime());
             Timestamp creationTime = Timestamp.valueOf(orderEntity.getCreationTime());
             statement.setTimestamp(2, creationTime);
@@ -133,7 +133,6 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public OrderEntity update(long id, OrderEntity orderEntity) throws DaoException {
-        return null;
+    public void update(long id, OrderEntity orderEntity) throws DaoException {
     }
 }

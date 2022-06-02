@@ -2,35 +2,35 @@ package com.mahanko.finalproject.model.entity.menu;
 
 import com.mahanko.finalproject.model.entity.AbstractEntity;
 
+import java.math.BigDecimal;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
 public class MenuItem extends AbstractEntity<Long> {
     private String name;
-    private double cost;
-    private String description;
+    private BigDecimal cost;
     private String pictureBase64;
-    private MenuSection section;
+    private long sectionId;
     private final Set<Ingredient> ingredients;
 
     public MenuItem() {
         ingredients = new HashSet<>();
     }
 
-    public void setSection(MenuSection section) {
-        this.section = section;
+    public void setSectionId(long sectionId) {
+        this.sectionId = sectionId;
     }
 
-    public MenuSection getSection() {
-        return section;
+    public long getSectionId() {
+        return sectionId;
     }
 
-    public double getCost() {
+    public BigDecimal getCost() {
         return cost;
     }
 
-    public void setCost(double cost) {
+    public void setCost(BigDecimal cost) {
         this.cost = cost;
     }
 
@@ -40,14 +40,6 @@ public class MenuItem extends AbstractEntity<Long> {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
     }
 
     public String getPictureBase64() {
@@ -97,26 +89,20 @@ public class MenuItem extends AbstractEntity<Long> {
 
         MenuItem menuItem = (MenuItem) o;
 
-        if (Double.compare(menuItem.cost, cost) != 0) return false;
+        if (sectionId != menuItem.sectionId) return false;
         if (!Objects.equals(name, menuItem.name)) return false;
-        if (!Objects.equals(description, menuItem.description))
-            return false;
+        if (!Objects.equals(cost, menuItem.cost)) return false;
         if (!Objects.equals(pictureBase64, menuItem.pictureBase64))
             return false;
-        if (!Objects.equals(section, menuItem.section)) return false;
         return Objects.equals(ingredients, menuItem.ingredients);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = name != null ? name.hashCode() : 0;
-        temp = Double.doubleToLongBits(cost);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (description != null ? description.hashCode() : 0);
+        int result = name != null ? name.hashCode() : 0;
+        result = 31 * result + (cost != null ? cost.hashCode() : 0);
         result = 31 * result + (pictureBase64 != null ? pictureBase64.hashCode() : 0);
-        result = 31 * result + (section != null ? section.hashCode() : 0);
+        result = 31 * result + (int) (sectionId ^ (sectionId >>> 32));
         result = 31 * result + (ingredients != null ? ingredients.hashCode() : 0);
         return result;
     }

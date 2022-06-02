@@ -15,4 +15,6 @@ public interface MenuItemService {
     Optional<MenuItem> findById(Long id) throws ServiceException;
 
     List<MenuItem> findByName(String name) throws ServiceException;
+
+    void update(long id, RequestParameters parameters) throws ServiceException;
 }

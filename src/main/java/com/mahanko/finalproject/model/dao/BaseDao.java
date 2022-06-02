@@ -16,5 +16,5 @@ public interface BaseDao<E extends AbstractEntity> {
 
     List<E> findAll() throws DaoException;
 
-    E update(long id, E e) throws DaoException;
+    void update(long id, E e) throws DaoException;
 }

@@ -2,6 +2,7 @@ package com.mahanko.finalproject.model.entity;
 
 import com.mahanko.finalproject.model.entity.menu.MenuItem;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,11 +38,11 @@ public class OrderEntity extends AbstractEntity<Long> {
         return items.getOrDefault(item, 0);
     }
 
-    public double getCost() {
+    public BigDecimal getCost() {
         return items.entrySet()
                 .stream()
-                .map(pair -> pair.getKey().getCost() * pair.getValue())
-                .reduce(0d, Double::sum);
+                .map(pair -> pair.getKey().getCost().multiply(BigDecimal.valueOf(pair.getValue())))
+                .reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
     public Long getUserId() {

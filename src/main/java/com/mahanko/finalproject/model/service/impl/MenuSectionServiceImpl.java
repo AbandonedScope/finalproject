@@ -25,6 +25,14 @@ import static com.mahanko.finalproject.controller.ParameterType.VALIDATION_MESSA
 
 public class MenuSectionServiceImpl implements MenuSectionService {
     private static final Logger logger = LogManager.getLogger();
+    private static final MenuSectionServiceImpl instance = new MenuSectionServiceImpl();
+
+    private MenuSectionServiceImpl() {
+    }
+
+    public static MenuSectionServiceImpl getInstance() {
+        return instance;
+    }
 
     @Override
     public List<MenuSection> findAll() throws ServiceException {

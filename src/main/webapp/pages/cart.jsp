@@ -109,12 +109,12 @@
                                    type="datetime-local" name="order-time"
                                    required>
                             <div class="form-floating my-5">
-                                <select class="form-select" id="payment-type-section" name="payment-type" required>
+                                <select class="form-select" id="payment-type-sectionId" name="payment-type" required>
                                     <c:forEach var="paymentType" items="${requestScope.paymentTypes}">
                                         <option value="${paymentType}">${paymentType}</option>
                                     </c:forEach>
                                 </select>
-                                <label for="payment-type-section"><fmt:message key="label.menuitem.section"/></label>
+                                <label for="payment-type-sectionId"><fmt:message key="label.menuitem.sectionId"/></label>
                             </div>
                             <c:if test="${not empty requestScope.get(ParameterType.SERVING_DATETIME_VALIDATION_MESSAGE)}">
                                 <fmt:message key="message.validation.order.serving-date"/>

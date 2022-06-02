@@ -5,7 +5,6 @@ import com.mahanko.finalproject.controller.command.CommandType;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.model.pool.ConnectionPool;
 import jakarta.servlet.ServletException;
-import jakarta.servlet.ServletRequestAttributeListener;
 import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -26,6 +25,11 @@ public class Controller extends HttpServlet {
     public void init() {
         logger.log(Level.INFO, "Servlet '{}' initialization.", this.getServletName());
         ConnectionPool.getInstance();
+    }
+
+    @Override
+    protected void doPut(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+        process(request, response);
     }
 
     @Override

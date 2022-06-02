@@ -1,6 +1,7 @@
 package com.mahanko.finalproject.controller;
 
 public final class ParameterType {
+    public static final String PATH = "path";
     public static final String USERNAME_VALIDATION_MESSAGE = "username";
     public static final String USER_SURNAME_VALIDATION_MESSAGE = "user-surname";
     public static final String LOGIN_REGISTRATION_VALIDATION_MESSAGE = "login";
@@ -8,7 +9,6 @@ public final class ParameterType {
     public static final String CONFIRM_PASSWORD_VALIDATION_MESSAGE = "confirm-password";
     public static final String MEAL_NAME_VALIDATION_MESSAGE = "meal-name";
     public static final String MEAL_COST_VALIDATION_MESSAGE = "meal-cost";
-    public static final String MEAL_DESCRIPTION_VALIDATION_MESSAGE = "meal-description";
     public static final String MEAL_PICTURE_VALIDATION_MESSAGE = "meal-picture";
     public static final String INGREDIENT_NAME_VALIDATION_MESSAGE = "ingredient-name";
     public static final String INGREDIENT_CALORIES_VALIDATION_MESSAGE = "ingredient-calories";
@@ -52,7 +52,6 @@ public final class ParameterType {
     public static final String MENU_ITEM_PROTEINS = "menu-item-proteins";
     public static final String MENU_ITEM_FATS = "menu-item-fats";
     public static final String MENU_ITEM_CARBOHYDRATES = "menu-item-carbohydrates";
-    public static final String MENU_ITEM_DESCRIPTION = "menu-item-description";
     public static final String MENU_ITEM_PICTURE = "menu-item-picture";
     public static final String MENU_ITEM_INGREDIENT = "menu-item-ingredient";
     public static final String MENU_ITEM_PICTURE_NAME = "menu-item-picture-name";

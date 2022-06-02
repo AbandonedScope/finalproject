@@ -10,17 +10,17 @@
 <body data-bs-spy="scroll" data-bs-target="#navbar-sections" data-bs-offset="150">
 <nav id="navbar-sections" class="navbar sticky-top navbar-light bg-light px-3" style="z-index: 1">
     <ul class="nav nav-pills">
-        <c:forEach var="section" items="${applicationScope.sections}">
+        <c:forEach var="sectionId" items="${applicationScope.sections}">
             <li class="nav-item">
-                <a class="nav-link" href="#scrollspyHeading${section.id}">${section.name}</a>
+                <a class="nav-link" href="#scrollspyHeading${sectionId.id}">${sectionId.name}</a>
             </li>
         </c:forEach>
     </ul>
 </nav>
 <div>
-    <c:forEach var="section" items="${applicationScope.sections}">
-        <div id="scrollspyHeading${section.id}" class="row row-cols-4 row-cols-md-4 g-3 mx-5 px-5 my-3">
-            <c:forEach var="menuItem" items="${section.items}">
+    <c:forEach var="sectionId" items="${applicationScope.sections}">
+        <div id="scrollspyHeading${sectionId.id}" class="row row-cols-4 row-cols-md-4 g-3 mx-5 px-5 my-3">
+            <c:forEach var="menuItem" items="${sectionId.items}">
                 <div class="col">
                     <div class="card bg-light">
                         <div class="p-3">

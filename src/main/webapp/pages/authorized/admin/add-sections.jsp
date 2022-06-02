@@ -13,9 +13,9 @@
     <h2><fmt:message key="navigation.admin.section"/></h2>
     <div class="justify-content-center mx-5">
         <form id="form" action="${pageContext.request.contextPath}/controller" method="post">
-            <input type="hidden" name="command" value="add-menu-section"/>
+            <input type="hidden" name="command" value="add-menu-sectionId"/>
             <div class="form-floating my-5">
-                <input class="form-control" id="name" type="text" name="menu-section-name" placeholder="Name" required>
+                <input class="form-control" id="name" type="text" name="menu-sectionId-name" placeholder="Name" required>
                 <c:if test="${not empty requestScope.get(ParameterType.SECTION_NAME_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.section-name"/>
                 </c:if>

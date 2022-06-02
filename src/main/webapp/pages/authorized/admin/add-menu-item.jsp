@@ -31,20 +31,12 @@
                 <label for="cost"><fmt:message key="label.menuitem.cost"/></label>
             </div>
             <div class="form-floating my-5">
-                <input class="form-control" id="description" type="text" name="menu-item-description" maxlength="600"
-                       placeholder="description" required>
-                <c:if test="${not empty requestScope.get(ParameterType.MEAL_DESCRIPTION_VALIDATION_MESSAGE)}">
-                    <fmt:message key="message.validation.meal-description"/>
-                </c:if>
-                <label for="description"><fmt:message key="label.menuitem.description"/></label>
-            </div>
-            <div class="form-floating my-5">
-                <select class="form-select" id="section" name="menu-item-section-id" required>
-                    <c:forEach var="section" items="${sessionScope.sections}">
-                        <option value="${section.id}">${section.name}</option>
+                <select class="form-select" id="sectionId" name="menu-item-sectionId-id" required>
+                    <c:forEach var="sectionId" items="${sessionScope.sections}">
+                        <option value="${sectionId.id}">${sectionId.name}</option>
                     </c:forEach>
                 </select>
-                <label for="section"><fmt:message key="label.menuitem.section"/></label>
+                <label for="sectionId"><fmt:message key="label.menuitem.sectionId"/></label>
             </div>
             <div class="col-sm-8 my-5">
                 <label for="picture"><fmt:message key="label.menuitem.picture"/></label>

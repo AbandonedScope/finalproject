@@ -22,7 +22,8 @@ public enum CommandType {
     ON_ORDERS_PAGE(new OnOrdersPageCommand()),
     CHANGE_ITEM_IN_CART_AMOUNT(new ChangeItemInCartAmountCommand()),
     REMOVE_MENU_ITEM_FROM_CART(new RemoveItemFromCartCommand()),
-    FIND_MENU_ITEMS_BY_NAME(new FindMenuItemsByName());
+    FIND_MENU_ITEMS_BY_NAME(new FindMenuItemsByName()),
+    MODIFY_MENU_ITEM(new ModifyMenuItemCommand());
 
 
     private final Command command;

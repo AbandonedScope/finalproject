@@ -19,7 +19,7 @@ public class AddMenuSectionCommand implements Command {
         Router route = new Router(PagePath.ADD_MENU_SECTION, Router.Type.FORWARD);
         RequestParameters parameters = new RequestParameters();
         parameters.put(MENU_SECTION_NAME, request.getParameter(MENU_SECTION_NAME));
-        MenuSectionService service = new MenuSectionServiceImpl();
+        MenuSectionService service = MenuSectionServiceImpl.getInstance();
         try {
             if(service.insert(parameters)) {
                 request.setAttribute(SECTION_ADD_SUCCESSFULLY_MESSAGE, SECTION_ADD_SUCCESSFULLY_MESSAGE);
