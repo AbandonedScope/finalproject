@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.model.service.impl;
 
+import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.exception.ServiceException;
@@ -57,6 +58,19 @@ public class MenuSectionServiceImpl implements MenuSectionService {
     }
 
     @Override
+    public List<MenuSection> findByName(String name) throws ServiceException {
+        MenuSectionDao menuSectionDao = MenuSectionDaoImpl.getInstance();
+        List<MenuSection> sections;
+        try {
+            sections = menuSectionDao.findByName(name);
+        } catch (DaoException e) {
+            logger.log(Level.ERROR, e);
+            throw new ServiceException(e);
+        }
+        return sections;
+    }
+
+    @Override
     public List<MenuSection> findAllLazy() throws ServiceException {
         MenuSectionDao menuSectionDao = MenuSectionDaoImpl.getInstance();
         List<MenuSection> sections;
@@ -96,5 +110,24 @@ public class MenuSectionServiceImpl implements MenuSectionService {
         }
 
         return isInserted;
+    }
+
+    @Override
+    public void update(int id, RequestParameters parameters) throws ServiceException {
+        String sectionIdString = parameters.get(MENU_SECTION_ID);
+        String sectionName = parameters.get(MENU_SECTION_NAME);
+        int sectionId = Integer.parseInt(sectionIdString);
+        MenuSection section = new MenuSection();
+        section.setId(sectionId);
+        MenuSectionValidator validator = new MenuSectionValidatorImpl();
+        if (validator.validateName(sectionName)) {
+            section.setName(sectionName);
+            MenuSectionDao menuSectionDao = MenuSectionDaoImpl.getInstance();
+            try {
+                menuSectionDao.update(sectionId, section);
+            } catch (DaoException e) {
+                throw new ServiceException(e);
+            }
+        }
     }
 }

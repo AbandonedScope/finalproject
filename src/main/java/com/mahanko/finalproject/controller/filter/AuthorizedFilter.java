@@ -2,7 +2,6 @@ package com.mahanko.finalproject.controller.filter;
 
 import com.mahanko.finalproject.controller.AttributeType;
 import com.mahanko.finalproject.controller.PagePath;
-import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
 import com.mahanko.finalproject.model.entity.RoleType;
 import jakarta.servlet.*;
@@ -15,14 +14,6 @@ import java.io.IOException;
 
 @WebFilter(filterName = "AuthorizedFilter", urlPatterns = "/pages/authorized/*")
 public class AuthorizedFilter implements Filter {
-
-    @Override
-    public void init(FilterConfig config) throws ServletException {
-    }
-
-    public void destroy() {
-    }
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;

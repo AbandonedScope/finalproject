@@ -1,6 +1,7 @@
 package com.mahanko.finalproject.model.dao.impl;
 
 import com.mahanko.finalproject.exception.DaoException;
+import com.mahanko.finalproject.model.mapper.CustomRowMapper;
 import com.mahanko.finalproject.model.mapper.impl.IngredientRowMapper;
 import com.mahanko.finalproject.model.dao.IngredientDao;
 import com.mahanko.finalproject.model.entity.menu.Ingredient;
@@ -17,12 +18,29 @@ import java.util.Optional;
 
 public class IngredientDaoImpl implements IngredientDao {
     private static final Logger logger = LogManager.getLogger();
-    private static final String SELECT_BY_ID = "SELECT * FROM ingredients WHERE ingr_id = ?";
-    private static final String SELECT_ALL_INGREDIENTS = "SELECT * FROM ingredients";
-    private static final String SELECT_EXISTS_INGREDIENT_BY_NAME = "SELECT EXISTS (SELECT ingr_id FROM ingredients WHERE ingr_name = ?)";
+    private static final String SELECT_BY_ID =
+            "SELECT ingr_id, ingr_name, ingr_proteins, ingr_fats, " +
+                    "ingr_carbohydrates, ingr_calories, ingr_picture " +
+                    "FROM ingredients WHERE ingr_id = ?";
+    private static final String SELECT_ALL_INGREDIENTS =
+            "SELECT ingr_id, ingr_name, ingr_proteins, ingr_fats, " +
+                    "ingr_carbohydrates, ingr_calories, ingr_picture " +
+                    "FROM ingredients";
+    private static final String SELECT_EXISTS_INGREDIENT_BY_NAME =
+            "SELECT EXISTS (SELECT ingr_id FROM ingredients WHERE ingr_name = ?)";
     private static final String INSERT_NEW_INGREDIENTS =
-            "INSERT INTO ingredients(ingr_name, ingr_proteins, ingr_fats, ingr_carbohydrates, ingr_calories, ingr_picture)" +
+            "INSERT INTO ingredients(ingr_name, ingr_proteins, ingr_fats, " +
+                    "ingr_carbohydrates, ingr_calories, ingr_picture)" +
                     " VALUE (?, ?, ?, ?, ?, ?)";
+    private static final String SELECT_BY_NAME =
+            "SELECT ingr_id, ingr_name, ingr_proteins, ingr_fats, " +
+                    " ingr_carbohydrates, ingr_calories, ingr_picture from ingredients " +
+                    "WHERE locate(?, ingr_name) > 0";
+    private static final String UPDATE_BY_ID =
+            "update ingredients set ingr_id = ?, ingr_name = ?, ingr_proteins = ?, " +
+                    "ingr_fats = ?, ingr_carbohydrates = ?, ingr_calories = ?, " +
+                    "ingr_picture = ? " +
+                    "where ingr_id = ?";
     private static final IngredientDaoImpl instance = new IngredientDaoImpl();
 
     private IngredientDaoImpl() {
@@ -31,7 +49,6 @@ public class IngredientDaoImpl implements IngredientDao {
     public static IngredientDaoImpl getInstance() {
         return instance;
     }
-
 
     @Override
     public boolean existWithName(String name) throws DaoException {
@@ -52,10 +69,30 @@ public class IngredientDaoImpl implements IngredientDao {
     }
 
     @Override
+    public List<Ingredient> findByName(String name) throws DaoException {
+        List<Ingredient> ingredients = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BY_NAME)) {
+            statement.setString(1, name);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                CustomRowMapper<Ingredient> mapper = new IngredientRowMapper();
+                while (resultSet.next()) {
+                    mapper.map(resultSet).ifPresent(ingredients::add);
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return ingredients;
+    }
+
+    @Override
     public Optional<Ingredient> findById(Long id) throws DaoException {
         Optional<Ingredient> ingredientOptional = Optional.empty();
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
             statement.setLong(1, id);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
@@ -121,6 +158,30 @@ public class IngredientDaoImpl implements IngredientDao {
     }
 
     @Override
-    public void update(long id, Ingredient ingredient) throws DaoException {
+    public boolean update(long id, Ingredient ingredient) throws DaoException {
+        boolean isInserted = false;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_BY_ID)) {
+            String base64String = ingredient.getPictureBase64();
+            byte[] data = CustomPictureEncoder.decodeString(base64String);
+            Blob blob = connection.createBlob();
+            blob.setBytes(1, data);
+            statement.setLong(1, ingredient.getId());
+            statement.setString(2, ingredient.getName());
+            statement.setDouble(3, ingredient.getProteins());
+            statement.setDouble(4, ingredient.getFats());
+            statement.setDouble(5, ingredient.getCarbohydrates());
+            statement.setDouble(6, ingredient.getCalories());
+            statement.setBlob(7, blob);
+            statement.setLong(8, id);
+            if (statement.executeUpdate() != 0) {
+                isInserted = true;
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return isInserted;
     }
 }

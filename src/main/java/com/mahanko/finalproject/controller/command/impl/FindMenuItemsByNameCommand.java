@@ -17,11 +17,10 @@ import com.mahanko.finalproject.model.service.impl.MenuItemServiceImpl;
 import com.mahanko.finalproject.model.service.impl.MenuSectionServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
-public class FindMenuItemsByName implements Command {
+public class FindMenuItemsByNameCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router route = new Router(PagePath.MODIFY_MENU_ITEM, Router.Type.FORWARD);

@@ -152,7 +152,8 @@ public class MenuItemDaoImpl implements MenuItemDao {
     }
 
     @Override
-    public void update(long id, MenuItem menuItem) throws DaoException {
+    public boolean update(long id, MenuItem menuItem) throws DaoException {
+        boolean isInserted = true;
         Connection connection = ConnectionPool.getInstance().getConnection();
         try (PreparedStatement deleteIngredientStatement = connection.prepareStatement(DELETE_MENU_ITEM_INGREDIENTS_MERGE);
              PreparedStatement updateMenuItemStatement = connection.prepareStatement(UPDATE_MENU_ITEM_BY_ID)) {
@@ -171,7 +172,9 @@ public class MenuItemDaoImpl implements MenuItemDao {
             updateMenuItemStatement.executeUpdate();
 
             deleteIngredientStatement.setLong(1, menuItem.getId());
-            deleteIngredientStatement.executeUpdate();
+            if (deleteIngredientStatement.executeUpdate() != 1) {
+                isInserted = false;
+            }
 
             insertMenuItemIngredientsMerge(connection, menuItem);
             connection.commit();
@@ -191,6 +194,8 @@ public class MenuItemDaoImpl implements MenuItemDao {
                 logger.log(Level.ERROR, exception);
             }
         }
+
+        return isInserted;
     }
 
     @Override

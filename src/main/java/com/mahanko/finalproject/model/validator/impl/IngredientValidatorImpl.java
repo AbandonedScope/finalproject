@@ -16,8 +16,8 @@ public class IngredientValidatorImpl implements IngredientValidator {
     @Override
     public boolean validateName(String name) {
         return !StringUtils.isEmptyOrWhitespaceOnly(name)
-                && Pattern.matches(INGREDIENT_NAME_RUS_LONGER_2_SHORTER_45, name)
-                || Pattern.matches(INGREDIENT_NAME_ENG_LONGER_2_SHORTER_45, name);
+                && (Pattern.matches(INGREDIENT_NAME_RUS_LONGER_2_SHORTER_45, name)
+                || Pattern.matches(INGREDIENT_NAME_ENG_LONGER_2_SHORTER_45, name));
     }
 
     @Override

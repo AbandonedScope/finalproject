@@ -20,9 +20,16 @@ import java.util.Optional;
 
 public class MenuSectionDaoImpl implements MenuSectionDao {
     private static final Logger logger = LogManager.getLogger();
-    private static final String SELECT_ALL_SECTIONS = "SELECT s_id, s_name FROM sections";
-    private static final String SELECT_SECTION_BY_ID = "SELECT s_id, s_name FROM sections WHERE s_id = ?";
-    private static final String INSERT_SECTION = "INSERT INTO sections(s_name) VALUES (?)";
+    private static final String SELECT_ALL_SECTIONS =
+            "SELECT s_id, s_name FROM sections";
+    private static final String SELECT_SECTION_BY_ID =
+            "SELECT s_id, s_name FROM sections WHERE s_id = ?";
+    private static final String INSERT_SECTION =
+            "INSERT INTO sections(s_name) VALUES (?)";
+    private static final String SELECT_BY_NAME =
+            "SELECT s_id, s_name FROM sections WHERE locate(?, s_name) > 0";
+    private static final String UPDATE_SECTION_BY_ID =
+            "update sections set s_id = ?, s_name = ? where s_id = ?";
     private static final MenuSectionDaoImpl instance = new MenuSectionDaoImpl();
 
 
@@ -94,6 +101,41 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     }
 
     @Override
-    public void update(long id, MenuSection menuSection) throws DaoException {
+    public boolean update(long id, MenuSection menuSection) throws DaoException {
+        boolean isInserted = false;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_SECTION_BY_ID)) {
+            statement.setInt(1, menuSection.getId());
+            statement.setString(2, menuSection.getName());
+            statement.setInt(3, (int)id);
+            if (statement.executeUpdate() == 1) {
+                isInserted = true;
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return isInserted;
+    }
+
+    @Override
+    public List<MenuSection> findByName(String name) throws DaoException {
+        List<MenuSection> sections = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BY_NAME)) {
+            statement.setString(1, name);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                CustomRowMapper<MenuSection> mapper = new MenuSectionRowMapper();
+                while (resultSet.next()) {
+                    mapper.map(resultSet).ifPresent(sections::add);
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return sections;
     }
 }

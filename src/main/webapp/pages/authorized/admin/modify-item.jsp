@@ -5,7 +5,7 @@
 <%@include file="../../header.jsp" %>
 <html>
 <head>
-    <title><fmt:message key="navigation.admin.modify-item"/></title>
+    <title><fmt:message key="navigation.admin.modify.item"/></title>
 </head>
 <body>
 <c:set var="items" value="${requestScope.menuItems}"/>

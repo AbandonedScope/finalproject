@@ -14,7 +14,6 @@ public enum CommandType {
     ADD_INGREDIENT(new AddIngredientCommand()),
     ADD_MENU_ITEM(new AddMenuItemCommand()),
     ADD_MENU_SECTION(new AddMenuSectionCommand()),
-    //ON_ADD_MENU_ITEM(new OnAddMenuItemPageCommand()),
     SET_LOCALIZATION_TO_ENGLISH(new SetLocalizationToEnglishCommand()),
     SET_LOCALIZATION_TO_RUSSIAN(new SetLocalizationToRussianCommand()),
     ADD_ITEM_TO_CART(new AddItemToCartCommand()),
@@ -22,8 +21,12 @@ public enum CommandType {
     ON_ORDERS_PAGE(new OnOrdersPageCommand()),
     CHANGE_ITEM_IN_CART_AMOUNT(new ChangeItemInCartAmountCommand()),
     REMOVE_MENU_ITEM_FROM_CART(new RemoveItemFromCartCommand()),
-    FIND_MENU_ITEMS_BY_NAME(new FindMenuItemsByName()),
-    MODIFY_MENU_ITEM(new ModifyMenuItemCommand());
+    FIND_MENU_ITEMS_BY_NAME(new FindMenuItemsByNameCommand()),
+    FIND_MENU_SECTIONS_BY_NAME(new FindMenuSectionsByNameCommand()),
+    FIND_INGREDIENTS_BY_NAME(new FindIngredientsByNameCommand()),
+    MODIFY_MENU_ITEM(new ModifyMenuItemCommand()),
+    MODIFY_MENU_SECTION(new ModifyMenuSectionCommand()),
+    MODIFY_INGREDIENT(new ModifyIngredientCommand());
 
 
     private final Command command;

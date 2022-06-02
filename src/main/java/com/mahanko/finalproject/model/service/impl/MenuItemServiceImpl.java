@@ -194,8 +194,8 @@ public class MenuItemServiceImpl implements MenuItemService {
                 long menuItemId = Long.parseLong(itemIdString);
                 menuItem.setId(menuItemId);
                 MenuItemDao menuItemDao = MenuItemDaoImpl.getInstance();
-                MenuItem oldMenuItem = menuItemDao.findById(menuItemId).orElseThrow();
                 if (menuItem.getPictureBase64() == null) {
+                    MenuItem oldMenuItem = menuItemDao.findById(menuItemId).orElseThrow();
                     menuItem.setPictureBase64(oldMenuItem.getPictureBase64());
                 }
                 menuItemDao.update(id, menuItem);

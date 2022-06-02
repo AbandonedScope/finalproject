@@ -10,8 +10,6 @@ import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.Arrays;
@@ -19,8 +17,6 @@ import java.util.Optional;
 
 @WebFilter(filterName = "BaseFilter", urlPatterns = "/*") // urlPatterns - на кого срабатывают
 public class BaseFilter implements Filter {
-    private static final Logger logger = LogManager.getLogger();
-
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;

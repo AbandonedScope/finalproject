@@ -21,7 +21,7 @@ public class IngredientRowMapper implements CustomRowMapper<Ingredient> {
     @Override
     public Optional<Ingredient> map(ResultSet resultSet) throws DaoException {
         Optional<Ingredient> ingredientOptional = Optional.empty();
-        try { // FIXME: 22.04.2022 picture
+        try {
             Blob blob = resultSet.getBlob(ColumnName.INGREDIENT_PICTURE);
             String picture = CustomPictureEncoder.arrayToBase64(blob.getBinaryStream().readAllBytes());
             Ingredient ingredient = Ingredient.newBuilder()

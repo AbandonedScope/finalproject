@@ -133,6 +133,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public void update(long id, OrderEntity orderEntity) throws DaoException {
+    public boolean update(long id, OrderEntity orderEntity) throws DaoException {
+        return false;
     }
 }

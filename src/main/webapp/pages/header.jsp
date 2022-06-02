@@ -55,7 +55,19 @@
                             <li>
                                 <a class="dropdown-item"
                                    href="${pageContext.request.contextPath}/pages/authorized/admin/modify-item.jsp">
-                                    <fmt:message key="navigation.admin.modify-item"/>
+                                    <fmt:message key="navigation.admin.modify.item"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="${pageContext.request.contextPath}/pages/authorized/admin/modify-section.jsp">
+                                    <fmt:message key="navigation.admin.modify.section"/>
+                                </a>
+                            </li>
+                            <li>
+                                <a class="dropdown-item"
+                                   href="${pageContext.request.contextPath}/pages/authorized/admin/modify-ingredient.jsp">
+                                    <fmt:message key="navigation.admin.modify.ingredient"/>
                                 </a>
                             </li>
                         </ul>

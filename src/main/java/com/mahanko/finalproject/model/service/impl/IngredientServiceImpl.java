@@ -10,14 +10,19 @@ import com.mahanko.finalproject.model.entity.menu.Ingredient;
 import com.mahanko.finalproject.model.service.IngredientService;
 import com.mahanko.finalproject.model.validator.IngredientValidator;
 import com.mahanko.finalproject.model.validator.impl.IngredientValidatorImpl;
+import org.apache.logging.log4j.Level;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
 
 public class IngredientServiceImpl implements IngredientService {
+    private static final Logger logger = LogManager.getLogger();
     private final static IngredientServiceImpl instance = new IngredientServiceImpl();
 
     private IngredientServiceImpl() {
@@ -43,8 +48,22 @@ public class IngredientServiceImpl implements IngredientService {
     @Override
     public List<Ingredient> findAll() throws ServiceException {
         List<Ingredient> ingredients;
+        IngredientDao ingredientDao = IngredientDaoImpl.getInstance();
         try {
-            ingredients = IngredientDaoImpl.getInstance().findAll();
+            ingredients = ingredientDao.findAll();
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+
+        return ingredients;
+    }
+
+    @Override
+    public List<Ingredient> findByName(String name) throws ServiceException {
+        List<Ingredient> ingredients;
+        IngredientDao ingredientDao = IngredientDaoImpl.getInstance();
+        try {
+            ingredients = ingredientDao.findByName(name);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
@@ -116,5 +135,85 @@ public class IngredientServiceImpl implements IngredientService {
         }
 
         return isInserted;
+    }
+
+    @Override
+    public void update(long id, RequestParameters parameters) throws ServiceException {
+        boolean isValid = true;
+        String ingredientIdString = parameters.get(INGREDIENT_ID);
+        String ingredientName = parameters.get(INGREDIENT_NAME);
+        String ingredientCaloriesString = parameters.get(INGREDIENT_CALORIES);
+        String ingredientProteinsString = parameters.get(INGREDIENT_PROTEINS);
+        String ingredientFatsString = parameters.get(INGREDIENT_FATS);
+        String ingredientCarbohydratesString = parameters.get(INGREDIENT_CARBOHYDRATES);
+        String ingredientPicture = parameters.get(ParameterType.INGREDIENT_PICTURE);
+
+        try {
+            long ingredientId = Long.parseLong(ingredientIdString);
+            double ingredientCalories = Double.parseDouble(ingredientCaloriesString);
+            double ingredientProteins = Double.parseDouble(ingredientProteinsString);
+            double ingredientFats = Double.parseDouble(ingredientFatsString);
+            double ingredientCarbohydrates = Double.parseDouble(ingredientCarbohydratesString);
+
+            IngredientValidator validator = new IngredientValidatorImpl();
+            List<String> validationMessages = new ArrayList<>();
+            if (!validator.validateName(ingredientName)) {
+                isValid = false;
+                validationMessages.add(INGREDIENT_NAME_VALIDATION_MESSAGE);
+            }
+
+            if (!validator.validateNumericField(ingredientCalories)) {
+                isValid = false;
+                validationMessages.add(INGREDIENT_CALORIES_VALIDATION_MESSAGE);
+            }
+
+            if (!validator.validateNumericField(ingredientProteins)) {
+                isValid = false;
+                validationMessages.add(INGREDIENT_PROTEINS_VALIDATION_MESSAGE);
+            }
+
+            if (!validator.validateNumericField(ingredientFats)) {
+                isValid = false;
+                validationMessages.add(INGREDIENT_FATS_VALIDATION_MESSAGE);
+            }
+
+            if (!validator.validateNumericField(ingredientCarbohydrates)) {
+                isValid = false;
+                validationMessages.add(INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE);
+            }
+
+            if (ingredientPicture != null) {
+                String pictureName = parameters.get(ParameterType.INGREDIENT_PICTURE_NAME);
+                long pictureSize = Long.parseLong(parameters.get(ParameterType.INGREDIENT_PICTURE_SIZE));
+                if (!validator.validatePicture(pictureName, pictureSize)) {
+                    isValid = false;
+                    validationMessages.add(INGREDIENT_PICTURE_VALIDATION_MESSAGE);
+                }
+            }
+
+            if (isValid) {
+                Ingredient ingredient = Ingredient.newBuilder()
+                        .setId(ingredientId)
+                        .setName(ingredientName)
+                        .setCalories(ingredientCalories)
+                        .setProteins(ingredientProteins)
+                        .setFats(ingredientFats)
+                        .setCarbohydrates(ingredientCarbohydrates)
+                        .setPicture(ingredientPicture)
+                        .build();
+                IngredientDao ingredientDao = IngredientDaoImpl.getInstance();
+                if (ingredientPicture == null) {
+                    Ingredient oldIngredient = ingredientDao.findById(id).orElseThrow();
+                    ingredient.setPicture(oldIngredient.getPictureBase64());
+                }
+
+                ingredientDao.update(id, ingredient);
+            }
+        } catch (NumberFormatException | NoSuchElementException e) {
+            logger.log(Level.ERROR, e);
+            throw new ServiceException(e);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 }

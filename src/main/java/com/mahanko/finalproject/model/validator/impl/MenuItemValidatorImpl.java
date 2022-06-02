@@ -17,8 +17,8 @@ public class MenuItemValidatorImpl implements MenuItemValidator {
     @Override
     public boolean validateName(String name) {
         return !StringUtils.isEmptyOrWhitespaceOnly(name)
-                && Pattern.matches(MENU_ITEM_NAME_RUS_LONGER_2_SHORTER_45, name)
-                || Pattern.matches(MENU_ITEM_NAME_ENG_LONGER_2_SHORTER_45, name);
+                && (Pattern.matches(MENU_ITEM_NAME_RUS_LONGER_2_SHORTER_45, name)
+                || Pattern.matches(MENU_ITEM_NAME_ENG_LONGER_2_SHORTER_45, name));
     }
 
     @Override
