@@ -8,17 +8,20 @@
     <title><fmt:message key="navigation.user.profile"/></title>
 </head>
 <body>
-<p>${sessionScope.user.name}</p>
-<p>${sessionScope.user.login}</p>
-<a href="orders.jsp">
-    <button class="btn btn-outline-primary fs-5">
-        <fmt:message key="navigation.user.orders"/>
-    </button>
-</a>
-<form action="${pageContext.request.contextPath}/controller">
-    <input type="hidden" name="command" value="${CommandType.LOGOUT}"/>
-    <input class="btn btn-outline-secondary fs-5" type="submit" value="<fmt:message key="action.user.logout"/>"/>
-</form>
+<div class="m-5 d-flex flex-column">
+    <p>${sessionScope.user.name}</p>
+    <p>${sessionScope.user.login}</p>
+    <p>${sessionScope.user.loyalPoints}</p>
+    <a href="orders.jsp">
+        <button class="btn btn-outline-primary fs-5">
+            <fmt:message key="navigation.user.orders"/>
+        </button>
+    </a>
+    <form action="${pageContext.request.contextPath}/controller">
+        <input type="hidden" name="command" value="${CommandType.LOGOUT}"/>
+        <input class="btn btn-outline-secondary fs-5" type="submit" value="<fmt:message key="action.user.logout"/>"/>
+    </form>
+</div>
 <c:import url="../footer.jsp"/>
 </body>
 </html>

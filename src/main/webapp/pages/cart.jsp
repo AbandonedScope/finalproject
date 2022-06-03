@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.controller.ParameterType"
+         import="com.mahanko.finalproject.controller.ValidationMessage"
          import="com.mahanko.finalproject.controller.command.CommandType" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -71,7 +71,7 @@
             <h5><fmt:message key="label.shopping-cart.cost"/> : ${cart.cost}</h5>
         </div>
         <!-- Button trigger modal -->
-        <c:if test="${not empty requestScope.get(ParameterType.SERVING_DATETIME_VALIDATION_MESSAGE)}">
+        <c:if test="${not empty requestScope.get(ValidationMessage.SERVING_DATETIME_VALIDATION_MESSAGE)}">
             <fmt:message key="message.validation.order.serving-date"/>
         </c:if>
         <c:choose>
@@ -116,7 +116,7 @@
                                 </select>
                                 <label for="payment-type-sectionId"><fmt:message key="label.menuitem.sectionId"/></label>
                             </div>
-                            <c:if test="${not empty requestScope.get(ParameterType.SERVING_DATETIME_VALIDATION_MESSAGE)}">
+                            <c:if test="${not empty requestScope.get(ValidationMessage.SERVING_DATETIME_VALIDATION_MESSAGE)}">
                                 <fmt:message key="message.validation.order.serving-date"/>
                             </c:if>
                             <p>Minimum value now + 30 minutes</p>

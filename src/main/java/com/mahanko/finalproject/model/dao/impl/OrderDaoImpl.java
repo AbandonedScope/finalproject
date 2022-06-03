@@ -18,10 +18,20 @@ import java.util.Optional;
 
 public class OrderDaoImpl implements OrderDao {
     private static final Logger logger = LogManager.getLogger();
-    private static final String SELECT_ALL = "select or_id, or_cost, or_creation_date, or_serving_date, or_user, or_taken, or_payment_type from orders";
-    private static final String INSERT_ORDER = "INSERT INTO orders(OR_COST, or_creation_date, or_serving_date, OR_USER, or_payment_type) VALUES (?, ?, ?, ?, ?)";
-    private static final String INSERT_ORDER_MENU_ITEMS_MERGE = "INSERT INTO m2m_orders_menuitems(or_id, mi_id, mi_count) VALUES (?, ?, ?)";
-    private static final String SELECT_ORDERS_BY_CUSTOMER_ID = "select or_id, or_cost, or_creation_date, or_serving_date, or_user, or_payment_type, or_taken from orders where or_user = ?";
+    private static final String SELECT_ALL_LAZY =
+            "select or_id, or_cost, or_creation_date, or_serving_date, " +
+                    "or_user, or_taken, or_payment_type from orders";
+    private static final String INSERT_ORDER =
+            "INSERT INTO orders(OR_COST, or_creation_date, or_serving_date, OR_USER, or_payment_type) " +
+                    "VALUES (?, ?, ?, ?, ?)";
+    private static final String INSERT_ORDER_MENU_ITEMS_MERGE =
+            "INSERT INTO m2m_orders_menuitems(or_id, mi_id, mi_count) VALUES (?, ?, ?)";
+    private static final String SELECT_ORDERS_BY_CUSTOMER_ID =
+            "select or_id, or_cost, or_creation_date, or_serving_date, or_user, " +
+                    "or_payment_type, or_taken from orders where or_user = ?";
+    private static final String SELECT_ALL_OFFSET_LIMIT =
+            "select or_id, or_cost, or_creation_date, or_serving_date, " +
+                    "or_user, or_taken, or_payment_type from orders limit ?, ?";
     private static final OrderDaoImpl instance = new OrderDaoImpl();
 
 
@@ -110,6 +120,27 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public List<OrderEntity> findPage(long offset, int pageSize) throws DaoException {
+        List<OrderEntity> orders = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_ALL_OFFSET_LIMIT)) {
+            statement.setLong(1, offset);
+            statement.setInt(2, pageSize);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                CustomRowMapper<OrderEntity> mapper = new OrderMapper();
+                while (resultSet.next()) {
+                    mapper.map(resultSet).ifPresent(orders::add);
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return orders;
+    }
+
+    @Override
     public boolean remove(OrderEntity orderEntity) throws DaoException {
         return false;
     }
@@ -118,7 +149,7 @@ public class OrderDaoImpl implements OrderDao {
     public List<OrderEntity> findAll() throws DaoException {
         List<OrderEntity> orderEntities = new ArrayList<>();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_ALL);
+             PreparedStatement statement = connection.prepareStatement(SELECT_ALL_LAZY);
              ResultSet resultSet = statement.executeQuery()) {
             CustomRowMapper<OrderEntity> orderMapper = new OrderMapper();
             while (resultSet.next()) {

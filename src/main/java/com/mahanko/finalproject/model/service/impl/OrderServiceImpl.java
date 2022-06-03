@@ -21,6 +21,8 @@ import java.util.List;
 import java.util.Map;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
+import static com.mahanko.finalproject.controller.ValidationMessage.SERVING_DATETIME_VALIDATION_MESSAGE;
+import static com.mahanko.finalproject.controller.ValidationMessage.VALIDATION_MESSAGES;
 
 public class OrderServiceImpl implements OrderService {
     private static final Logger logger = LogManager.getLogger();
@@ -84,6 +86,20 @@ public class OrderServiceImpl implements OrderService {
         try {
             OrderDao orderDao = OrderDaoImpl.getInstance();
             orders = orderDao.findByCustomerId(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+
+        return orders;
+    }
+
+    @Override
+    public List<OrderEntity> findOrdersPage(int pageNum, int pageSize) throws ServiceException {
+        List<OrderEntity> orders;
+        pageNum--;
+        try {
+            OrderDao orderDao = OrderDaoImpl.getInstance();
+            orders = orderDao.findPage((long) pageNum * pageSize, pageSize);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

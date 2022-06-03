@@ -17,8 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
-import static com.mahanko.finalproject.controller.ParameterType.PASSWORD_VALIDATION_MESSAGE;
-import static com.mahanko.finalproject.controller.ParameterType.USERNAME_VALIDATION_MESSAGE;
+import static com.mahanko.finalproject.controller.ValidationMessage.*;
 
 public class CustomerServiceImpl implements CustomerService {
 

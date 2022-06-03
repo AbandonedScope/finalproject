@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
+import static com.mahanko.finalproject.controller.ValidationMessage.REGISTRATION_USER_EXISTS_MESSAGE;
 
 public class AddUserCommand implements Command {
     

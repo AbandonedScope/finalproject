@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.controller.ParameterType" %>
+         import="com.mahanko.finalproject.controller.ValidationMessage" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="../../header.jsp" %>
@@ -57,7 +57,7 @@
                                                        name="ingredient-name" placeholder="Name"
                                                        value="${ingredient.name}"
                                                        required>
-                                                <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_NAME_VALIDATION_MESSAGE)}">
+                                                <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_NAME_VALIDATION_MESSAGE)}">
                                                     <fmt:message key="message.validation.ingredient-name"/>
                                                 </c:if>
                                                 <label for="ingredientName"><fmt:message
@@ -68,7 +68,7 @@
                                                        name="ingredient-calories"
                                                        min="0.01" step="0.01"
                                                        placeholder="10" value="${ingredient.calories}" required>
-                                                <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_CALORIES_VALIDATION_MESSAGE)}">
+                                                <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_CALORIES_VALIDATION_MESSAGE)}">
                                                     <fmt:message key="message.validation.ingredient-calories"/>
                                                 </c:if>
                                                 <label for="ingredientCalories-${ingredient.id}"><fmt:message key="label.ingredient.calories"/></label>
@@ -78,7 +78,7 @@
                                                        name="ingredient-proteins"
                                                        min="0.01" step="0.01"
                                                        placeholder="10" value="${ingredient.proteins}" required>
-                                                <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_PROTEINS_VALIDATION_MESSAGE)}">
+                                                <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_PROTEINS_VALIDATION_MESSAGE)}">
                                                     <fmt:message key="message.validation.ingredient-proteins"/>
                                                 </c:if>
                                                 <label for="ingredientProteins-${ingredient.id}"><fmt:message key="label.ingredient.proteins"/></label>
@@ -88,7 +88,7 @@
                                                        name="ingredient-fats"
                                                        min="0.01" step="0.01"
                                                        placeholder="10" value="${ingredient.fats}" required>
-                                                <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_FATS_VALIDATION_MESSAGE)}">
+                                                <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_FATS_VALIDATION_MESSAGE)}">
                                                     <fmt:message key="message.validation.ingredient-fats"/>
                                                 </c:if>
                                                 <label for="ingredientFats-${ingredient.id}"><fmt:message key="label.ingredient.fats"/></label>
@@ -98,7 +98,7 @@
                                                        name="ingredient-carbohydrates"
                                                        min="0.01" step="0.01"
                                                        placeholder="10" value="${ingredient.carbohydrates}" required>
-                                                <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE)}">
+                                                <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE)}">
                                                     <fmt:message key="message.validation.ingredient-carbohydrates"/>
                                                 </c:if>
                                                 <label for="ingredientCarbohydrates-${ingredient.id}"><fmt:message key="label.ingredient.carbohydrates"/></label>
@@ -113,7 +113,7 @@
                                                     <fmt:message key="label.ingredient.picture.condition"/>
                                                 </p>
                                                 <p>
-                                                    <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_PICTURE_VALIDATION_MESSAGE)}">
+                                                    <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_PICTURE_VALIDATION_MESSAGE)}">
                                                         <fmt:message key="message.validation.ingredient-picture"/>
                                                     </c:if>
                                                 </p>
@@ -138,55 +138,6 @@
                     </div>
                 </div>
             </c:forEach>
-        </div>
-
-        <!-- Modal -->
-        <div class="modal fade" id="ingredientModal" tabindex="-1" aria-labelledby="exampleModalLabel"
-             aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header d-flex">
-                        <div class="form-floating flex-fill">
-                            <input oninput="searchingByName()" class="form-control" id="searching-ingredient-name-input"
-                                   type="text" name="searching-ingredient-name"
-                                   placeholder="Name" required>
-                            <label for="searching-ingredient-name-input"><fmt:message
-                                    key="label.ingredient.searching-name"/></label>
-                        </div>
-                        <button type="button" class="btn-close ms-1" data-bs-dismiss="modal"
-                                aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body overflow-auto" style="height: 500px">
-                        <div id="modal-ingredients">
-                            <c:forEach var="ingredient" items="${existingIngredients}">
-                                <div id="existingIngredientDiv-${ingredient.id}"
-                                     class="d-flex justify-content-between existingIngredient">
-                                    <div class="d-flex flex-wrap align-items-center text-dark m-1 p-2">
-                                    <span class="input-group-addon">
-                                        <img style="user-select: none; max-width: 40px; max-height: 40px"
-                                             src="data:image/png;base64,${ingredient.pictureBase64}"
-                                             alt="${ingredient.name}">
-                                        <p id="existingIngredientPictureP-${ingredient.id}"
-                                           class="d-none">${ingredient.pictureBase64}</p>
-                                    </span>
-                                        <div id="existingIngredientNameDiv-${ingredient.id}"
-                                             class="input-group-addon ms-1 align-middle">
-                                                ${ingredient.name}
-                                        </div>
-                                    </div>
-                                    <div>
-                                        <button onclick="addNewIngredient(event, '${ingredient.id}', '${ingredient.name}', '${ingredient.pictureBase64}')"
-                                                id="existingIngredientButton-${ingredient.id}" type="button"
-                                                class="btn btn-outline-primary ms-auto p-2">
-                                            <em class="bi bi-plus-lg fw-bold"></em>
-                                        </button>
-                                    </div>
-                                </div>
-                            </c:forEach>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </c:if>
 </div>

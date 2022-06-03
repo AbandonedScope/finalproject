@@ -20,6 +20,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
+import static com.mahanko.finalproject.controller.ValidationMessage.*;
 
 public class MenuItemServiceImpl implements MenuItemService {
     private static final Logger logger = LogManager.getLogger();
@@ -75,6 +76,11 @@ public class MenuItemServiceImpl implements MenuItemService {
             if (!menuItemValidator.validatePicture(pictureName, pictureSize)) {
                 isValid = false;
                 validationMessages.add(MEAL_PICTURE_VALIDATION_MESSAGE);
+            }
+
+            if (!menuItemValidator.validateIngredientsWeights(ingredientWeights)) {
+                isValid = false;
+                validationMessages.add(MEAL_INGREDIENTS_VALIDATION_MESSAGE);
             }
 
 

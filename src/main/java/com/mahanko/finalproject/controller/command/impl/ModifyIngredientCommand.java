@@ -6,6 +6,7 @@ import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
+import com.mahanko.finalproject.model.entity.menu.Ingredient;
 import com.mahanko.finalproject.model.service.IngredientService;
 import com.mahanko.finalproject.model.service.impl.IngredientServiceImpl;
 import com.mahanko.finalproject.util.CustomPictureEncoder;
@@ -18,6 +19,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
 
@@ -48,7 +50,8 @@ public class ModifyIngredientCommand implements Command {
             }
 
             IngredientService service = IngredientServiceImpl.getInstance();
-            service.update(Long.parseLong(ingredientIdString), parameters);
+            Optional<Ingredient> optionalIngredient = service.update(Long.parseLong(ingredientIdString), parameters);
+            // FIXME: 03.06.2022 messages
         } catch (ServiceException | NumberFormatException e) {
             throw new CommandException(e);
         } catch (ServletException | IOException e) {

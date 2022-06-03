@@ -12,6 +12,8 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
+import static com.mahanko.finalproject.controller.ValidationMessage.SECTION_ADD_FAIL_MESSAGE;
+import static com.mahanko.finalproject.controller.ValidationMessage.SECTION_ADD_SUCCESSFULLY_MESSAGE;
 
 public class AddMenuSectionCommand implements Command {
     @Override

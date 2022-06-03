@@ -38,6 +38,6 @@ public class AddItemToCartCommand implements Command {
         }
 
         session.setAttribute(ORDER_CART, order);
-        return new Router(PagePath.MAIN, Router.Type.FORWARD);
+        return new Router(PagePath.MAIN, Router.Type.REDIRECT);
     }
 }

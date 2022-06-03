@@ -20,6 +20,7 @@ import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
+import static com.mahanko.finalproject.controller.ValidationMessage.*;
 
 public class IngredientServiceImpl implements IngredientService {
     private static final Logger logger = LogManager.getLogger();
@@ -29,7 +30,7 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     public static IngredientServiceImpl getInstance() {
-        return  instance;
+        return instance;
     }
 
     @Override
@@ -72,8 +73,8 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public boolean insert(RequestParameters params) throws ServiceException {
-        boolean isInserted = false;
+    public Optional<Ingredient> insert(RequestParameters params) throws ServiceException {
+        Optional<Ingredient> optionalIngredient = Optional.empty();
         boolean isValid = true;
         String ingredientPicture = params.get(ParameterType.INGREDIENT_PICTURE);
         String pictureName = params.get(ParameterType.INGREDIENT_PICTURE_NAME);
@@ -124,22 +125,23 @@ public class IngredientServiceImpl implements IngredientService {
                         .build();
 
                 IngredientDao dao = IngredientDaoImpl.getInstance();
-                if (!dao.existWithName(ingredient.getName())) {
-                    isInserted = dao.insert(ingredient);
+                if (!dao.existWithName(ingredient.getName()) && dao.insert(ingredient)) {
+                    optionalIngredient = Optional.of(ingredient);
                 }
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
         } else {
-            params.put(ParameterType.VALIDATION_MESSAGES, validationMessages);
+            params.put(VALIDATION_MESSAGES, validationMessages);
         }
 
-        return isInserted;
+        return optionalIngredient;
     }
 
     @Override
-    public void update(long id, RequestParameters parameters) throws ServiceException {
+    public Optional<Ingredient> update(long id, RequestParameters parameters) throws ServiceException {
         boolean isValid = true;
+        Optional<Ingredient> optionalIngredient = Optional.empty();
         String ingredientIdString = parameters.get(INGREDIENT_ID);
         String ingredientName = parameters.get(INGREDIENT_NAME);
         String ingredientCaloriesString = parameters.get(INGREDIENT_CALORIES);
@@ -207,7 +209,10 @@ public class IngredientServiceImpl implements IngredientService {
                     ingredient.setPicture(oldIngredient.getPictureBase64());
                 }
 
-                ingredientDao.update(id, ingredient);
+                if (ingredientDao.update(id, ingredient)) {
+                    ingredient.setId(id);
+                    optionalIngredient = Optional.of(ingredient);
+                }
             }
         } catch (NumberFormatException | NoSuchElementException e) {
             logger.log(Level.ERROR, e);
@@ -215,5 +220,7 @@ public class IngredientServiceImpl implements IngredientService {
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
+
+        return optionalIngredient;
     }
 }

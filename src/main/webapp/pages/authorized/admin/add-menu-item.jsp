@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.controller.ParameterType" %>
+         import="com.mahanko.finalproject.controller.ValidationMessage" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="../../header.jsp" %>
@@ -17,7 +17,7 @@
             <input type="hidden" name="command" value="add-menu-item"/>
             <div class="form-floating my-5">
                 <input class="form-control" id="name" type="text" name="menu-item-name" placeholder="Name" required>
-                <c:if test="${not empty requestScope.get(ParameterType.MEAL_NAME_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_NAME_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.meal-name"/>
                 </c:if>
                 <label for="name"><fmt:message key="label.menuitem.name"/></label>
@@ -25,13 +25,13 @@
             <div class="form-floating my-5">
                 <input class="form-control" id="cost" type="number" name="menu-item-cost" min="0.01" step="0.01"
                        placeholder="10" required>
-                <c:if test="${not empty requestScope.get(ParameterType.MEAL_COST_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_COST_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.meal-cost"/>
                 </c:if>
                 <label for="cost"><fmt:message key="label.menuitem.cost"/></label>
             </div>
             <div class="form-floating my-5">
-                <select class="form-select" id="sectionId" name="menu-item-sectionId-id" required>
+                <select class="form-select" id="sectionId" name="menu-item-section-id" required>
                     <c:forEach var="sectionId" items="${sessionScope.sections}">
                         <option value="${sectionId.id}">${sectionId.name}</option>
                     </c:forEach>
@@ -46,7 +46,7 @@
                     <fmt:message key="label.menuitem.picture.condition"/>
                 </p>
                 <p>
-                    <c:if test="${not empty requestScope.get(ParameterType.MEAL_PICTURE_VALIDATION_MESSAGE)}">
+                    <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_PICTURE_VALIDATION_MESSAGE)}">
                         <fmt:message key="message.validation.meal-picture"/>
                     </c:if>
                 </p>
@@ -63,6 +63,9 @@
                 </div>
                 <div>
                     <fmt:message key="label.menuitem.ingredients"/>
+                    <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_INGREDIENTS_VALIDATION_MESSAGE)}">
+                        <fmt:message key="message.validation.meal-ingredients"/>
+                    </c:if>
                     <ul class="list-group">
                         <div style="max-height: 250px;
                                     width: 450px;
@@ -76,7 +79,7 @@
                        value="<fmt:message key="action.admin.add.menuitem"/>">
             </div>
         </form>
-        <c:if test="${not empty requestScope.get(ParameterType.MEAL_ADDED_SUCCESSFULLY_MESSAGE)}">
+        <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_ADDED_SUCCESSFULLY_MESSAGE)}">
             <fmt:message key="message.add.meal.success"/>
         </c:if>
     </div>

@@ -7,10 +7,11 @@
 <head>
     <title><fmt:message key="navigation.guest.main"/></title>
 </head>
+<c:set var="sections" value="${applicationScope.sections}"/>
 <body data-bs-spy="scroll" data-bs-target="#navbar-sections" data-bs-offset="150">
 <nav id="navbar-sections" class="navbar sticky-top navbar-light bg-light px-3" style="z-index: 1">
     <ul class="nav nav-pills">
-        <c:forEach var="sectionId" items="${applicationScope.sections}">
+        <c:forEach var="sectionId" items="${sections}">
             <li class="nav-item">
                 <a class="nav-link" href="#scrollspyHeading${sectionId.id}">${sectionId.name}</a>
             </li>
@@ -18,7 +19,7 @@
     </ul>
 </nav>
 <div>
-    <c:forEach var="sectionId" items="${applicationScope.sections}">
+    <c:forEach var="sectionId" items="${sections}">
         <div id="scrollspyHeading${sectionId.id}" class="row row-cols-4 row-cols-md-4 g-3 mx-5 px-5 my-3">
             <c:forEach var="menuItem" items="${sectionId.items}">
                 <div class="col">

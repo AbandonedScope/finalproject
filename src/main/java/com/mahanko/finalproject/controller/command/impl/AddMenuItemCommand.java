@@ -19,9 +19,9 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 import java.util.*;
-import java.util.stream.Collectors;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
+import static com.mahanko.finalproject.controller.ValidationMessage.MEAL_ADDED_SUCCESSFULLY_MESSAGE;
 
 public class AddMenuItemCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
@@ -33,8 +33,17 @@ public class AddMenuItemCommand implements Command {
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {
             RequestParameters parameters = new RequestParameters();
-            List<String> ingredientIds = Arrays.stream(request.getParameterValues(INGREDIENT_ID)).collect(Collectors.toList());
-            List<String> ingredientWeights = Arrays.stream(request.getParameterValues(INGREDIENT_WEIGHT)).collect(Collectors.toList());
+            String[] ingredientIdsArray = request.getParameterValues(INGREDIENT_ID);
+            String[] ingredientWeightsArray = request.getParameterValues(INGREDIENT_WEIGHT);
+            List<String> ingredientIds;
+            List<String> ingredientWeights;
+            if (ingredientIdsArray != null) {
+                ingredientIds = List.of(ingredientIdsArray);
+                ingredientWeights = List.of(ingredientWeightsArray);
+            } else {
+                ingredientIds = List.of();
+                ingredientWeights = List.of();
+            }
             parameters.put(INGREDIENT_ID, ingredientIds);
             parameters.put(INGREDIENT_WEIGHT, ingredientWeights);
 

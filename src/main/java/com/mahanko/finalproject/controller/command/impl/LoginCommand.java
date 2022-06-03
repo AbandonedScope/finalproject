@@ -19,6 +19,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
+import static com.mahanko.finalproject.controller.ValidationMessage.LOGIN_VALIDATION_MESSAGE;
 
 public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger();

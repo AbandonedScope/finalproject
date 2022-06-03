@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.controller.ParameterType" %>
+         import="com.mahanko.finalproject.controller.ValidationMessage" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="../../header.jsp" %>
@@ -16,7 +16,7 @@
             <input type="hidden" name="command" value="add-menu-sectionId"/>
             <div class="form-floating my-5">
                 <input class="form-control" id="name" type="text" name="menu-sectionId-name" placeholder="Name" required>
-                <c:if test="${not empty requestScope.get(ParameterType.SECTION_NAME_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.SECTION_NAME_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.section-name"/>
                 </c:if>
                 <label for="name">

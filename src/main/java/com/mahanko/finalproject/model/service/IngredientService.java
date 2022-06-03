@@ -14,7 +14,7 @@ public interface IngredientService {
 
     List<Ingredient> findByName(String name) throws ServiceException;
 
-    boolean insert(RequestParameters parameters) throws ServiceException;
+    Optional<Ingredient> insert(RequestParameters parameters) throws ServiceException;
 
-    void update(long id, RequestParameters parameters) throws ServiceException;
+    Optional<Ingredient> update(long id, RequestParameters parameters) throws ServiceException;
 }

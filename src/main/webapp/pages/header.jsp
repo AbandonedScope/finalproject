@@ -72,11 +72,6 @@
                             </li>
                         </ul>
                     </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="${pageContext.request.contextPath}/pages/authorized/admin/admin-panel.jsp">
-                            <fmt:message key="navigation.admin.panel"/>
-                        </a>
-                    </li>
                 </c:if>
                 <c:choose>
                     <c:when test="${sessionScope.user != null && sessionScope.user.getRole() == RoleType.GUEST}">

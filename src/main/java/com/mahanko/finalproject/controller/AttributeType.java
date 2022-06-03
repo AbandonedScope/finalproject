@@ -5,6 +5,7 @@ public final class AttributeType {
     public static final String ORDER_CART = "shoppingCart";
     public static final String USER = "user";
     public static final String SECTIONS = "sections";
+    public static final String INGREDIENTS = "ingredients";
 
     private AttributeType() {
     }

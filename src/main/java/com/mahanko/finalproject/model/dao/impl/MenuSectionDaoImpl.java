@@ -46,10 +46,11 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_SECTION_BY_ID)) {
             statement.setInt(1, id.intValue());
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                CustomRowMapper<MenuSection> mapper = new MenuSectionRowMapper();
-                sectionOptional = mapper.map(resultSet);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    CustomRowMapper<MenuSection> mapper = new MenuSectionRowMapper();
+                    sectionOptional = mapper.map(resultSet);
+                }
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
@@ -85,12 +86,13 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
         List<MenuSection> sections = new ArrayList<>();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL_SECTIONS)) {
-            ResultSet resultSet = statement.executeQuery();
-            resultSet.next();
-            MenuSectionRowMapper mapper = new MenuSectionRowMapper();
-            while (!resultSet.isAfterLast()) {
-                // FIXME: 27.04.2022 if empty???
-                mapper.map(resultSet).ifPresent(sections::add);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                resultSet.next();
+                MenuSectionRowMapper mapper = new MenuSectionRowMapper();
+                while (!resultSet.isAfterLast()) {
+                    // FIXME: 27.04.2022 if empty???
+                    mapper.map(resultSet).ifPresent(sections::add);
+                }
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
@@ -104,10 +106,10 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     public boolean update(long id, MenuSection menuSection) throws DaoException {
         boolean isInserted = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(UPDATE_SECTION_BY_ID)) {
+             PreparedStatement statement = connection.prepareStatement(UPDATE_SECTION_BY_ID)) {
             statement.setInt(1, menuSection.getId());
             statement.setString(2, menuSection.getName());
-            statement.setInt(3, (int)id);
+            statement.setInt(3, (int) id);
             if (statement.executeUpdate() == 1) {
                 isInserted = true;
             }

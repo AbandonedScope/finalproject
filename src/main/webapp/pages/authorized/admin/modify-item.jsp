@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.controller.ParameterType" %>
+         import="com.mahanko.finalproject.controller.ValidationMessage" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="../../header.jsp" %>
@@ -58,7 +58,7 @@
                                                     <input class="form-control" id="mealName" type="text"
                                                            name="menu-item-name" placeholder="Name" value="${item.name}"
                                                            required>
-                                                    <c:if test="${not empty requestScope.get(ParameterType.MEAL_NAME_VALIDATION_MESSAGE)}">
+                                                    <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_NAME_VALIDATION_MESSAGE)}">
                                                         <fmt:message key="message.validation.meal-name"/>
                                                     </c:if>
                                                     <label for="mealName"><fmt:message
@@ -138,7 +138,7 @@
                                                     <fmt:message key="label.menuitem.picture.condition"/>
                                                 </p>
                                                 <p>
-                                                    <c:if test="${not empty requestScope.get(ParameterType.MEAL_PICTURE_VALIDATION_MESSAGE)}">
+                                                    <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_PICTURE_VALIDATION_MESSAGE)}">
                                                         <fmt:message key="message.validation.meal-picture"/>
                                                     </c:if>
                                                 </p>
@@ -148,7 +148,7 @@
                                                        name="menu-item-cost"
                                                        min="0.01" step="0.01"
                                                        placeholder="10" value="${item.cost}" required>
-                                                <c:if test="${not empty requestScope.get(ParameterType.MEAL_COST_VALIDATION_MESSAGE)}">
+                                                <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_COST_VALIDATION_MESSAGE)}">
                                                     <fmt:message key="message.validation.meal-cost"/>
                                                 </c:if>
                                                 <label for="cost"><fmt:message key="label.menuitem.cost"/></label>

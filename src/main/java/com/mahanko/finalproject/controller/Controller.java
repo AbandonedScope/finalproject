@@ -62,7 +62,7 @@ public class Controller extends HttpServlet {
             }
         } catch (CommandException e) {
             logger.log(Level.FATAL, e);
-            throw  new ServletException(e);
+            throw new ServletException(e);
         }
     }
 

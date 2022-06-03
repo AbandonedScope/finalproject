@@ -56,9 +56,10 @@ public class IngredientDaoImpl implements IngredientDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_EXISTS_INGREDIENT_BY_NAME)) {
             statement.setString(1, name);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                exists = resultSet.getBoolean(1);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    exists = resultSet.getBoolean(1);
+                }
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
@@ -94,10 +95,11 @@ public class IngredientDaoImpl implements IngredientDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
             statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                IngredientRowMapper mapper = new IngredientRowMapper();
-                ingredientOptional = mapper.map(resultSet);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    IngredientRowMapper mapper = new IngredientRowMapper();
+                    ingredientOptional = mapper.map(resultSet);
+                }
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
@@ -112,7 +114,7 @@ public class IngredientDaoImpl implements IngredientDao {
     public boolean insert(Ingredient ingredient) throws DaoException {
         boolean isInserted = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT_NEW_INGREDIENTS)) {
+             PreparedStatement statement = connection.prepareStatement(INSERT_NEW_INGREDIENTS, Statement.RETURN_GENERATED_KEYS)) {
             String base64String = ingredient.getPictureBase64();
             byte[] data = CustomPictureEncoder.decodeString(base64String);
             Blob blob = connection.createBlob();
@@ -125,6 +127,11 @@ public class IngredientDaoImpl implements IngredientDao {
             statement.setBlob(6, blob);
             if (statement.executeUpdate() != 0) {
                 isInserted = true;
+                try (ResultSet key = statement.getGeneratedKeys()) {
+                    key.next();
+                    long ingredientId = key.getLong(1);
+                    ingredient.setId(ingredientId);
+                }
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
@@ -144,10 +151,11 @@ public class IngredientDaoImpl implements IngredientDao {
         List<Ingredient> ingredients = new ArrayList<>();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL_INGREDIENTS)) {
-            ResultSet result = statement.executeQuery();
-            IngredientRowMapper mapper = new IngredientRowMapper();
-            while (result.next()) {
-                mapper.map(result).ifPresent(ingredients::add);
+            try (ResultSet result = statement.executeQuery()) {
+                IngredientRowMapper mapper = new IngredientRowMapper();
+                while (result.next()) {
+                    mapper.map(result).ifPresent(ingredients::add);
+                }
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);

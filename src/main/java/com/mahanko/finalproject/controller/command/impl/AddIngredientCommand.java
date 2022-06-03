@@ -6,6 +6,7 @@ import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
+import com.mahanko.finalproject.model.entity.menu.Ingredient;
 import com.mahanko.finalproject.model.service.IngredientService;
 import com.mahanko.finalproject.model.service.impl.IngredientServiceImpl;
 import com.mahanko.finalproject.util.CustomPictureEncoder;
@@ -18,8 +19,10 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.Optional;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
+import static com.mahanko.finalproject.controller.ValidationMessage.INGREDIENT_ADD_MESSAGE;
 
 public class AddIngredientCommand implements Command {
 
@@ -48,7 +51,8 @@ public class AddIngredientCommand implements Command {
             params.put(INGREDIENT_CALORIES, request.getParameter(INGREDIENT_CALORIES));
 
             IngredientService ingredientService = IngredientServiceImpl.getInstance();
-            if (ingredientService.insert(params)) {
+            Optional<Ingredient> ingredientOptional = ingredientService.insert(params);
+            if (ingredientOptional.isPresent()) {
                 request.setAttribute(INGREDIENT_ADD_MESSAGE, INGREDIENT_SUCCESSFUL_ADDED_MESSAGE);
             } else {
                 if (!params.fillRequestWithValidations(request)) {

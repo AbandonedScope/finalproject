@@ -1,6 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"
          import="com.mahanko.finalproject.controller.command.CommandType"
-         import="com.mahanko.finalproject.controller.ParameterType" %>
+         import="com.mahanko.finalproject.controller.ValidationMessage" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="header.jsp" %>
@@ -20,7 +20,7 @@
             <div class="form-floating my-5 fs-5">
                 <input class="form-control" id="name" type="text" name="name" placeholder="Name" maxlength="20"
                        required/>
-                <c:if test="${not empty requestScope.get(ParameterType.USERNAME_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.USERNAME_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.username"/>
                 </c:if>
                 <label for="name">
@@ -29,7 +29,7 @@
             <div class="form-floating my-5 fs-5">
                 <input class="form-control" id="surname" type="text" name="surname" placeholder="Surname" maxlength="20"
                        required/>
-                <c:if test="${not empty requestScope.get(ParameterType.USER_SURNAME_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.USER_SURNAME_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.user.surname"/>
                 </c:if>
                 <label for="surname">
@@ -38,7 +38,7 @@
             <div class="form-floating my-5 fs-5">
                 <input class="form-control" id="login" type="text" name="login" placeholder="Login" maxlength="16"
                        minlength="8" required/>
-                <c:if test="${not empty requestScope.get(ParameterType.LOGIN_REGISTRATION_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.LOGIN_REGISTRATION_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.login"/>
                 </c:if>
                 <label for="login">
@@ -47,7 +47,7 @@
             <div class="form-floating my-5 fs-5">
                 <input class="form-control" id="password" type="password" name="password" placeholder="Password"
                        maxlength="20" minlength="8" required/>
-                <c:if test="${not empty requestScope.get(ParameterType.PASSWORD_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.PASSWORD_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.password"/>
                 </c:if>
                 <label for="password">
@@ -56,7 +56,7 @@
             <div class="form-floating my-5 fs-5">
                 <input class="form-control" id="confirm-password" type="password" name="confirm-password"
                        placeholder="ConfirmPassword" maxlength="20" minlength="8" required/>
-                <c:if test="${not empty requestScope.get(ParameterType.PASSWORD_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.PASSWORD_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.password"/>
                 </c:if>
                 <label for="confirm-password">
@@ -64,7 +64,7 @@
             </div>
             <input class="btn btn-outline-primary fs-5" type="submit" name="login-sub"
                    value="<fmt:message key="action.guest.login"/>">
-            <c:if test="${not empty requestScope.get(ParameterType.REGISTRATION_USER_EXISTS_MESSAGE)}">
+            <c:if test="${not empty requestScope.get(ValidationMessage.REGISTRATION_USER_EXISTS_MESSAGE)}">
                 <fmt:message key="message.registration.user-exists"/>
             </c:if>
         </form>

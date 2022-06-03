@@ -1,6 +1,5 @@
 package com.mahanko.finalproject.model.service.impl;
 
-import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.exception.ServiceException;
@@ -22,7 +21,8 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
-import static com.mahanko.finalproject.controller.ParameterType.VALIDATION_MESSAGES;
+import static com.mahanko.finalproject.controller.ValidationMessage.SECTION_NAME_VALIDATION_MESSAGE;
+import static com.mahanko.finalproject.controller.ValidationMessage.VALIDATION_MESSAGES;
 
 public class MenuSectionServiceImpl implements MenuSectionService {
     private static final Logger logger = LogManager.getLogger();

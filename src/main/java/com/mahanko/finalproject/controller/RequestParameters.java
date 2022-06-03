@@ -27,7 +27,7 @@ public class RequestParameters {
     }
 
     public boolean fillRequestWithValidations(HttpServletRequest request) {
-        List<String> messages = getMultiple(ParameterType.VALIDATION_MESSAGES);
+        List<String> messages = getMultiple(ValidationMessage.VALIDATION_MESSAGES);
         boolean isNotEmpty = messages != null && !messages.isEmpty();
         if (isNotEmpty) {
             for (String message : messages) {

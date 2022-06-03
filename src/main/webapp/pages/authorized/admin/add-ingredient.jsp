@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.controller.ParameterType" %>
+         import="com.mahanko.finalproject.controller.ValidationMessage" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="../../header.jsp" %>
@@ -16,7 +16,7 @@
             <input type="hidden" name="command" value="add-ingredient"/>
             <div class="form-floating my-5">
                 <input class="form-control" id="name" type="text" name="ingredient-name" placeholder="Name" required>
-                <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_NAME_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_NAME_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.ingredient-name"/>
                 </c:if>
                 <label for="name">
@@ -25,7 +25,7 @@
             <div class="form-floating my-5">
                 <input class="form-control" id="calories" type="number" name="ingredient-calories" step="0.01" min="0"
                        max="5000" placeholder="100" required>
-                <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_CALORIES_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_CALORIES_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.ingredient-calories"/>
                 </c:if>
                 <label for="calories">
@@ -35,7 +35,7 @@
             <div class="form-floating my-5">
                 <input class="form-control" id="proteins" type="number" name="ingredient-proteins" step="0.01" min="0"
                        max="5000" placeholder="20" required>
-                <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_PROTEINS_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_PROTEINS_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.ingredient-proteins"/>
                 </c:if>
                 <label for="proteins">
@@ -45,7 +45,7 @@
             <div class="form-floating my-5">
                 <input class="form-control" id="fats" type="number" name="ingredient-fats" step="0.01" min="0"
                        max="5000" placeholder="20" required>
-                <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_FATS_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_FATS_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.ingredient-fats"/>
                 </c:if>
                 <label for="fats">
@@ -55,7 +55,7 @@
             <div class="form-floating my-5">
                 <input class="form-control" id="carbohydrates" type="number" name="ingredient-carbohydrates" step="0.01"
                        min="0" max="5000" placeholder="20" required>
-                <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.ingredient-carbohydrates"/>
                 </c:if>
                 <label for="carbohydrates">
@@ -72,7 +72,7 @@
                     <fmt:message key="label.ingredient.picture.condition"/>
                 </p>
                 <p>
-                <c:if test="${not empty requestScope.get(ParameterType.INGREDIENT_PICTURE_VALIDATION_MESSAGE)}">
+                <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_PICTURE_VALIDATION_MESSAGE)}">
                     <fmt:message key="message.validation.ingredient-picture"/>
                 </c:if>
                 </p>
