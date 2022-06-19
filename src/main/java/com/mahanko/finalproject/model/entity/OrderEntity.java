@@ -13,6 +13,7 @@ public class OrderEntity extends AbstractEntity<Long> {
     private Long userId;
     private LocalDateTime servingTime;
     private LocalDateTime creationTime;
+    private BigDecimal orderedCost;
     private boolean isTaken;
     private PaymentType paymentType;
     private final Map<MenuItem, Integer> items;
@@ -83,6 +84,14 @@ public class OrderEntity extends AbstractEntity<Long> {
 
     public void setPaymentType(PaymentType paymentType) {
         this.paymentType = paymentType;
+    }
+
+    public BigDecimal getOrderedCost() {
+        return orderedCost == null ? getCost() : orderedCost;
+    }
+
+    public void setOrderedCost(BigDecimal orderedCost) {
+        this.orderedCost = orderedCost;
     }
 
     @Override

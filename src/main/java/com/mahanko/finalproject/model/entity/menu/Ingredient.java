@@ -13,6 +13,7 @@ public class Ingredient extends AbstractEntity<Long> {
     private double carbohydrates;
     private double calories;
     private String pictureBase64;
+    private Integer hashCode;
 
     public static IngredientBuilder newBuilder() {
         return new Ingredient(). new IngredientBuilder();
@@ -138,36 +139,63 @@ public class Ingredient extends AbstractEntity<Long> {
 
     @Override
     public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
+        if (this == o) {
+            return true;
+        }
+
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
 
         Ingredient that = (Ingredient) o;
 
-        if (Double.compare(that.weight, weight) != 0) return false;
-        if (Double.compare(that.proteins, proteins) != 0) return false;
-        if (Double.compare(that.fats, fats) != 0) return false;
-        if (Double.compare(that.carbohydrates, carbohydrates) != 0) return false;
-        if (Double.compare(that.calories, calories) != 0) return false;
-        if (!Objects.equals(name, that.name)) return false;
+        if (Double.compare(that.weight, weight) != 0) {
+            return false;
+        }
+
+        if (Double.compare(that.proteins, proteins) != 0) {
+            return false;
+        }
+
+        if (Double.compare(that.fats, fats) != 0) {
+            return false;
+        }
+
+        if (Double.compare(that.carbohydrates, carbohydrates) != 0) {
+            return false;
+        }
+
+        if (Double.compare(that.calories, calories) != 0) {
+            return false;
+        }
+
+        if (!Objects.equals(name, that.name)) {
+            return false;
+        }
+
         return Objects.equals(pictureBase64, that.pictureBase64);
     }
 
     @Override
     public int hashCode() {
-        int result;
-        long temp;
-        result = name != null ? name.hashCode() : 0;
-        temp = Double.doubleToLongBits(weight);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(proteins);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(fats);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(carbohydrates);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        temp = Double.doubleToLongBits(calories);
-        result = 31 * result + (int) (temp ^ (temp >>> 32));
-        result = 31 * result + (pictureBase64 != null ? pictureBase64.hashCode() : 0);
-        return result;
+        if (hashCode == null) {
+            int result;
+            long temp;
+            result = name != null ? name.hashCode() : 0;
+            temp = Double.doubleToLongBits(weight);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(proteins);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(fats);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(carbohydrates);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            temp = Double.doubleToLongBits(calories);
+            result = 31 * result + (int) (temp ^ (temp >>> 32));
+            result = 31 * result + (pictureBase64 != null ? pictureBase64.hashCode() : 0);
+            hashCode = result;
+        }
+
+        return hashCode;
     }
 }

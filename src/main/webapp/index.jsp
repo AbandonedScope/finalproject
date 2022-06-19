@@ -19,9 +19,9 @@
     </ul>
 </nav>
 <div>
-    <c:forEach var="sectionId" items="${sections}">
-        <div id="scrollspyHeading${sectionId.id}" class="row row-cols-4 row-cols-md-4 g-3 mx-5 px-5 my-3">
-            <c:forEach var="menuItem" items="${sectionId.items}">
+    <c:forEach var="section" items="${sections}">
+        <div id="scrollspyHeading${section.id}" class="row row-cols-4 row-cols-md-4 g-3 mx-5 px-5 my-3">
+            <c:forEach var="menuItem" items="${section.items}">
                 <div class="col">
                     <div class="card bg-light">
                         <div class="p-3">
@@ -31,7 +31,6 @@
                                      class="card-img-top"
                                      alt="${menuItem.name}">
                             </a>
-
                             <div class="modal fade" id="item-${menuItem.id}" tabindex="-1"
                                  aria-labelledby="exampleModalLabel" aria-hidden="true">
                                 <div class="modal-dialog modal-dialog-scrollable modal-xl modal-dialog-centered">

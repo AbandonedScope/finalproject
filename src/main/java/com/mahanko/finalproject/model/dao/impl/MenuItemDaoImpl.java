@@ -84,7 +84,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
-                    MenuItemRowMapper mapper = new MenuItemRowMapper();
+                    CustomRowMapper<MenuItem> mapper = new MenuItemRowMapper();
                     item = mapper.map(resultSet);
                 }
             }
@@ -139,7 +139,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL_MENU_ITEMS_JOIN_INGREDIENTS)) {
             try (ResultSet resultSet = statement.executeQuery()) {
                 resultSet.next();
-                MenuItemRowMapper mapper = new MenuItemRowMapper();
+                CustomRowMapper<MenuItem> mapper = new MenuItemRowMapper();
                 while (!resultSet.isAfterLast()) {
                     mapper.map(resultSet).ifPresent(menuItems::add);
                 }

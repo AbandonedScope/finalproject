@@ -5,7 +5,8 @@ import com.mahanko.finalproject.model.dao.OrderDao;
 import com.mahanko.finalproject.model.entity.OrderEntity;
 import com.mahanko.finalproject.model.entity.menu.MenuItem;
 import com.mahanko.finalproject.model.mapper.CustomRowMapper;
-import com.mahanko.finalproject.model.mapper.impl.OrderMapper;
+import com.mahanko.finalproject.model.mapper.impl.OrderFullMapper;
+import com.mahanko.finalproject.model.mapper.impl.OrderLiteMapper;
 import com.mahanko.finalproject.model.pool.ConnectionPool;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
@@ -21,6 +22,9 @@ public class OrderDaoImpl implements OrderDao {
     private static final String SELECT_ALL_LAZY =
             "select or_id, or_cost, or_creation_date, or_serving_date, " +
                     "or_user, or_taken, or_payment_type from orders";
+    private static final String SELECT_ALL_JOIN_MENU_ITEMS =
+            "select or_id, or_cost, or_creation_date, or_serving_date, " +
+                    "or_user, or_taken, or_payment_type from orders";
     private static final String INSERT_ORDER =
             "INSERT INTO orders(OR_COST, or_creation_date, or_serving_date, OR_USER, or_payment_type) " +
                     "VALUES (?, ?, ?, ?, ?)";
@@ -29,6 +33,17 @@ public class OrderDaoImpl implements OrderDao {
     private static final String SELECT_ORDERS_BY_CUSTOMER_ID =
             "select or_id, or_cost, or_creation_date, or_serving_date, or_user, " +
                     "or_payment_type, or_taken from orders where or_user = ?";
+    private static final String SELECT_ORDERS_BY_CUSTOMER_ID_JOIN_MENU_ITEMS =
+            "select orders.or_id, or_cost, or_creation_date, or_serving_date, or_user, " +
+                    "or_payment_type, or_taken, m2mom.mi_count, menu_items.mi_id, mi_section, mi_name, mi_picture, mi_cost, " +
+                    "m2mmi.ingr_weight," +
+                    "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, ingr_carbohydrates, ingr_calories, ingr_picture " +
+                    "from orders " +
+                    "join m2m_orders_menuitems m2mom on orders.or_id = m2mom.or_id " +
+                    "join menu_items on m2mom.mi_id = menu_items.mi_id " +
+                    "join m2m_menuitems_ingredients m2mmi on m2mom.mi_id = m2mmi.mi_id " +
+                    "join ingredients on m2mmi.ingr_id = ingredients.ingr_id " +
+                    "where or_user = ?";
     private static final String SELECT_ALL_OFFSET_LIMIT =
             "select or_id, or_cost, or_creation_date, or_serving_date, " +
                     "or_user, or_taken, or_payment_type from orders limit ?, ?";
@@ -103,10 +118,10 @@ public class OrderDaoImpl implements OrderDao {
     public List<OrderEntity> findByCustomerId(Long id) throws DaoException {
         List<OrderEntity> customerOrders = new ArrayList<>();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_ORDERS_BY_CUSTOMER_ID)) {
+             PreparedStatement statement = connection.prepareStatement(SELECT_ORDERS_BY_CUSTOMER_ID_JOIN_MENU_ITEMS)) {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
-                CustomRowMapper<OrderEntity> mapper = new OrderMapper();
+                CustomRowMapper<OrderEntity> mapper = new OrderFullMapper();
                 while (resultSet.next()) {
                     mapper.map(resultSet).ifPresent(customerOrders::add);
                 }
@@ -127,7 +142,7 @@ public class OrderDaoImpl implements OrderDao {
             statement.setLong(1, offset);
             statement.setInt(2, pageSize);
             try (ResultSet resultSet = statement.executeQuery()) {
-                CustomRowMapper<OrderEntity> mapper = new OrderMapper();
+                CustomRowMapper<OrderEntity> mapper = new OrderLiteMapper();
                 while (resultSet.next()) {
                     mapper.map(resultSet).ifPresent(orders::add);
                 }
@@ -151,7 +166,7 @@ public class OrderDaoImpl implements OrderDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL_LAZY);
              ResultSet resultSet = statement.executeQuery()) {
-            CustomRowMapper<OrderEntity> orderMapper = new OrderMapper();
+            CustomRowMapper<OrderEntity> orderMapper = new OrderLiteMapper();
             while (resultSet.next()) {
                 orderMapper.map(resultSet).ifPresent(orderEntities::add);
             }

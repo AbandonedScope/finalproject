@@ -13,6 +13,7 @@ public class MenuItem extends AbstractEntity<Long> {
     private String pictureBase64;
     private long sectionId;
     private final Set<Ingredient> ingredients;
+    private Integer hashCode;
 
     public MenuItem() {
         ingredients = new HashSet<>();
@@ -99,11 +100,15 @@ public class MenuItem extends AbstractEntity<Long> {
 
     @Override
     public int hashCode() {
-        int result = name != null ? name.hashCode() : 0;
-        result = 31 * result + (cost != null ? cost.hashCode() : 0);
-        result = 31 * result + (pictureBase64 != null ? pictureBase64.hashCode() : 0);
-        result = 31 * result + (int) (sectionId ^ (sectionId >>> 32));
-        result = 31 * result + (ingredients != null ? ingredients.hashCode() : 0);
-        return result;
+        if (hashCode == null) {
+            int result = name != null ? name.hashCode() : 0;
+            result = 31 * result + (cost != null ? cost.hashCode() : 0);
+            result = 31 * result + (pictureBase64 != null ? pictureBase64.hashCode() : 0);
+            result = 31 * result + (int) (sectionId ^ (sectionId >>> 32));
+            result = 31 * result + (ingredients != null ? ingredients.hashCode() : 0);
+            hashCode = result;
+        }
+
+        return hashCode;
     }
 }

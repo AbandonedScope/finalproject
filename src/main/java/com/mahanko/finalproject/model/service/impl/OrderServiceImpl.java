@@ -124,7 +124,7 @@ public class OrderServiceImpl implements OrderService {
         boolean isValid = validator.validateItemAmount(itemAmount);
 
         if (isValid) {
-            var orderEntry = getOrderItemAmountPairById(order, id);
+            var orderEntry = getOrderItemAmountPairByItemId(order, id);
             orderEntry.setValue(itemAmount);
         }
 
@@ -146,11 +146,11 @@ public class OrderServiceImpl implements OrderService {
             throw  new ServiceException(e);
         }
 
-        var orderEntry = getOrderItemAmountPairById(order, menuItemId);
+        var orderEntry = getOrderItemAmountPairByItemId(order, menuItemId);
         return order.removeItem(orderEntry.getKey()) != null;
     }
 
-    private Map.Entry<MenuItem, Integer> getOrderItemAmountPairById(OrderEntity order, long itemId) throws ServiceException {
+    private Map.Entry<MenuItem, Integer> getOrderItemAmountPairByItemId(OrderEntity order, long itemId) throws ServiceException {
         var optionalEntry = order.getItems().stream()
                 .filter(entry -> entry.getKey().getId().equals(itemId))
                 .findFirst();

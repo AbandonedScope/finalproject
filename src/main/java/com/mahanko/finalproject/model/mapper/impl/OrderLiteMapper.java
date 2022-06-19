@@ -15,21 +15,20 @@ import java.util.Optional;
 
 import static com.mahanko.finalproject.model.mapper.ColumnName.*;
 
-
-public class OrderMapper implements CustomRowMapper<OrderEntity> {
+public class OrderLiteMapper implements CustomRowMapper<OrderEntity> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Optional<OrderEntity> map(ResultSet resultSet) throws DaoException {
         Optional<OrderEntity> optionalOrder;
         try {
-            Long id = resultSet.getLong(ORDER_ID);
-            BigDecimal cost = resultSet.getBigDecimal(ORDER_COST);
+            long id = resultSet.getLong(ORDER_ID);
+            BigDecimal orderedCost = resultSet.getBigDecimal(ORDER_COST);
             Long userId = resultSet.getLong(ORDER_USER_ID);
             String paymentTypeString = resultSet.getString(ORDER_PAYMENT_TYPE);
             LocalDateTime creationDate = resultSet.getTimestamp(ORDER_CREATION_DATE).toLocalDateTime();
             LocalDateTime servingTime = resultSet.getTimestamp(ORDER_SERVING_DATE).toLocalDateTime();
-            Boolean isTaken = resultSet.getBoolean(ORDER_IS_TAKEN);
+            boolean isTaken = resultSet.getBoolean(ORDER_IS_TAKEN);
             PaymentType paymentType = PaymentType.valueOf(paymentTypeString);
             OrderEntity order = new OrderEntity();
             order.setId(id);
@@ -38,6 +37,7 @@ public class OrderMapper implements CustomRowMapper<OrderEntity> {
             order.setCreationTime(creationDate);
             order.setTaken(isTaken);
             order.setPaymentType(paymentType);
+            order.setOrderedCost(orderedCost);
             optionalOrder = Optional.of(order);
         } catch (SQLException e) {
             throw new DaoException(e);

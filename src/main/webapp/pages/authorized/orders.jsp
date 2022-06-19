@@ -37,7 +37,7 @@
                             <h5 class="accordion-header" id="flush-headingOne">
                                 <ul class="list-group list-group-horizontal my-1">
                                     <li class="list-group-item flex-fill"
-                                        style="width: 27rem">${order.cost}</li>
+                                        style="width: 27rem">${order.orderedCost}</li>
                                     <li class="list-group-item flex-fill" style="width: 24rem">
                                         <c:choose>
                                             <c:when test="${order.taken}">
@@ -65,13 +65,42 @@
                                         </button>
                                     </li>
                                 </ul>
-
                             </h5>
                             <div id="flush-collapse${order.id}" class="accordion-collapse collapse">
-                                <div class="accordion-body">Placeholder content for this accordion, which is intended to
-                                    demonstrate the <code>.accordion-flush</code> class. This is the first item's
-                                    accordion body.
-                                </div>
+                                <c:set var="items" value="${order.items}"/>
+                                <table class="table table-bordered">
+                                    <thead>
+                                    <tr class="table-primary">
+                                        <th scope="col"><fmt:message key="cart.table.column.meal"/></th>
+                                        <th scope="col"><fmt:message key="cart.table.column.cost"/></th>
+                                        <th scope="col"><fmt:message key="cart.table.column.sum"/></th>
+                                        <th scope="col"><fmt:message key="cart.table.column.amount"/></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <c:forEach var="entryItem" items="${items}">
+                                        <c:set var="item" value="${entryItem.key}"/>
+                                        <c:set var="count" value="${entryItem.value}"/>
+                                        <tr>
+                                            <td class="align-middle">
+                                                <div class="d-flex justify-content-between align-items-center">
+                                                    <img style="max-width: 5rem; max-height: 5rem;"
+                                                         src="data:image/png;base64,${item.pictureBase64}"
+                                                         alt="${item.name}">
+                                                    <h5 class="m-0">${item.name}</h5>
+                                                </div>
+                                            </td>
+                                            <td class="align-middle">
+                                                <p class="m-0">${item.cost}</p>
+                                            </td>
+                                            <td class="align-middle"><p class="m-0">${count * item.cost}</p></td>
+                                            <td class="align-middle">
+                                                <p class="m-0">${count}</p>
+                                            </td>
+                                        </tr>
+                                    </c:forEach>
+                                    </tbody>
+                                </table>
                             </div>
                         </div>
                     </c:forEach>
