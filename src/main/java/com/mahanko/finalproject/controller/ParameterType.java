@@ -39,10 +39,14 @@ public final class ParameterType {
     public static final String MENU_SECTION_ID = "menu-section-id";
     public static final String MENU_SECTION_NAME = "menu-section-name";
     public static final String ORDERS = "orders";
+    public static final String ORDER_ID = "order-id";
     public static final String USER_ORDERS = "userOrders";
     public static final String ORDER_TIME = "order-time";
     public static final String ORDER_ITEMS = "order-items";
     public static final String ORDER_PAYMENT_TYPE = "payment-type";
+    public static final String CUSTOMER_ID = "customer-id";
+    public static final String BONUSES = "bonuses";
+
 
     private ParameterType() {
     }

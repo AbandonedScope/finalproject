@@ -6,7 +6,8 @@ public class Router {
 
     public enum Type {
         FORWARD,
-        REDIRECT
+        REDIRECT,
+        NONE
     }
 
     public Router() {

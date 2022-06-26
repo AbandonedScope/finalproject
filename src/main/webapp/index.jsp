@@ -42,62 +42,74 @@
                                                      class="card-img-top"
                                                      alt="${menuItem.name}">
                                             </div>
-                                            <div class="col position-relative">
+                                            <div class="col d-flex justify-content-between flex-column">
                                                 <div>
-                                                    <div class="d-flex justify-content-between">
+                                                    <div>
+                                                        <div class="d-flex justify-content-between">
+                                                            <div class="d-flex flex-wrap">
+                                                                <h4>${menuItem.name}</h4>
+                                                            </div>
+                                                            <div>
+                                                                <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal"></button>
+                                                            </div>
+                                                        </div>
                                                         <div class="d-flex flex-wrap">
-                                                        <h4>${menuItem.name}</h4>
-                                                        </div>
-                                                        <div>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                                aria-label="Close"></button>
-                                                        </div>
-                                                    </div>
-                                                    <div class="d-flex flex-wrap">
-                                                        <c:forEach var="ingredient" items="${menuItem.ingredients}">
-                                                            <div class="d-flex align-items-center text-dark m-1 p-2">
-                                                                <img style="user-select: none; max-width: 40px; max-height: 40px"
-                                                                     src="data:image/png;base64,${ingredient.pictureBase64}"
-                                                                     alt="${ingredient.name}">
+                                                            <c:forEach var="ingredient" items="${menuItem.ingredients}">
+                                                                <div class="d-flex align-items-center text-dark m-1 p-2">
+                                                                    <img style="user-select: none; max-width: 40px; max-height: 40px"
+                                                                         src="data:image/png;base64,${ingredient.pictureBase64}"
+                                                                         alt="${ingredient.name}">
                                                                     <div class="ms-1">
                                                                             ${ingredient.name}
                                                                     </div>
-                                                            </div>
-                                                        </c:forEach>
+                                                                </div>
+                                                            </c:forEach>
+                                                        </div>
+                                                    </div>
+                                                    <div>
+                                                        <ul class="list-group list-group-flush">
+                                                            <li class="list-group-item">
+                                                                    <fmt:message key="label.menuItem.calories"/>&ensp;:&emsp;${menuItem.calories}&ensp;<fmt:message
+                                                                    key="label.metrics.calories"/>
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                    <fmt:message key="label.menuItem.proteins"/>&ensp;:&emsp;${menuItem.proteins}&ensp;<fmt:message
+                                                                    key="label.metrics.weight"/>
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                    <fmt:message key="label.menuItem.fats"/>&ensp;:&emsp;${menuItem.fats}&ensp;<fmt:message
+                                                                    key="label.metrics.weight"/>
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                    <fmt:message
+                                                                            key="label.menuItem.carbohydrates"/>&ensp;:&emsp;${menuItem.carbohydrates}&ensp;<fmt:message
+                                                                    key="label.metrics.weight"/>
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                    <fmt:message key="label.menuItem.weight"/>&ensp;:&emsp;${menuItem.weight}&ensp;<fmt:message
+                                                                    key="label.metrics.weight"/>
+                                                            </li>
+                                                            <li class="list-group-item">
+                                                                    <fmt:message key="label.menuitem.cost"/>&ensp;:&emsp;${menuItem.cost}&ensp;<fmt:message
+                                                                    key="label.metrics.currency"/>
+                                                            </li>
+                                                        </ul>
                                                     </div>
                                                 </div>
-                                                <div>
-                                                    <ul class="list-group list-group-flush">
-                                                        <li class="list-group-item">
-                                                            <fmt:message key="label.menuItem.calories"/>&ensp;:&emsp;${menuItem.calories}&ensp;<fmt:message key="label.metrics.calories"/>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                                <fmt:message key="label.menuItem.proteins"/>&ensp;:&emsp;${menuItem.proteins}&ensp;<fmt:message key="label.metrics.weight"/>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                                <fmt:message key="label.menuItem.fats"/>&ensp;:&emsp;${menuItem.fats}&ensp;<fmt:message key="label.metrics.weight"/>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                                <fmt:message key="label.menuItem.carbohydrates"/>&ensp;:&emsp;${menuItem.carbohydrates}&ensp;<fmt:message key="label.metrics.weight"/>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                                <fmt:message key="label.menuItem.weight"/>&ensp;:&emsp;${menuItem.weight}&ensp;<fmt:message key="label.metrics.weight"/>
-                                                        </li>
-                                                        <li class="list-group-item">
-                                                                <fmt:message key="label.menuitem.cost"/>&ensp;:&emsp;${menuItem.cost}&ensp;<fmt:message key="label.metrics.currency"/>
-                                                        </li>
-                                                    </ul>
-                                                </div>
-                                                <div class="position-absolute bottom-0 end-0">
-                                                    <form class="m-0" action="${pageContext.request.contextPath}/controller"
+                                                <div class="d-flex justify-content-end">
+                                                    <form class="m-0"
+                                                          action="${pageContext.request.contextPath}/controller"
                                                           method="post">
                                                         <input type="hidden" name="command" value="add-item-to-cart">
                                                         <input type="hidden" name="menu-item-id" value="${menuItem.id}">
                                                         <div class="input-group">
-                                                            <input class="form-control" type="number" name="menu-item-count" value="1"
+                                                            <input class="form-control" type="number"
+                                                                   name="menu-item-count" value="1"
                                                                    min="1"
                                                                    step="1" required>
-                                                            <input class="btn btn-outline-primary text-wrap" type="submit"
+                                                            <input class="btn btn-outline-primary text-wrap"
+                                                                   type="submit"
                                                                    name="submit-button"
                                                                    value="<fmt:message key="action.guest.cart.add-to-cart"/>"/>
                                                         </div>

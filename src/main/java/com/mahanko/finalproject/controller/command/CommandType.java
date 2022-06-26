@@ -26,7 +26,10 @@ public enum CommandType {
     FIND_INGREDIENTS_BY_NAME(new FindIngredientsByNameCommand()),
     MODIFY_MENU_ITEM(new ModifyMenuItemCommand()),
     MODIFY_MENU_SECTION(new ModifyMenuSectionCommand()),
-    MODIFY_INGREDIENT(new ModifyIngredientCommand());
+    MODIFY_INGREDIENT(new ModifyIngredientCommand()),
+    GET_ORDER_INFORMATION(new GetOrderInformationCommand()),
+    GET_CUSTOMER_INFO(new GetCustomerInfoCommand()),
+    SET_ORDER_TAKEN(new SetOrderTakenCommand());
 
 
     private final Command command;

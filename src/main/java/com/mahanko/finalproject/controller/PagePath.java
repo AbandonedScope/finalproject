@@ -9,6 +9,8 @@ public final class PagePath {
     public static final String REGISTRATION = "pages/registration.jsp";
     public static final String SHOPPING_CART = "pages/cart.jsp";
     public static final String ORDERS = "pages/authorized/admin/orders.jsp";
+    public static final String ORDER_INFO = "pages/authorized/admin/order-info.jsp";
+    public static final String CUSTOMER_INFO = "pages/authorized/admin/customer-info.jsp";
     public static final String USER_ORDERS = "pages/authorized/orders.jsp";
     public static final String MODIFY_MENU_ITEM = "pages/authorized/admin/modify-item.jsp";
     public static final String MODIFY_INGREDIENT = "pages/authorized/admin/modify-ingredient.jsp";

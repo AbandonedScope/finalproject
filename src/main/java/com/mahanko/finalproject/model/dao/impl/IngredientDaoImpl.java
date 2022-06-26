@@ -90,7 +90,7 @@ public class IngredientDaoImpl implements IngredientDao {
     }
 
     @Override
-    public Optional<Ingredient> findById(Long id) throws DaoException {
+    public Optional<Ingredient> findById(long id) throws DaoException {
         Optional<Ingredient> ingredientOptional = Optional.empty();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {

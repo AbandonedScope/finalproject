@@ -15,7 +15,7 @@ import java.util.List;
 public class PreOrdersFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
-        OrderService service = new OrderServiceImpl();
+        OrderService service = OrderServiceImpl.getInstance();
         try {
             List<OrderEntity> orders = service.findAll();
             request.setAttribute(ParameterType.ORDERS, orders);

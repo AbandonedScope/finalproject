@@ -16,9 +16,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.time.*;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
 import static com.mahanko.finalproject.controller.ValidationMessage.SERVING_DATETIME_VALIDATION_MESSAGE;
@@ -26,6 +24,14 @@ import static com.mahanko.finalproject.controller.ValidationMessage.VALIDATION_M
 
 public class OrderServiceImpl implements OrderService {
     private static final Logger logger = LogManager.getLogger();
+    private static final OrderServiceImpl instance = new OrderServiceImpl();
+
+    private OrderServiceImpl() {
+    }
+
+    public static OrderServiceImpl getInstance() {
+        return instance;
+    }
 
     @Override
     public List<OrderEntity> findAll() throws ServiceException {
@@ -38,6 +44,18 @@ public class OrderServiceImpl implements OrderService {
         }
 
         return orders;
+    }
+
+    @Override
+    public Optional<OrderEntity> findById(long id) throws ServiceException {
+        Optional<OrderEntity> optionalOrder;
+        OrderDao orderDao = OrderDaoImpl.getInstance();
+        try {
+            optionalOrder = orderDao.findById(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+        return optionalOrder;
     }
 
     @Override
@@ -148,6 +166,16 @@ public class OrderServiceImpl implements OrderService {
 
         var orderEntry = getOrderItemAmountPairByItemId(order, menuItemId);
         return order.removeItem(orderEntry.getKey()) != null;
+    }
+
+    @Override
+    public void setTaken(long id) throws ServiceException {
+        OrderDao orderDao = OrderDaoImpl.getInstance();
+        try {
+            orderDao.setTaken(id, true);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 
     private Map.Entry<MenuItem, Integer> getOrderItemAmountPairByItemId(OrderEntity order, long itemId) throws ServiceException {

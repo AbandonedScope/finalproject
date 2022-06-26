@@ -36,7 +36,7 @@ public class AddUserCommand implements Command {
         params.put(USER_CONFIRM_PASSWORD, request.getParameter(USER_CONFIRM_PASSWORD));
         // FIXME: 01.05.2022 validation messages
         try {
-            CustomerService customerService = new CustomerServiceImpl();
+            CustomerService customerService = CustomerServiceImpl.getInstance();
             Optional<CustomerEntity> optionalCustomer = customerService.register(params);
             if (optionalCustomer.isEmpty()) {
                 route.setPage(PagePath.REGISTRATION);

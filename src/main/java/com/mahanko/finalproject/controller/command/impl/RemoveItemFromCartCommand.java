@@ -19,7 +19,7 @@ public class RemoveItemFromCartCommand implements Command {
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router route = new Router(PagePath.SHOPPING_CART);
         HttpSession session = request.getSession();
-        OrderService service = new OrderServiceImpl();
+        OrderService service = OrderServiceImpl.getInstance();
         OrderEntity order = (OrderEntity) session.getAttribute(AttributeType.ORDER_CART);
         String menuItemId = request.getParameter(ParameterType.MENU_ITEM_ID);
         try {

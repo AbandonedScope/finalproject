@@ -29,7 +29,7 @@ public class LoginCommand implements Command {
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String login = request.getParameter(USER_LOGIN);
         String password = request.getParameter(USER_PASSWORD);
-        CustomerService customerService = new CustomerServiceImpl();
+        CustomerService customerService =  CustomerServiceImpl.getInstance();
         String page;
         HttpSession session = request.getSession();
         Router route = new Router();

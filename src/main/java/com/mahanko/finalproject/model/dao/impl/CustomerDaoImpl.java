@@ -1,6 +1,7 @@
 package com.mahanko.finalproject.model.dao.impl;
 
 import com.mahanko.finalproject.model.dao.CustomerDao;
+import com.mahanko.finalproject.model.mapper.CustomRowMapper;
 import com.mahanko.finalproject.model.mapper.impl.CustomerRowMapper;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
 import com.mahanko.finalproject.exception.DaoException;
@@ -22,11 +23,17 @@ public class CustomerDaoImpl implements CustomerDao {
             "SELECT u_id, u_name, u_surname, u_password, u_login, u_loyaltypoints, u_blocked, u_role " +
             "FROM users " +
             "WHERE u_login = ? AND u_password = ? ";
+    private static final String SELECT_BY_ID =
+            "SELECT u_id, u_name, u_surname, u_password, u_login, u_loyaltypoints, u_blocked, u_role " +
+            "FROM users " +
+            "WHERE u_id = ? ";
     private static final String SELECT_EXISTS_BY_LOGIN =
             "SELECT EXISTS (SELECT u_login FROM users WHERE u_login = ?)";
     private static final String INSERT_NEW_CUSTOMER =
             "INSERT INTO users(u_name, u_surname, u_login, u_password, u_loyaltypoints, u_blocked, u_role) " +
                     "VALUE (?, ?, ?, ?, ?, ?, ?)";
+    private static final String UPDATE_BONUSES =
+            "update users set u_loyaltypoints = ? where u_id = ?";
     private static final CustomerDaoImpl instance = new CustomerDaoImpl();
 
     private CustomerDaoImpl() {
@@ -45,7 +52,7 @@ public class CustomerDaoImpl implements CustomerDao {
             statement.setString(2, password);
             ResultSet resultSet = statement.executeQuery();
             if (resultSet.next()) {
-                CustomerRowMapper mapper = new CustomerRowMapper();
+                CustomRowMapper<CustomerEntity> mapper = new CustomerRowMapper();
                 optionalCustomer = mapper.map(resultSet);
             }
         } catch (SQLException e) {
@@ -74,10 +81,37 @@ public class CustomerDaoImpl implements CustomerDao {
         return isExist;
     }
 
+    @Override
+    public void addBonuses(long userId, int bonuses) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_BONUSES)) {
+            statement.setInt(1, bonuses);
+            statement.setLong(2, userId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+    }
+
 
     @Override
-    public Optional<CustomerEntity> findById(Long id) throws DaoException {
-        return Optional.empty();
+    public Optional<CustomerEntity> findById(long id) throws DaoException {
+        Optional<CustomerEntity> optionalCustomer = Optional.empty();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
+            statement.setLong(1, id);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                CustomRowMapper<CustomerEntity> mapper = new CustomerRowMapper();
+                optionalCustomer = mapper.map(resultSet);
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return optionalCustomer;
     }
 
     @Override

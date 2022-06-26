@@ -87,7 +87,9 @@
                                                     <img style="max-width: 5rem; max-height: 5rem;"
                                                          src="data:image/png;base64,${item.pictureBase64}"
                                                          alt="${item.name}">
-                                                    <h5 class="m-0">${item.name}</h5>
+                                                    <div class="text-wrap w-50">
+                                                            ${item.name}
+                                                    </div>
                                                 </div>
                                             </td>
                                             <td class="align-middle">

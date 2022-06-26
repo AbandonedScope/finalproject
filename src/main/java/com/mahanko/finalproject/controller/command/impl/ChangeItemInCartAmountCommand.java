@@ -33,7 +33,7 @@ public class ChangeItemInCartAmountCommand implements Command {
             throw new CommandException("The order was null");
         }
 
-        OrderService service = new OrderServiceImpl();
+        OrderService service = OrderServiceImpl.getInstance();
         try {
             service.setItemAmount(order, id, amount);
         } catch (ServiceException e) {

@@ -9,4 +9,6 @@ public interface OrderDao extends BaseDao<OrderEntity> {
     List<OrderEntity> findByCustomerId(Long id) throws DaoException;
 
     List<OrderEntity> findPage(long offset, int pageSize) throws DaoException;
+
+    void setTaken(long id, boolean state) throws DaoException;
 }

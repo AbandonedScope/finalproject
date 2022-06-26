@@ -17,7 +17,7 @@
             <fmt:message key="navigation.user.orders"/>
         </button>
     </a>
-    <form action="${pageContext.request.contextPath}/controller">
+    <form action="${pageContext.request.contextPath}/controller" method="get">
         <input type="hidden" name="command" value="${CommandType.LOGOUT}"/>
         <input class="btn btn-outline-secondary fs-5" type="submit" value="<fmt:message key="action.user.logout"/>"/>
     </form>

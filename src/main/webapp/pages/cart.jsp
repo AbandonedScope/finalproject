@@ -33,7 +33,9 @@
                                 <img style="max-width: 5rem; max-height: 5rem;"
                                      src="data:image/png;base64,${item.pictureBase64}"
                                      alt="${item.name}">
-                                <h5 class="m-0">${item.name}</h5>
+                                <div class="text-wrap w-50">
+                                        ${item.name}
+                                </div>
                             </div>
                         </td>
                         <td class="align-middle">
@@ -125,11 +127,11 @@
                         <div class="modal-footer">
                             <button type="button" class="btn btn-outline-secondary fs-5" data-bs-dismiss="modal">
                                 <fmt:message
-                                        key="cart.order-modal.close"/></button>
+                                        key="modal.close"/></button>
                             <button type="submit" id="confirm" class="btn btn-outline-success fs-5"
                                     data-bs-dismiss="modal"
                                     disabled><fmt:message
-                                    key="cart.order-modal.confirm"/></button>
+                                    key="modal.confirm"/></button>
                         </div>
                     </form>
                 </div>

@@ -31,9 +31,12 @@ public class BaseFilter implements Filter {
                     .setRole(RoleType.GUEST)
                     .build();
             session.setAttribute(AttributeType.USER, customer);
-            Optional<Cookie> cookieOptional = Arrays.stream(cookies)
-                    .filter(cookie -> cookie.getName().equals(CookieName.LOCALE))
-                    .findFirst();
+            Optional<Cookie> cookieOptional = Optional.empty();
+            if (cookies != null) {
+                cookieOptional = Arrays.stream(cookies)
+                        .filter(cookie -> cookie.getName().equals(CookieName.LOCALE))
+                        .findFirst();
+            }
             cookieOptional.ifPresentOrElse(cookie -> session.setAttribute(AttributeType.LOCALE, cookie.getValue()),
                     () -> {
                         Cookie localCookie = new Cookie(CookieName.LOCALE, LocaleType.DEFAULT);

@@ -51,6 +51,9 @@ public class Controller extends HttpServlet {
                     response.sendRedirect(page);
                     break;
                 }
+                case NONE: {
+                    break;
+                }
                 default: {
                     throw new ServletException("No such command exists");
                 }

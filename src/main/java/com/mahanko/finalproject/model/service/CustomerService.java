@@ -10,4 +10,8 @@ public interface CustomerService {
     Optional<CustomerEntity> authenticate(String login, String password) throws ServiceException;
 
     Optional<CustomerEntity> register(RequestParameters parameters) throws ServiceException;
+
+    Optional<CustomerEntity> findById(long id) throws ServiceException;
+
+    void addBonuses(long userId, int bonuses) throws ServiceException;
 }

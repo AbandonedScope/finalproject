@@ -20,6 +20,14 @@ import static com.mahanko.finalproject.controller.ParameterType.*;
 import static com.mahanko.finalproject.controller.ValidationMessage.*;
 
 public class CustomerServiceImpl implements CustomerService {
+    private static final CustomerServiceImpl instance = new CustomerServiceImpl();
+
+    private CustomerServiceImpl() {
+    }
+
+    public static CustomerServiceImpl getInstance() {
+        return instance;
+    }
 
     @Override
     public Optional<CustomerEntity> authenticate(String login, String password) throws ServiceException {
@@ -95,5 +103,32 @@ public class CustomerServiceImpl implements CustomerService {
         }
 
         return optionalCustomer;
+    }
+
+    @Override
+    public Optional<CustomerEntity> findById(long id) throws ServiceException {
+        Optional<CustomerEntity> optionalCustomer = Optional.empty();
+        CustomerDao customerDao = CustomerDaoImpl.getInstance();
+        try {
+            optionalCustomer = customerDao.findById(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+
+        return optionalCustomer;
+    }
+
+    @Override
+    public void addBonuses(long userId, int bonuses) throws ServiceException {
+        CustomerDao customerDao = CustomerDaoImpl.getInstance();
+        try {
+            Optional<CustomerEntity> optionalCustomer = customerDao.findById(userId);
+            if (optionalCustomer.isPresent()) {
+                int customerLoyalPoints = optionalCustomer.get().getLoyalPoints();
+                customerDao.addBonuses(userId, customerLoyalPoints + bonuses);
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 }

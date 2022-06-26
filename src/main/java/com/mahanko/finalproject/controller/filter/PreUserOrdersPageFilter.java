@@ -22,7 +22,7 @@ public class PreUserOrdersPageFilter implements Filter {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
         HttpSession session = httpRequest.getSession();
         CustomerEntity customer = (CustomerEntity) session.getAttribute(AttributeType.USER);
-        OrderService service = new OrderServiceImpl();
+        OrderService service = OrderServiceImpl.getInstance();
         try {
             List<OrderEntity> userOrders = service.findOrdersByCustomerId(customer.getId());
             if (!userOrders.isEmpty()) {

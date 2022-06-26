@@ -18,7 +18,7 @@ public class OnOrdersPageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router route = new Router(PagePath.ORDERS, Router.Type.FORWARD);
-        OrderService service = new OrderServiceImpl();
+        OrderService service = OrderServiceImpl.getInstance();
         try {
             List<OrderEntity> orders = service.findAll();
             request.setAttribute(ParameterType.ORDERS, orders);

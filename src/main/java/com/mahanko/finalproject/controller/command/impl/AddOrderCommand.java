@@ -30,7 +30,7 @@ public class AddOrderCommand implements Command {
         params.put(USER_ID, customer.getId().toString());
         params.put(ORDER_TIME, request.getParameter(ORDER_TIME));
         params.put(ORDER_PAYMENT_TYPE,request.getParameter(ORDER_PAYMENT_TYPE));
-        OrderService service = new OrderServiceImpl();
+        OrderService service = OrderServiceImpl.getInstance();
 
         try {
             if (!service.insertNew(params, order)) {

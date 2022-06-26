@@ -41,11 +41,11 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     }
 
     @Override
-    public Optional<MenuSection> findById(Long id) throws DaoException {
+    public Optional<MenuSection> findById(long id) throws DaoException {
         Optional<MenuSection> sectionOptional = Optional.empty();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_SECTION_BY_ID)) {
-            statement.setInt(1, id.intValue());
+            statement.setInt(1, (int)id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     CustomRowMapper<MenuSection> mapper = new MenuSectionRowMapper();
