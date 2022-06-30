@@ -15,6 +15,7 @@ public class OrderEntity extends AbstractEntity<Long> {
     private LocalDateTime creationTime;
     private BigDecimal orderedCost;
     private boolean isTaken;
+    private boolean isServed;
     private PaymentType paymentType;
     private final Map<MenuItem, Integer> items;
 
@@ -76,6 +77,14 @@ public class OrderEntity extends AbstractEntity<Long> {
 
     public void setTaken(boolean taken) {
         isTaken = taken;
+    }
+
+    public boolean getServed() {
+        return isServed;
+    }
+
+    public void setServed(boolean served) {
+        isServed = served;
     }
 
     public PaymentType getPaymentType() {

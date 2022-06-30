@@ -32,6 +32,7 @@ public final class ColumnName {
     public static final String ORDER_SERVING_DATE = "or_serving_date";
     public static final String ORDER_PAYMENT_TYPE = "or_payment_type";
     public static final String ORDER_IS_TAKEN = "or_taken";
+    public static final String ORDER_IS_SERVED = "or_served";
     public static final String ORDER_MENU_ITEM_COUNT = "mi_count";
 
     private ColumnName() {

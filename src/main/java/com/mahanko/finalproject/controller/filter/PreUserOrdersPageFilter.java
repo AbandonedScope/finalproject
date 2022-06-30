@@ -24,7 +24,7 @@ public class PreUserOrdersPageFilter implements Filter {
         CustomerEntity customer = (CustomerEntity) session.getAttribute(AttributeType.USER);
         OrderService service = OrderServiceImpl.getInstance();
         try {
-            List<OrderEntity> userOrders = service.findOrdersByCustomerId(customer.getId());
+            List<OrderEntity> userOrders = service.findActiveByCustomerId(customer.getId());
             if (!userOrders.isEmpty()) {
                 httpRequest.setAttribute(ParameterType.USER_ORDERS, userOrders);
             }

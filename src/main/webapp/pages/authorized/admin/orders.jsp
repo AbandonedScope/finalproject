@@ -14,7 +14,7 @@
     <div>
         <c:choose>
             <c:when test="${not empty orders}">
-                <h2><fmt:message key="navigation.user.orders"/></h2>
+                <h2><fmt:message key="navigation.admin.orders"/></h2>
                 <ul class="list-group list-group-horizontal my-1">
                     <li class="list-group-item list-group-item-info flex-fill" style="width: 27rem">
                         <fmt:message key="orders.order.cost"/>

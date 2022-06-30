@@ -21,7 +21,7 @@ public class OrderDaoImpl implements OrderDao {
     private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_ALL_LAZY =
             "select or_id, or_cost, or_creation_date, or_serving_date, " +
-                    "or_user, or_taken, or_payment_type from orders ORDER BY or_id DESC";
+                    "or_user, or_taken, or_served, or_payment_type from orders ORDER BY or_id DESC";
     private static final String INSERT_ORDER =
             "INSERT INTO orders(OR_COST, or_creation_date, or_serving_date, OR_USER, or_payment_type) " +
                     "VALUES (?, ?, ?, ?, ?)";
@@ -29,7 +29,8 @@ public class OrderDaoImpl implements OrderDao {
             "INSERT INTO m2m_orders_menuitems(or_id, mi_id, mi_count) VALUES (?, ?, ?)";
     private static final String SELECT_ORDERS_BY_CUSTOMER_ID_JOIN_MENU_ITEMS =
             "select orders.or_id, or_cost, or_creation_date, or_serving_date, or_user, " +
-                    "or_payment_type, or_taken, m2mom.mi_count, menu_items.mi_id, mi_section, mi_name, mi_picture, mi_cost, " +
+                    "or_payment_type, or_taken, m2mom.mi_count, menu_items.mi_id, " +
+                    "mi_section, mi_name, mi_picture, mi_cost, or_served, " +
                     "m2mmi.ingr_weight," +
                     "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, ingr_carbohydrates, ingr_calories, ingr_picture " +
                     "from orders " +
@@ -38,9 +39,22 @@ public class OrderDaoImpl implements OrderDao {
                     "join m2m_menuitems_ingredients m2mmi on m2mom.mi_id = m2mmi.mi_id " +
                     "join ingredients on m2mmi.ingr_id = ingredients.ingr_id " +
                     "where or_user = ? ORDER BY orders.or_id DESC";
+    private static final String SELECT_ACTIVE_ORDERS_BY_CUSTOMER_ID_JOIN_MENU_ITEMS =
+            "select orders.or_id, or_cost, or_creation_date, or_serving_date, or_user, " +
+                    "or_payment_type, or_taken, or_served, m2mom.mi_count, " +
+                    "menu_items.mi_id, mi_section, mi_name, mi_picture, mi_cost, " +
+                    "m2mmi.ingr_weight," +
+                    "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, ingr_carbohydrates, ingr_calories, ingr_picture " +
+                    "from orders " +
+                    "join m2m_orders_menuitems m2mom on orders.or_id = m2mom.or_id " +
+                    "join menu_items on m2mom.mi_id = menu_items.mi_id " +
+                    "join m2m_menuitems_ingredients m2mmi on m2mom.mi_id = m2mmi.mi_id " +
+                    "join ingredients on m2mmi.ingr_id = ingredients.ingr_id " +
+                    "where or_user = ? and or_served = 0 ORDER BY orders.or_id DESC";
     private static final String SELECT_ORDER_BY_ID_JOIN_MENU_ITEMS =
             "select orders.or_id, or_cost, or_creation_date, or_serving_date, or_user, " +
-                    "or_payment_type, or_taken, m2mom.mi_count, menu_items.mi_id, mi_section, mi_name, mi_picture, mi_cost, " +
+                    "or_payment_type, or_taken, m2mom.mi_count, menu_items.mi_id, or_served, " +
+                    "mi_section, mi_name, mi_picture, mi_cost, " +
                     "m2mmi.ingr_weight," +
                     "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, ingr_carbohydrates, ingr_calories, ingr_picture " +
                     "from orders " +
@@ -51,9 +65,11 @@ public class OrderDaoImpl implements OrderDao {
                     "where orders.or_id = ?";
     private static final String SELECT_ALL_OFFSET_LIMIT =
             "select or_id, or_cost, or_creation_date, or_serving_date, " +
-                    "or_user, or_taken, or_payment_type from orders limit ?, ?";
+                    "or_user, or_taken, or_served, or_payment_type from orders limit ?, ?";
     private static final String UPDATE_ORDER_TAKEN =
             "update orders set or_taken = ? where or_id = ?";
+    private static final String UPDATE_ORDER_SERVED =
+            "update orders set or_served = ? where or_id = ?";
     private static final OrderDaoImpl instance = new OrderDaoImpl();
 
 
@@ -85,25 +101,25 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public boolean insert(OrderEntity orderEntity) throws DaoException {
+    public boolean insert(OrderEntity id) throws DaoException {
         boolean isInserted = false;
         Connection connection = ConnectionPool.getInstance().getConnection();
         try (PreparedStatement statement = connection.prepareStatement(INSERT_ORDER, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement mergeStatement = connection.prepareStatement(INSERT_ORDER_MENU_ITEMS_MERGE)) {
             connection.setAutoCommit(false);
-            statement.setBigDecimal(1, orderEntity.getCost());
-            Timestamp servingTime = Timestamp.valueOf(orderEntity.getServingTime());
-            Timestamp creationTime = Timestamp.valueOf(orderEntity.getCreationTime());
+            statement.setBigDecimal(1, id.getCost());
+            Timestamp servingTime = Timestamp.valueOf(id.getServingTime());
+            Timestamp creationTime = Timestamp.valueOf(id.getCreationTime());
             statement.setTimestamp(2, creationTime);
             statement.setTimestamp(3, servingTime);
-            statement.setLong(4, orderEntity.getUserId());
-            statement.setString(5, orderEntity.getPaymentType().name());
+            statement.setLong(4, id.getUserId());
+            statement.setString(5, id.getPaymentType().name());
             if (statement.executeUpdate() == 1) {
                 ResultSet keys = statement.getGeneratedKeys();
                 keys.next();
                 long orderId = keys.getLong(1);
 
-                for (var entry : orderEntity.getItems()) {
+                for (var entry : id.getItems()) {
                     MenuItem meal = entry.getKey();
                     int count = entry.getValue();
                     mergeStatement.setLong(1, orderId);
@@ -137,10 +153,35 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
+    public boolean remove(Long id) throws DaoException {
+        return false;
+    }
+
+    @Override
     public List<OrderEntity> findByCustomerId(Long id) throws DaoException {
         List<OrderEntity> customerOrders = new ArrayList<>();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ORDERS_BY_CUSTOMER_ID_JOIN_MENU_ITEMS)) {
+            statement.setLong(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                CustomRowMapper<OrderEntity> mapper = new OrderFullMapper();
+                while (resultSet.next()) {
+                    mapper.map(resultSet).ifPresent(customerOrders::add);
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return customerOrders;
+    }
+
+    @Override
+    public List<OrderEntity> findActiveByCustomerId(Long id) throws DaoException {
+        List<OrderEntity> customerOrders = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_ACTIVE_ORDERS_BY_CUSTOMER_ID_JOIN_MENU_ITEMS)) {
             statement.setLong(1, id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 CustomRowMapper<OrderEntity> mapper = new OrderFullMapper();
@@ -191,8 +232,16 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public boolean remove(OrderEntity orderEntity) throws DaoException {
-        return false;
+    public void setServed(long id, boolean isServed) throws DaoException {
+        try(Connection connection = ConnectionPool.getInstance().getConnection();
+        PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER_SERVED)) {
+            statement.setBoolean(1, isServed);
+            statement.setLong(2, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
     }
 
     @Override
@@ -214,7 +263,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public boolean update(long id, OrderEntity orderEntity) throws DaoException {
+    public boolean update(long id, OrderEntity entity) throws DaoException {
         return false;
     }
 }

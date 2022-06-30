@@ -24,7 +24,7 @@ import static com.mahanko.finalproject.controller.ValidationMessage.*;
 
 public class IngredientServiceImpl implements IngredientService {
     private static final Logger logger = LogManager.getLogger();
-    private final static IngredientServiceImpl instance = new IngredientServiceImpl();
+    private static final  IngredientServiceImpl instance = new IngredientServiceImpl();
 
     private IngredientServiceImpl() {
     }
@@ -125,7 +125,7 @@ public class IngredientServiceImpl implements IngredientService {
                         .build();
 
                 IngredientDao dao = IngredientDaoImpl.getInstance();
-                if (!dao.existWithName(ingredient.getName()) && dao.insert(ingredient)) {
+                if (!dao.existsWithName(ingredient.getName()) && dao.insert(ingredient)) {
                     optionalIngredient = Optional.of(ingredient);
                 }
             } catch (DaoException e) {
@@ -136,6 +136,20 @@ public class IngredientServiceImpl implements IngredientService {
         }
 
         return optionalIngredient;
+    }
+
+    @Override
+    public void remove(long id) throws ServiceException {
+        try {
+            IngredientDao ingredientDao = IngredientDaoImpl.getInstance();
+            if (ingredientDao.existsMerge(id)) {
+                ingredientDao.setHidden(id, true);
+            } else {
+                ingredientDao.remove(id);
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
     }
 
     @Override

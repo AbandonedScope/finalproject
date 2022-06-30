@@ -125,7 +125,23 @@ public class CustomerServiceImpl implements CustomerService {
             Optional<CustomerEntity> optionalCustomer = customerDao.findById(userId);
             if (optionalCustomer.isPresent()) {
                 int customerLoyalPoints = optionalCustomer.get().getLoyalPoints();
-                customerDao.addBonuses(userId, customerLoyalPoints + bonuses);
+                customerDao.updateBonuses(userId, customerLoyalPoints + bonuses);
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void setBlocked(long userId, boolean state) throws ServiceException {
+        CustomerDao customerDao = CustomerDaoImpl.getInstance();
+        try {
+            Optional<CustomerEntity> optionalCustomer = customerDao.findById(userId);
+            if (optionalCustomer.isPresent()) {
+                CustomerEntity customer = optionalCustomer.get();
+                if (state || customer.getRole() != RoleType.ADMIN) {
+                    customerDao.updateBlocked(userId, state);
+                } // TODO: 29.06.2022
             }
         } catch (DaoException e) {
             throw new ServiceException(e);

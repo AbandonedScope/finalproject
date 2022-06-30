@@ -16,10 +16,10 @@
             <div class="form-floating flex-fill">
                 <input class="form-control" id="ingredientSearchingName" type="text"
                        name="ingredient-name" placeholder="Name"
-                       required>
+                       required/>
                 <label for="ingredientSearchingName"><fmt:message key="label.ingredient.name"/></label>
             </div>
-            <input class="btn btn-outline-primary" type="submit">
+            <input class="btn btn-outline-primary" type="submit" value="<fmt:message key="action.admin.change.find"/>">
         </div>
     </form>
     <c:if test="${not empty ingredients}">

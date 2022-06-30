@@ -10,6 +10,8 @@ import java.util.Optional;
 public interface OrderService {
     List<OrderEntity> findAll() throws ServiceException;
 
+    List<OrderEntity> findActiveByCustomerId(long id) throws ServiceException;
+
     Optional<OrderEntity> findById(long id) throws ServiceException;
 
     boolean insertNew(RequestParameters parameters, OrderEntity order) throws ServiceException;
@@ -23,4 +25,6 @@ public interface OrderService {
     boolean removeItem(OrderEntity order, String itemId) throws ServiceException;
 
     void setTaken(long id) throws ServiceException;
+
+    void setServed(long id) throws ServiceException;
 }

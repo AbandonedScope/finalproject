@@ -14,4 +14,6 @@ public interface CustomerService {
     Optional<CustomerEntity> findById(long id) throws ServiceException;
 
     void addBonuses(long userId, int bonuses) throws ServiceException;
+
+    void setBlocked(long userId, boolean state) throws ServiceException;
 }

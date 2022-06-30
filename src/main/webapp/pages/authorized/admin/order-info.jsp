@@ -36,7 +36,8 @@
                             <div class="m-2 position-relative">
                                 <span class="position-absolute top-50 start-50 translate-middle" tabindex="0"
                                       data-bs-toggle="popover"
-                                      data-bs-trigger="hover focus" data-bs-content="<ftm:message key="label.user.loyal-points.negative"/>">
+                                      data-bs-trigger="hover focus"
+                                      data-bs-content="<ftm:message key="label.user.loyal-points.negative"/>">
                                     <em class="bi bi-exclamation-circle text-danger">
                                     </em>
                                 </span>
@@ -83,7 +84,7 @@
                                             <p class="my-auto"><fmt:message key="orders.order.is-taken.false"/>
                                             </p>
                                         </div>
-                                        <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+                                        <button type="button" class="btn btn-primary ms-3" data-bs-toggle="modal"
                                                 data-bs-target="#set-taken-modal">
                                             <fmt:message key="orders.order.is-taken.take"/>
                                         </button>
@@ -127,6 +128,38 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </c:when>
+                            </c:choose>
+                        </div>
+                    </div>
+                </li>
+                <li class="list-group-item">
+                    <div>
+                        <label>
+                            <fmt:message key="orders.order.is-served"/>
+                        </label>
+                        <div>
+                            <c:choose>
+                                <c:when test="${order.served}">
+                                    <div class="badge bg-success text-wrap">
+                                        <fmt:message key="orders.order.is-served.true"/>
+                                    </div>
+                                </c:when>
+                                <c:when test="${not order.served}">
+                                    <div class="d-flex">
+                                        <div class="badge bg-danger text-wrap d-flex justify-content-center">
+                                            <p class="my-auto"><fmt:message key="orders.order.is-served.false"/>
+                                            </p>
+                                        </div>
+                                        <form class="m-0 ms-3"
+                                              action="${pageContext.request.contextPath}/controller">
+                                            <input type="hidden" name="command" value="set-order-served">
+                                            <input type="hidden" name="order-id" value="${order.id}">
+                                            <button type="submit" class="btn btn-primary">
+                                                <fmt:message key="orders.order.is-served.serve"/>
+                                            </button>
+                                        </form>
                                     </div>
                                 </c:when>
                             </c:choose>

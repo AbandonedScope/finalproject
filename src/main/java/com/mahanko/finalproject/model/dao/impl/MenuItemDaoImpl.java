@@ -22,7 +22,8 @@ public class MenuItemDaoImpl implements MenuItemDao {
     private static final String SELECT_BY_ID =
             "SELECT menu_items.mi_id, mi_section, mi_name, mi_picture, mi_cost, " +
                     "m2m_menuitems_ingredients.ingr_weight," +
-                    "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, ingr_carbohydrates, ingr_calories, ingr_picture " +
+                    "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, " +
+                    "ingr_carbohydrates, ingr_calories, ingr_picture " +
                     "FROM menu_items " +
                     "INNER JOIN m2m_menuitems_ingredients " +
                     "ON menu_items.mi_id = m2m_menuitems_ingredients.mi_id " +
@@ -32,41 +33,53 @@ public class MenuItemDaoImpl implements MenuItemDao {
     private static final String INSERT_NEW_MENU_ITEM =
             "INSERT INTO menu_items(mi_section, mi_name, mi_picture, mi_cost) " +
                     "VALUE (?, ?, ?, ?)";
-    private static final String SELECT_ID_BY_NAME = "SELECT mi_id FROM menu_items WHERE mi_name = ?";
-    private static final String DELETE_MENU_ITEM_INGREDIENTS_MERGE = "delete from m2m_menuitems_ingredients where mi_id = ?";
+    private static final String DELETE_MENU_ITEM_INGREDIENTS_MERGE =
+            "delete from m2m_menuitems_ingredients where mi_id = ?";
     private static final String INSERT_MENU_ITEM_INGREDIENTS_MERGE =
             "INSERT INTO m2m_menuitems_ingredients(mi_id, ingr_id, ingr_weight) " +
                     "VALUE (?, ?, ?)";
     private static final String SELECT_ALL_MENU_ITEMS_JOIN_INGREDIENTS =
             "SELECT menu_items.mi_id, mi_section, mi_name, mi_picture, mi_cost, " +
                     "m2m_menuitems_ingredients.ingr_weight," +
-                    "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, ingr_carbohydrates, ingr_calories, ingr_picture " +
+                    "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, " +
+                    "ingr_carbohydrates, ingr_calories, ingr_picture " +
                     "FROM menu_items " +
                     "INNER JOIN m2m_menuitems_ingredients " +
                     "ON menu_items.mi_id = m2m_menuitems_ingredients.mi_id " +
                     "INNER JOIN ingredients " +
-                    "ON ingredients.ingr_id = m2m_menuitems_ingredients.ingr_id";
+                    "ON ingredients.ingr_id = m2m_menuitems_ingredients.ingr_id " +
+                    "where menu_items.mi_hidden = 0";
     private static final String SELECT_ALL_JOIN_INGREDIENTS_BY_SECTION_ID =
             "select menu_items.mi_id, mi_section, mi_name, mi_picture, mi_cost, " +
                     "m2m_menuitems_ingredients.ingr_weight, " +
-                    "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, ingr_carbohydrates, ingr_calories, ingr_picture " +
+                    "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, " +
+                    "ingr_carbohydrates, ingr_calories, ingr_picture " +
                     "FROM menu_items " +
                     "INNER JOIN m2m_menuitems_ingredients " +
                     "ON menu_items.mi_id = m2m_menuitems_ingredients.mi_id " +
                     "INNER JOIN ingredients " +
                     "ON ingredients.ingr_id = m2m_menuitems_ingredients.ingr_id " +
-                    "where mi_section = ?";
+                    "where mi_section = ? and menu_items.mi_hidden = 0";
     private static final String SELECT_MENU_ITEMS_BY_NAME =
             "SELECT menu_items.mi_id, mi_section, mi_name, mi_picture, mi_cost, " +
                     "m2m_menuitems_ingredients.ingr_weight," +
-                    "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, ingr_carbohydrates, ingr_calories, ingr_picture " +
+                    "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, " +
+                    "ingr_carbohydrates, ingr_calories, ingr_picture " +
                     "FROM menu_items " +
                     "INNER JOIN m2m_menuitems_ingredients " +
                     "ON menu_items.mi_id = m2m_menuitems_ingredients.mi_id " +
                     "INNER JOIN ingredients " +
                     "ON ingredients.ingr_id = m2m_menuitems_ingredients.ingr_id " +
-                    "WHERE locate(?, mi_name) > 0";
-    private static final String UPDATE_MENU_ITEM_BY_ID = "update menu_items set mi_id = ?, mi_name = ?, mi_picture = ?, mi_cost = ?, mi_section = ? where mi_id = ?";
+                    "WHERE locate(?, mi_name) > 0 and menu_items.mi_hidden = 0";
+    private static final String UPDATE_MENU_ITEM_BY_ID =
+            "update menu_items set mi_id = ?, mi_name = ?, mi_picture = ?, mi_cost = ?, " +
+                    "mi_section = ? where mi_id = ?";
+    private static final String UPDATE_HIDDEN_BY_ID =
+            "update menu_items set mi_hidden = ? where mi_id = ?";
+    private static final String REMOVE_BY_ID =
+            "delete from menu_items where mi_id = ?";
+    private static final String SELECT_EXISTS_IN_ORDERS_MERGE_BY_ID =
+            "select mi_id from m2m_orders_menuitems where mi_id = ? limit 1";
     private static final MenuItemDaoImpl instance = new MenuItemDaoImpl();
 
     private MenuItemDaoImpl() {
@@ -97,28 +110,28 @@ public class MenuItemDaoImpl implements MenuItemDao {
     }
 
     @Override
-    public boolean insert(MenuItem menuItem) throws DaoException {
+    public boolean insert(MenuItem id) throws DaoException {
         boolean isInserted = false;
         // FIXME: 22.04.2022 transactions
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_NEW_MENU_ITEM, Statement.RETURN_GENERATED_KEYS)) {
             Blob pictureBlob = connection.createBlob();
-            byte[] pictureBytes = CustomPictureEncoder.decodeString(menuItem.getPictureBase64());
+            byte[] pictureBytes = CustomPictureEncoder.decodeString(id.getPictureBase64());
             pictureBlob.setBytes(1, pictureBytes);
-            statement.setLong(1, menuItem.getSectionId());
-            statement.setString(2, menuItem.getName());
+            statement.setLong(1, id.getSectionId());
+            statement.setString(2, id.getName());
             statement.setBlob(3, pictureBlob);
-            statement.setBigDecimal(4, menuItem.getCost());
+            statement.setBigDecimal(4, id.getCost());
             if (statement.executeUpdate() != 0) {
                 isInserted = true;
                 try (ResultSet keys = statement.getGeneratedKeys()) {
                     keys.next();
                     long menuItemId = keys.getLong(1);
-                    menuItem.setId(menuItemId);
+                    id.setId(menuItemId);
                 }
             }
             // FIXME: 22.04.2022
-            insertMenuItemIngredientsMerge(connection, menuItem);
+            insertMenuItemIngredientsMerge(connection, id);
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
             throw new DaoException(e);
@@ -128,8 +141,38 @@ public class MenuItemDaoImpl implements MenuItemDao {
     }
 
     @Override
-    public boolean remove(MenuItem menuComposite) {
-        return false;
+    public boolean remove(Long id) throws DaoException {
+        boolean removed = false;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(REMOVE_BY_ID)) {
+            statement.setLong(1, id);
+            if (statement.executeUpdate() == 1) {
+                removed = true;
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return removed;
+    }
+
+    @Override
+    public boolean setHidden(Long id, boolean state) throws DaoException {
+        boolean updated = false;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_HIDDEN_BY_ID)) {
+            statement.setBoolean(1, state);
+            statement.setLong(2, id);
+            if (statement.executeUpdate() == 1) {
+                updated = true;
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return updated;
     }
 
     @Override
@@ -153,31 +196,31 @@ public class MenuItemDaoImpl implements MenuItemDao {
     }
 
     @Override
-    public boolean update(long id, MenuItem menuItem) throws DaoException {
+    public boolean update(long id, MenuItem entity) throws DaoException {
         boolean isInserted = true;
         Connection connection = ConnectionPool.getInstance().getConnection();
         try (PreparedStatement deleteIngredientStatement = connection.prepareStatement(DELETE_MENU_ITEM_INGREDIENTS_MERGE);
              PreparedStatement updateMenuItemStatement = connection.prepareStatement(UPDATE_MENU_ITEM_BY_ID)) {
             connection.setAutoCommit(false);
-            updateMenuItemStatement.setString(1, menuItem.getName());
+            updateMenuItemStatement.setString(1, entity.getName());
 
             Blob pictureBlob = connection.createBlob();
-            byte[] pictureBytes = CustomPictureEncoder.decodeString(menuItem.getPictureBase64());
+            byte[] pictureBytes = CustomPictureEncoder.decodeString(entity.getPictureBase64());
             pictureBlob.setBytes(1, pictureBytes);
-            updateMenuItemStatement.setLong(1, menuItem.getId());
-            updateMenuItemStatement.setString(2, menuItem.getName());
+            updateMenuItemStatement.setLong(1, entity.getId());
+            updateMenuItemStatement.setString(2, entity.getName());
             updateMenuItemStatement.setBlob(3, pictureBlob);
-            updateMenuItemStatement.setBigDecimal(4, menuItem.getCost());
-            updateMenuItemStatement.setLong(5, menuItem.getSectionId());
+            updateMenuItemStatement.setBigDecimal(4, entity.getCost());
+            updateMenuItemStatement.setLong(5, entity.getSectionId());
             updateMenuItemStatement.setLong(6, id);
             updateMenuItemStatement.executeUpdate();
 
-            deleteIngredientStatement.setLong(1, menuItem.getId());
+            deleteIngredientStatement.setLong(1, entity.getId());
             if (deleteIngredientStatement.executeUpdate() != 1) {
                 isInserted = false;
             }
 
-            insertMenuItemIngredientsMerge(connection, menuItem);
+            insertMenuItemIngredientsMerge(connection, entity);
             connection.commit();
         } catch (SQLException e) {
             try {
@@ -237,6 +280,25 @@ public class MenuItemDaoImpl implements MenuItemDao {
         }
 
         return items;
+    }
+
+    @Override
+    public boolean existsMerge(long id) throws DaoException {
+        boolean exists = false;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_EXISTS_IN_ORDERS_MERGE_BY_ID)) {
+            statement.setLong(1, id);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    exists = true;
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return exists;
     }
 
     private void insertMenuItemIngredientsMerge(Connection connection, MenuItem menuItem) throws SQLException {

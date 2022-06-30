@@ -20,11 +20,11 @@
                        required>
                 <label for="sectionSearchingName"><fmt:message key="label.section.name"/></label>
             </div>
-            <input class="btn btn-outline-primary" type="submit">
+            <input class="btn btn-outline-primary" type="submit" value="<fmt:message key="action.admin.change.find"/>">
         </div>
     </form>
     <c:if test="${not empty sections}">
-        <div class="accordion accordion-flush" id="accordionFlushExample">
+        <div id="accordionFlushExample" class="accordion accordion-flush">
             <c:forEach var="section" items="${sections}">
                 <div class="accordion-item">
                     <h2 class="accordion-header" id="flush-headingOne">

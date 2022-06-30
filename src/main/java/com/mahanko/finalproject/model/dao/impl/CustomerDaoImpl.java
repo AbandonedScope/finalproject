@@ -21,12 +21,12 @@ public class CustomerDaoImpl implements CustomerDao {
     private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_BY_PASSWORD_LOGIN =
             "SELECT u_id, u_name, u_surname, u_password, u_login, u_loyaltypoints, u_blocked, u_role " +
-            "FROM users " +
-            "WHERE u_login = ? AND u_password = ? ";
+                    "FROM users " +
+                    "WHERE u_login = ? AND u_password = ? ";
     private static final String SELECT_BY_ID =
             "SELECT u_id, u_name, u_surname, u_password, u_login, u_loyaltypoints, u_blocked, u_role " +
-            "FROM users " +
-            "WHERE u_id = ? ";
+                    "FROM users " +
+                    "WHERE u_id = ? ";
     private static final String SELECT_EXISTS_BY_LOGIN =
             "SELECT EXISTS (SELECT u_login FROM users WHERE u_login = ?)";
     private static final String INSERT_NEW_CUSTOMER =
@@ -34,6 +34,9 @@ public class CustomerDaoImpl implements CustomerDao {
                     "VALUE (?, ?, ?, ?, ?, ?, ?)";
     private static final String UPDATE_BONUSES =
             "update users set u_loyaltypoints = ? where u_id = ?";
+    private static final String UPDATE_BLOCKED =
+            "update users set u_blocked = ? where u_id = ?";
+
     private static final CustomerDaoImpl instance = new CustomerDaoImpl();
 
     private CustomerDaoImpl() {
@@ -82,10 +85,23 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public void addBonuses(long userId, int bonuses) throws DaoException {
+    public void updateBonuses(long userId, int bonuses) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(UPDATE_BONUSES)) {
+             PreparedStatement statement = connection.prepareStatement(UPDATE_BONUSES)) {
             statement.setInt(1, bonuses);
+            statement.setLong(2, userId);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+    }
+
+    @Override
+    public void updateBlocked(long userId, boolean state) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_BLOCKED)) {
+            statement.setBoolean(1, state);
             statement.setLong(2, userId);
             statement.executeUpdate();
         } catch (SQLException e) {
@@ -115,17 +131,17 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public boolean insert(CustomerEntity entity) throws DaoException {
+    public boolean insert(CustomerEntity id) throws DaoException {
         boolean isInserted = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_NEW_CUSTOMER)) {
-            statement.setString(1, entity.getName());
-            statement.setString(2, entity.getSurname());
-            statement.setString(3, entity.getLogin());
-            statement.setString(4, entity.getPassword());
-            statement.setInt(5, entity.getLoyalPoints());
-            statement.setBoolean(6, entity.isBlocked());
-            statement.setString(7, entity.getRole().toString());
+            statement.setString(1, id.getName());
+            statement.setString(2, id.getSurname());
+            statement.setString(3, id.getLogin());
+            statement.setString(4, id.getPassword());
+            statement.setInt(5, id.getLoyalPoints());
+            statement.setBoolean(6, id.isBlocked());
+            statement.setString(7, id.getRole().toString());
             if (statement.executeUpdate() != 0) {
                 isInserted = true;
             }
@@ -138,7 +154,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public boolean remove(CustomerEntity customerEntity) throws DaoException {
+    public boolean remove(Long id) throws DaoException {
         return false;
     }
 
@@ -148,7 +164,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public boolean update(long id, CustomerEntity customerEntity) throws DaoException {
+    public boolean update(long id, CustomerEntity entity) throws DaoException {
         return false;
     }
 }

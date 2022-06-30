@@ -47,6 +47,19 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
+    public List<OrderEntity> findActiveByCustomerId(long id) throws ServiceException {
+        List<OrderEntity> orders;
+        try {
+            OrderDao orderDao = OrderDaoImpl.getInstance();
+            orders = orderDao.findActiveByCustomerId(id);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+
+        return orders;
+    }
+
+    @Override
     public Optional<OrderEntity> findById(long id) throws ServiceException {
         Optional<OrderEntity> optionalOrder;
         OrderDao orderDao = OrderDaoImpl.getInstance();
@@ -173,6 +186,16 @@ public class OrderServiceImpl implements OrderService {
         OrderDao orderDao = OrderDaoImpl.getInstance();
         try {
             orderDao.setTaken(id, true);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
+
+    @Override
+    public void setServed(long id) throws ServiceException {
+        OrderDao orderDao = OrderDaoImpl.getInstance();
+        try {
+            orderDao.setServed(id, true);
         } catch (DaoException e) {
             throw new ServiceException(e);
         }

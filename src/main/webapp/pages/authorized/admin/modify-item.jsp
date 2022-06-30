@@ -21,7 +21,7 @@
                        required>
                 <label for="mealSearchingName"><fmt:message key="label.menuitem.name"/></label>
             </div>
-            <input class="btn btn-outline-primary" type="submit">
+            <input class="btn btn-outline-primary" type="submit" value="<fmt:message key="action.admin.change.find"/>">
         </div>
     </form>
     <c:if test="${not empty items}">

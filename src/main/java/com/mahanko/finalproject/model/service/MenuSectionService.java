@@ -16,4 +16,6 @@ public interface MenuSectionService {
     boolean insert(RequestParameters params) throws ServiceException;
 
     void update(int id, RequestParameters parameters) throws ServiceException;
+
+    void remove(int id) throws ServiceException;
 }

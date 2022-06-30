@@ -29,6 +29,7 @@ public class OrderLiteMapper implements CustomRowMapper<OrderEntity> {
             LocalDateTime creationDate = resultSet.getTimestamp(ORDER_CREATION_DATE).toLocalDateTime();
             LocalDateTime servingTime = resultSet.getTimestamp(ORDER_SERVING_DATE).toLocalDateTime();
             boolean isTaken = resultSet.getBoolean(ORDER_IS_TAKEN);
+            boolean isServed = resultSet.getBoolean(ORDER_IS_SERVED);
             PaymentType paymentType = PaymentType.valueOf(paymentTypeString);
             OrderEntity order = new OrderEntity();
             order.setId(id);
@@ -38,6 +39,7 @@ public class OrderLiteMapper implements CustomRowMapper<OrderEntity> {
             order.setTaken(isTaken);
             order.setPaymentType(paymentType);
             order.setOrderedCost(orderedCost);
+            order.setServed(isServed);
             optionalOrder = Optional.of(order);
         } catch (SQLException e) {
             throw new DaoException(e);

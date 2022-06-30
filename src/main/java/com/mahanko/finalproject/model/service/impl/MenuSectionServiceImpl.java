@@ -130,4 +130,18 @@ public class MenuSectionServiceImpl implements MenuSectionService {
             }
         }
     }
+
+    @Override
+    public void remove(int id) throws ServiceException {
+        try {
+            MenuSectionDao menuSectionDao = MenuSectionDaoImpl.getInstance();
+            if (menuSectionDao.existsMerge(id)) {
+                menuSectionDao.setHidden(id, true);
+            } else {
+                menuSectionDao.remove(id);
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
 }

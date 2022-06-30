@@ -16,5 +16,7 @@ public interface IngredientService {
 
     Optional<Ingredient> insert(RequestParameters parameters) throws ServiceException;
 
+    void remove(long id) throws ServiceException;
+
     Optional<Ingredient> update(long id, RequestParameters parameters) throws ServiceException;
 }

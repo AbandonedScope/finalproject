@@ -212,4 +212,18 @@ public class MenuItemServiceImpl implements MenuItemService {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public void remove(long id) throws ServiceException {
+        try {
+            MenuItemDao menuItemDao = MenuItemDaoImpl.getInstance();
+            if (menuItemDao.existsMerge(id)) {
+                menuItemDao.setHidden(id, true);
+            } else {
+                menuItemDao.remove(id);
+            }
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
 }

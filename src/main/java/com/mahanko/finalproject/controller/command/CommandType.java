@@ -29,7 +29,12 @@ public enum CommandType {
     MODIFY_INGREDIENT(new ModifyIngredientCommand()),
     GET_ORDER_INFORMATION(new GetOrderInformationCommand()),
     GET_CUSTOMER_INFO(new GetCustomerInfoCommand()),
-    SET_ORDER_TAKEN(new SetOrderTakenCommand());
+    SET_ORDER_TAKEN(new SetOrderTakenCommand()),
+    SET_ORDER_SERVED(new SetOrderServedCommand()),
+    SET_CUSTOMER_BLOCKED(new SetCustomerBlockedCommand()),
+    REMOVE_INGREDIENT(new RemoveIngredientCommand()),
+    REMOVE_MENU_ITEM(new RemoveMenuItemCommand()),
+    REMOVE_MENU_SECTION(new RemoveMenuSectionCommand());
 
 
     private final Command command;

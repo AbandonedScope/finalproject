@@ -30,6 +30,12 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
             "SELECT s_id, s_name FROM sections WHERE locate(?, s_name) > 0";
     private static final String UPDATE_SECTION_BY_ID =
             "update sections set s_id = ?, s_name = ? where s_id = ?";
+    private static final String SELECT_EXISTS_IN_MENU_ITEMS_BY_ID =
+            "select mi_section from menu_items where mi_section = ? limit 1";
+    private static final String REMOVE_BY_ID =
+            "delete from sections where s_id = ?";
+    private static final String UPDATE_HIDDEN_BY_ID =
+            "update sections set s_hidden = ? where s_id = ?";
     private static final MenuSectionDaoImpl instance = new MenuSectionDaoImpl();
 
 
@@ -45,7 +51,7 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
         Optional<MenuSection> sectionOptional = Optional.empty();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_SECTION_BY_ID)) {
-            statement.setInt(1, (int)id);
+            statement.setInt(1, (int) id);
             try (ResultSet resultSet = statement.executeQuery()) {
                 if (resultSet.next()) {
                     CustomRowMapper<MenuSection> mapper = new MenuSectionRowMapper();
@@ -60,11 +66,11 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     }
 
     @Override
-    public boolean insert(MenuSection menuSection) throws DaoException {
+    public boolean insert(MenuSection id) throws DaoException {
         boolean isInserted = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_SECTION)) {
-            statement.setString(1, menuSection.getName());
+            statement.setString(1, id.getName());
             if (statement.executeUpdate() != 0) {
                 isInserted = true;
             }
@@ -77,8 +83,20 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     }
 
     @Override
-    public boolean remove(MenuSection menuSection) throws DaoException {
-        return false;
+    public boolean remove(Integer id) throws DaoException {
+        boolean removed = false;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(REMOVE_BY_ID)) {
+            statement.setLong(1, id);
+            if (statement.executeUpdate() == 1) {
+                removed = true;
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return removed;
     }
 
     @Override
@@ -103,12 +121,12 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     }
 
     @Override
-    public boolean update(long id, MenuSection menuSection) throws DaoException {
+    public boolean update(long id, MenuSection entity) throws DaoException {
         boolean isInserted = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_SECTION_BY_ID)) {
-            statement.setInt(1, menuSection.getId());
-            statement.setString(2, menuSection.getName());
+            statement.setInt(1, entity.getId());
+            statement.setString(2, entity.getName());
             statement.setInt(3, (int) id);
             if (statement.executeUpdate() == 1) {
                 isInserted = true;
@@ -139,5 +157,42 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
         }
 
         return sections;
+    }
+
+    @Override
+    public boolean existsMerge(long sectionId) throws DaoException {
+        boolean exists = false;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_EXISTS_IN_MENU_ITEMS_BY_ID)) {
+            statement.setLong(1, sectionId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    exists = true;
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return exists;
+    }
+
+    @Override
+    public boolean setHidden(Integer id, boolean state) throws DaoException {
+        boolean updated = false;
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_HIDDEN_BY_ID)) {
+            statement.setBoolean(1, state);
+            statement.setLong(2, id);
+            if (statement.executeUpdate() == 1) {
+                updated = true;
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return updated;
     }
 }
