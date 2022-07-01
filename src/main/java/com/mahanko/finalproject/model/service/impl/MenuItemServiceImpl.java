@@ -143,8 +143,9 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public void update(long id, RequestParameters parameters) throws ServiceException {
+    public boolean update(long id, RequestParameters parameters) throws ServiceException {
         boolean isValid = true;
+        boolean updated = false;
         try {
             String menuItemName = parameters.get(MENU_ITEM_NAME).trim();
             String menuItemPicture = parameters.get(MENU_ITEM_PICTURE);
@@ -204,26 +205,32 @@ public class MenuItemServiceImpl implements MenuItemService {
                     MenuItem oldMenuItem = menuItemDao.findById(menuItemId).orElseThrow();
                     menuItem.setPictureBase64(oldMenuItem.getPictureBase64());
                 }
-                menuItemDao.update(id, menuItem);
+
+                updated = menuItemDao.update(id, menuItem);
             } else {
                 parameters.put(VALIDATION_MESSAGES, validationMessages);
             }
         } catch (DaoException | NumberFormatException e) {
             throw new ServiceException(e);
         }
+
+        return updated;
     }
 
     @Override
-    public void remove(long id) throws ServiceException {
+    public boolean remove(long id) throws ServiceException {
+        boolean removed = false;
         try {
             MenuItemDao menuItemDao = MenuItemDaoImpl.getInstance();
             if (menuItemDao.existsMerge(id)) {
-                menuItemDao.setHidden(id, true);
+                removed = menuItemDao.setHidden(id, true);
             } else {
-                menuItemDao.remove(id);
+                removed = menuItemDao.remove(id);
             }
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
+
+        return removed;
     }
 }

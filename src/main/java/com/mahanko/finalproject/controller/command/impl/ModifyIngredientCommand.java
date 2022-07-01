@@ -1,12 +1,10 @@
 package com.mahanko.finalproject.controller.command.impl;
 
-import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
-import com.mahanko.finalproject.controller.command.Command;
+import com.mahanko.finalproject.controller.ValidationMessage;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
-import com.mahanko.finalproject.model.entity.menu.Ingredient;
 import com.mahanko.finalproject.model.service.IngredientService;
 import com.mahanko.finalproject.model.service.impl.IngredientServiceImpl;
 import com.mahanko.finalproject.util.CustomPictureEncoder;
@@ -19,16 +17,16 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
-import java.util.Optional;
+import java.util.List;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
 
-public class ModifyIngredientCommand implements Command {
+public class ModifyIngredientCommand extends AsynchronousCommand {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        Router router = new Router(PagePath.MODIFY_INGREDIENT, Router.Type.FORWARD);
+        Router router;
         try {
             RequestParameters parameters = new RequestParameters();
             String ingredientIdString = request.getParameter(INGREDIENT_ID);
@@ -50,8 +48,11 @@ public class ModifyIngredientCommand implements Command {
             }
 
             IngredientService service = IngredientServiceImpl.getInstance();
-            Optional<Ingredient> optionalIngredient = service.update(Long.parseLong(ingredientIdString), parameters);
-            // FIXME: 03.06.2022 messages
+            boolean updated = service.update(Long.parseLong(ingredientIdString), parameters);
+            List<String> validationMessages = parameters.getMultiple(ValidationMessage.VALIDATION_MESSAGES);
+            router = validationMessages != null ?
+                    fillResponse(response, updated, validationMessages) :
+                    fillResponse(response, updated);
         } catch (ServiceException | NumberFormatException e) {
             throw new CommandException(e);
         } catch (ServletException | IOException e) {

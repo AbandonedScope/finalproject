@@ -155,18 +155,20 @@
                                             </div>
                                         </div>
                                         <div class="d-flex justify-content-evenly mt-3">
-                                            <form action="${pageContext.request.contextPath}/controller"
-                                                  method="post">
-                                                <input type="hidden" name="command" value="delete-item">
-                                                <input class="btn btn-outline-danger text-wrap" type="submit"
-                                                       name="submit-button"
-                                                       value="<fmt:message key="action.modify.delete"/>"/>
-                                            </form>
                                             <input class="btn btn-outline-primary text-wrap" type="submit"
                                                    name="submit-button"
                                                    value="<fmt:message key="action.modify.save"/>"/>
                                         </div>
                                     </form>
+                                    <form action="${pageContext.request.contextPath}/controller"
+                                          method="post">
+                                        <input type="hidden" name="menu-item-id" value="${item.id}">
+                                        <input type="hidden" name="command" value="remove-menu-item">
+                                        <input class="btn btn-outline-danger text-wrap" type="submit"
+                                               name="submit-button"
+                                               value="<fmt:message key="action.modify.delete"/>"/>
+                                    </form>
+
                                 </div>
                             </div>
                         </div>

@@ -1,9 +1,8 @@
 package com.mahanko.finalproject.controller.command.impl;
 
-import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
-import com.mahanko.finalproject.controller.command.Command;
+import com.mahanko.finalproject.controller.ValidationMessage;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.service.MenuItemService;
@@ -24,12 +23,12 @@ import java.util.stream.Collectors;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
 
-public class ModifyMenuItemCommand implements Command {
+public class ModifyMenuItemCommand extends AsynchronousCommand {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        Router router = new Router(PagePath.MODIFY_MENU_ITEM, Router.Type.FORWARD);
+        Router router;
         try {
             RequestParameters parameters = new RequestParameters();
 
@@ -53,7 +52,11 @@ public class ModifyMenuItemCommand implements Command {
             String menuItemId = request.getParameter(MENU_ITEM_ID);
             parameters.put(MENU_ITEM_ID, menuItemId);
             MenuItemService menuItemService = MenuItemServiceImpl.getInstance();
-            menuItemService.update(Integer.parseInt(menuItemId), parameters);
+            boolean updated = menuItemService.update(Integer.parseInt(menuItemId), parameters);
+            List<String> validationMessages = parameters.getMultiple(ValidationMessage.VALIDATION_MESSAGES);
+            router = validationMessages != null ?
+                    fillResponse(response, updated, validationMessages) :
+                    fillResponse(response, updated);
         } catch (ServiceException | NumberFormatException e) {
             throw new CommandException(e);
         } catch (ServletException | IOException e) {

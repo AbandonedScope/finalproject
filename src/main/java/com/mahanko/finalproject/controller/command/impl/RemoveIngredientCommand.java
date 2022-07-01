@@ -13,23 +13,25 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class RemoveIngredientCommand implements Command {
+public class RemoveIngredientCommand extends AsynchronousCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
+        Router router;
         try {
             String ingredientIdString = request.getParameter(ParameterType.INGREDIENT_ID);
             long ingredientId = Long.parseLong(ingredientIdString);
             IngredientService ingredientService = IngredientServiceImpl.getInstance();
-            ingredientService.remove(ingredientId);
-            // TODO: 30.06.2022 ajax? 
+            boolean removed = ingredientService.remove(ingredientId);
+            router = fillResponse(response, removed);
         } catch (NumberFormatException e) {
             logger.log(Level.ERROR, e);
             throw new CommandException(e);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        return new Router();
+
+        return router;
     }
 }

@@ -139,23 +139,26 @@ public class IngredientServiceImpl implements IngredientService {
     }
 
     @Override
-    public void remove(long id) throws ServiceException {
+    public boolean remove(long id) throws ServiceException {
+        boolean removed = false;
         try {
             IngredientDao ingredientDao = IngredientDaoImpl.getInstance();
             if (ingredientDao.existsMerge(id)) {
-                ingredientDao.setHidden(id, true);
+                removed = ingredientDao.setHidden(id, true);
             } else {
-                ingredientDao.remove(id);
+                removed = ingredientDao.remove(id);
             }
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
+
+        return removed;
     }
 
     @Override
-    public Optional<Ingredient> update(long id, RequestParameters parameters) throws ServiceException {
+    public boolean update(long id, RequestParameters parameters) throws ServiceException {
         boolean isValid = true;
-        Optional<Ingredient> optionalIngredient = Optional.empty();
+        boolean updated = false;
         String ingredientIdString = parameters.get(INGREDIENT_ID);
         String ingredientName = parameters.get(INGREDIENT_NAME);
         String ingredientCaloriesString = parameters.get(INGREDIENT_CALORIES);
@@ -223,10 +226,9 @@ public class IngredientServiceImpl implements IngredientService {
                     ingredient.setPicture(oldIngredient.getPictureBase64());
                 }
 
-                if (ingredientDao.update(id, ingredient)) {
-                    ingredient.setId(id);
-                    optionalIngredient = Optional.of(ingredient);
-                }
+                updated = ingredientDao.update(id, ingredient);
+            } else {
+                parameters.put(VALIDATION_MESSAGES, validationMessages);
             }
         } catch (NumberFormatException | NoSuchElementException e) {
             logger.log(Level.ERROR, e);
@@ -235,6 +237,6 @@ public class IngredientServiceImpl implements IngredientService {
             throw new ServiceException(e);
         }
 
-        return optionalIngredient;
+        return updated;
     }
 }

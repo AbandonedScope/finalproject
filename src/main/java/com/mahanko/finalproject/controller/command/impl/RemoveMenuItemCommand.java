@@ -13,23 +13,25 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-public class RemoveMenuItemCommand implements Command {
+public class RemoveMenuItemCommand extends AsynchronousCommand {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
+        Router router;
         try {
             String menuItemIdString = request.getParameter(ParameterType.MENU_ITEM_ID);
             long menuItemId = Long.parseLong(menuItemIdString);
             MenuItemService menuItemService = MenuItemServiceImpl.getInstance();
-            menuItemService.remove(menuItemId);
-            // TODO: 30.06.2022 ajax?
+            boolean removed = menuItemService.remove(menuItemId);
+            router = fillResponse(response, removed);
         } catch (NumberFormatException e) {
             logger.log(Level.ERROR, e);
             throw new CommandException(e);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        return new Router();
+
+        return router;
     }
 }
