@@ -3,7 +3,6 @@ package com.mahanko.finalproject.controller.command.impl;
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
-import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.service.MenuItemService;
@@ -23,7 +22,7 @@ import java.util.*;
 import static com.mahanko.finalproject.controller.ParameterType.*;
 import static com.mahanko.finalproject.controller.ValidationMessage.MEAL_ADDED_SUCCESSFULLY_MESSAGE;
 
-public class AddMenuItemCommand implements Command {
+public class AddMenuItemCommand extends AsynchronousCommand {
     private static final Logger logger = LogManager.getLogger();
     // FIXME: 01.06.2022 
     private static final String MENU_ITEM_ADD_SUCCESS = "Menu item was added successfully.";

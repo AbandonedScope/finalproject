@@ -41,10 +41,14 @@ public class ModifyMenuItemCommand extends AsynchronousCommand {
                 parameters.put(MENU_ITEM_PICTURE_SIZE, String.valueOf(filePart.getSize()));
             }
 
-            List<String> ingredientIds = Arrays.stream(request.getParameterValues(INGREDIENT_ID)).collect(Collectors.toList());
-            List<String> ingredientWeights = Arrays.stream(request.getParameterValues(INGREDIENT_WEIGHT)).collect(Collectors.toList());
-            parameters.put(INGREDIENT_ID, ingredientIds);
-            parameters.put(INGREDIENT_WEIGHT, ingredientWeights);
+            String[] ingredientsId = request.getParameterValues(INGREDIENT_ID);
+            String[] ingredientsWeights = request.getParameterValues(INGREDIENT_WEIGHT);
+            if (ingredientsId != null && ingredientsWeights != null && ingredientsId.length == ingredientsWeights.length) {
+                List<String> ingredientIds = Arrays.stream(ingredientsId).collect(Collectors.toList());
+                List<String> ingredientWeights = Arrays.stream(ingredientsWeights).collect(Collectors.toList());
+                parameters.put(INGREDIENT_ID, ingredientIds);
+                parameters.put(INGREDIENT_WEIGHT, ingredientWeights);
+            }
 
             parameters.put(MENU_ITEM_NAME, request.getParameter(MENU_ITEM_NAME));
             parameters.put(MENU_ITEM_COST, request.getParameter(MENU_ITEM_COST));

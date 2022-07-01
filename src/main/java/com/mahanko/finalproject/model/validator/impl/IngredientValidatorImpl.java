@@ -21,8 +21,16 @@ public class IngredientValidatorImpl implements IngredientValidator {
     }
 
     @Override
-    public boolean validateNumericField(double value) {
-        return value >= MINIMAL_NUMERIC_FIELD_VALUE && value <= MAXIMAL_NUMERIC_FIELD_VALUE;
+    public boolean validateNumericField(String value) {
+        boolean result;
+        try {
+            double val = Double.parseDouble(value);
+            result = val >= MINIMAL_NUMERIC_FIELD_VALUE && val <= MAXIMAL_NUMERIC_FIELD_VALUE;
+        } catch (NumberFormatException e) {
+            result = false;
+        }
+
+        return result;
     }
 
     @Override

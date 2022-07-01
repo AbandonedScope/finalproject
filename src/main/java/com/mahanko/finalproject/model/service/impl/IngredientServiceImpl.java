@@ -80,12 +80,10 @@ public class IngredientServiceImpl implements IngredientService {
         String pictureName = params.get(ParameterType.INGREDIENT_PICTURE_NAME);
         long pictureSize = Long.parseLong(params.get(ParameterType.INGREDIENT_PICTURE_SIZE));
         String ingredientName = params.get(ParameterType.INGREDIENT_NAME).trim();
-        // FIXME: 01.05.2022 number format
-        double proteins = Double.parseDouble(params.get(ParameterType.INGREDIENT_PROTEINS));
-        double fats = Double.parseDouble(params.get(ParameterType.INGREDIENT_FATS));
-        double carbohydrates = Double.parseDouble(params.get(ParameterType.INGREDIENT_CARBOHYDRATES));
-        double calories = Double.parseDouble(params.get(ParameterType.INGREDIENT_CALORIES));
-        // FIXME: 01.05.2022 validation messages?
+        String proteinsString = params.get(ParameterType.INGREDIENT_PROTEINS);
+        String fatsString = params.get(ParameterType.INGREDIENT_FATS);
+        String carbohydratesString = params.get(ParameterType.INGREDIENT_CARBOHYDRATES);
+        String caloriesString = params.get(ParameterType.INGREDIENT_CALORIES);
         IngredientValidator validator = new IngredientValidatorImpl();
         List<String> validationMessages = new ArrayList<>();
         if (!validator.validateName(ingredientName)) {
@@ -98,23 +96,27 @@ public class IngredientServiceImpl implements IngredientService {
             validationMessages.add(INGREDIENT_PICTURE_VALIDATION_MESSAGE);
         }
 
-        if (!validator.validateNumericField(proteins)) {
+        if (!validator.validateNumericField(proteinsString)) {
             isValid = false;
             validationMessages.add(INGREDIENT_PROTEINS_VALIDATION_MESSAGE);
         }
 
-        if (!validator.validateNumericField(fats)) {
+        if (!validator.validateNumericField(fatsString)) {
             isValid = false;
             validationMessages.add(INGREDIENT_FATS_VALIDATION_MESSAGE);
         }
 
-        if (!validator.validateNumericField(carbohydrates)) {
+        if (!validator.validateNumericField(caloriesString)) {
             isValid = false;
             validationMessages.add(INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE);
         }
 
         if (isValid) {
             try {
+                double proteins = Double.parseDouble(proteinsString);
+                double fats = Double.parseDouble(fatsString);
+                double carbohydrates = Double.parseDouble(carbohydratesString);
+                double calories = Double.parseDouble(caloriesString);
                 Ingredient ingredient = Ingredient.newBuilder()
                         .setName(ingredientName)
                         .setCalories(calories)
@@ -168,12 +170,6 @@ public class IngredientServiceImpl implements IngredientService {
         String ingredientPicture = parameters.get(ParameterType.INGREDIENT_PICTURE);
 
         try {
-            long ingredientId = Long.parseLong(ingredientIdString);
-            double ingredientCalories = Double.parseDouble(ingredientCaloriesString);
-            double ingredientProteins = Double.parseDouble(ingredientProteinsString);
-            double ingredientFats = Double.parseDouble(ingredientFatsString);
-            double ingredientCarbohydrates = Double.parseDouble(ingredientCarbohydratesString);
-
             IngredientValidator validator = new IngredientValidatorImpl();
             List<String> validationMessages = new ArrayList<>();
             if (!validator.validateName(ingredientName)) {
@@ -181,22 +177,22 @@ public class IngredientServiceImpl implements IngredientService {
                 validationMessages.add(INGREDIENT_NAME_VALIDATION_MESSAGE);
             }
 
-            if (!validator.validateNumericField(ingredientCalories)) {
+            if (!validator.validateNumericField(ingredientCaloriesString)) {
                 isValid = false;
                 validationMessages.add(INGREDIENT_CALORIES_VALIDATION_MESSAGE);
             }
 
-            if (!validator.validateNumericField(ingredientProteins)) {
+            if (!validator.validateNumericField(ingredientProteinsString)) {
                 isValid = false;
                 validationMessages.add(INGREDIENT_PROTEINS_VALIDATION_MESSAGE);
             }
 
-            if (!validator.validateNumericField(ingredientFats)) {
+            if (!validator.validateNumericField(ingredientFatsString)) {
                 isValid = false;
                 validationMessages.add(INGREDIENT_FATS_VALIDATION_MESSAGE);
             }
 
-            if (!validator.validateNumericField(ingredientCarbohydrates)) {
+            if (!validator.validateNumericField(ingredientCarbohydratesString)) {
                 isValid = false;
                 validationMessages.add(INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE);
             }
@@ -210,7 +206,14 @@ public class IngredientServiceImpl implements IngredientService {
                 }
             }
 
+
+
             if (isValid) {
+                long ingredientId = Long.parseLong(ingredientIdString);
+                double ingredientCalories = Double.parseDouble(ingredientCaloriesString);
+                double ingredientProteins = Double.parseDouble(ingredientProteinsString);
+                double ingredientFats = Double.parseDouble(ingredientFatsString);
+                double ingredientCarbohydrates = Double.parseDouble(ingredientCarbohydratesString);
                 Ingredient ingredient = Ingredient.newBuilder()
                         .setId(ingredientId)
                         .setName(ingredientName)

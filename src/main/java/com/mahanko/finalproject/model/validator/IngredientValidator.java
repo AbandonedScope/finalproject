@@ -1,7 +1,7 @@
 package com.mahanko.finalproject.model.validator;
 
 public interface IngredientValidator extends NameValidator {
-    boolean validateNumericField(double value);
+    boolean validateNumericField(String value);
 
     boolean validatePicture(String pictureName, long size);
 

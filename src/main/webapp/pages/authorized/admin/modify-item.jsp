@@ -1,5 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.controller.ValidationMessage" %>
+<%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="../../header.jsp" %>
@@ -48,7 +47,7 @@
                                          alt="${item.name}">
                                 </div>
                                 <div class="col d-flex flex-column justify-content-between">
-                                    <form class="m-0" action="${pageContext.request.contextPath}/controller"
+                                    <form onsubmit="onModifyFormSubmit(event)" class="m-0" action="${pageContext.request.contextPath}/controller"
                                           method="post" enctype="multipart/form-data">
                                         <input type="hidden" name="command" value="modify-menu-item">
                                         <input type="hidden" name="menu-item-id" value="${item.id}">
@@ -58,9 +57,6 @@
                                                     <input class="form-control" id="mealName" type="text"
                                                            name="menu-item-name" placeholder="Name" value="${item.name}"
                                                            required>
-                                                    <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_NAME_VALIDATION_MESSAGE)}">
-                                                        <fmt:message key="message.validation.meal-name"/>
-                                                    </c:if>
                                                     <label for="mealName"><fmt:message
                                                             key="label.menuitem.name"/></label>
                                                 </div>
@@ -88,6 +84,7 @@
                                                                            name="ingredient-weight"
                                                                            value="${ingredient.weight}"
                                                                            placeholder="Weight"
+                                                                           max="1000"
                                                                            min="0.01" step="0.01" required>
                                                                     <label for="ingredient-${ingredient.id}"><fmt:message
                                                                             key="label.ingredient.weight"/></label>
@@ -137,20 +134,13 @@
                                                 <p class="mb-2">
                                                     <fmt:message key="label.menuitem.picture.condition"/>
                                                 </p>
-                                                <p>
-                                                    <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_PICTURE_VALIDATION_MESSAGE)}">
-                                                        <fmt:message key="message.validation.meal-picture"/>
-                                                    </c:if>
-                                                </p>
                                             </div>
                                             <div class="form-floating my-2">
                                                 <input class="form-control" id="cost" type="number"
                                                        name="menu-item-cost"
+                                                       max="1000"
                                                        min="0.01" step="0.01"
                                                        placeholder="10" value="${item.cost}" required>
-                                                <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_COST_VALIDATION_MESSAGE)}">
-                                                    <fmt:message key="message.validation.meal-cost"/>
-                                                </c:if>
                                                 <label for="cost"><fmt:message key="label.menuitem.cost"/></label>
                                             </div>
                                         </div>
@@ -160,7 +150,7 @@
                                                    value="<fmt:message key="action.modify.save"/>"/>
                                         </div>
                                     </form>
-                                    <form action="${pageContext.request.contextPath}/controller"
+                                    <form onsubmit="onRemoveFormSubmit(event)" action="${pageContext.request.contextPath}/controller"
                                           method="post">
                                         <input type="hidden" name="menu-item-id" value="${item.id}">
                                         <input type="hidden" name="command" value="remove-menu-item">
@@ -226,8 +216,51 @@
             </div>
         </div>
     </c:if>
+    <div class="modal fade" id="validationModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <fmt:message key="message.validation"/>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div id="validationModalBody" class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="successModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">
+                        <fmt:message key="message.success"/>
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div id="successModalBody" class="modal-body">
+                    <fmt:message key="message.success.modifying"/>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="modal fade" id="removeModal" tabindex="-1">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="removeModelHeader">
+                    </h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div id="removeModelBody" class="modal-body">
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 <script>
+    const url = 'http://localhost:8080/demo1_war_exploded/controller';
     const $modal = document.getElementById('ingredientModal');
     const delimiter = '-';
     let currentMenuItemId = -1;
@@ -238,6 +271,17 @@
     const existingIngredientNameDivIdPrefix = 'existingIngredientNameDiv-';
     const existingIngredientPicturePIdPrefix = 'existingIngredientPictureP-';
     const existingIngredientDivIdPrefix = 'existingIngredientDiv-';
+    const validationModalId = 'validationModal';
+    const successModalId = 'successModal';
+    const removeModalId = 'removeModal';
+    const removeModalHeaderId = 'removeModelHeader';
+    const removeModalBodyId = 'removeModelBody';
+    const validationModalBodyId = 'validationModalBody';
+
+    const success = '<fmt:message key="message.success"/>';
+    const fail = '<fmt:message key="message.fail"/>';
+    const removeFail = '<fmt:message key="message.fail.remove"/>';
+    const removeSuccess = '<fmt:message key="message.success.remove"/>';
 
     const deleteIngredient = function (removeId) {
         const ingredientDiv = document.getElementById(removeId);
@@ -397,6 +441,92 @@
         let image = document.getElementById(menuItemPictureImgIdPrefix + currentMenuItemId);
         image.src = URL.createObjectURL(event.target.files[0]);
     };
+
+    const MEAL_NAME_VALIDATION_MESSAGE = '<fmt:message key="message.validation.meal-name"/>';
+    const MEAL_COST_VALIDATION_MESSAGE = '<fmt:message key="message.validation.meal-cost"/>';
+    const MEAL_PICTURE_VALIDATION_MESSAGE = '<fmt:message key="message.validation.meal-picture"/>';
+    const MEAL_INGREDIENTS_VALIDATION_MESSAGE = '<fmt:message key="message.validation.meal-ingredients"/>';
+
+    const fillModalWithValidations = (validations) => {
+        const $modalBody = document.getElementById(validationModalBodyId);
+        $modalBody.innerText = '';
+        const $validationsDiv = document.createElement("div");
+        for (let validationMessage of validations) {
+            let message;
+            switch (validationMessage) {
+                case 'meal-name':
+                    message = MEAL_NAME_VALIDATION_MESSAGE;
+                    break;
+                case 'meal-cost':
+                    message = MEAL_COST_VALIDATION_MESSAGE;
+                    break;
+                case 'meal-picture':
+                    message = MEAL_PICTURE_VALIDATION_MESSAGE;
+                    break;
+                case 'meal-ingredients-validation-message':
+                    message = MEAL_INGREDIENTS_VALIDATION_MESSAGE;
+                    break;
+            }
+            const $validationDiv = document.createElement("div");
+            $validationDiv.innerText = message;
+            $validationsDiv.append($validationDiv);
+        }
+        $modalBody.append($validationsDiv);
+    }
+
+    const onModifyFormSubmit = async (event) => {
+        event.preventDefault();
+        let formData = new FormData(event.target);
+        fetch(url, {
+            method: 'POST',
+            credentials: 'include',
+            cache: 'no-cache',
+            body: formData
+        })
+            .then(async (response) => {
+                if (response.ok) {
+                    const modal = new bootstrap.Modal(document.getElementById(successModalId));
+                    modal.show();
+                } else if (response.status === 400) {
+                    let data = await response.json();
+                    if (data.validation_msg) {
+                        fillModalWithValidations(data.validation_msg);
+                        const modal = new bootstrap.Modal(document.getElementById(validationModalId));
+                        modal.show();
+                    }
+                }
+            });
+
+        return false;
+    }
+
+    const onRemoveFormSubmit = async (event) => {
+        event.preventDefault();
+        let formData = new FormData(event.target);
+        fetch(url, {
+            method: 'POST',
+            credentials: 'include',
+            cache: 'no-cache',
+            body: formData
+        })
+            .then(async (response) => {
+                let $removalModalHeader = document.getElementById(removeModalHeaderId);
+                let $removalModalBody = document.getElementById(removeModalBodyId);
+                $removalModalHeader.innerText = '';
+                $removalModalBody.innerText = '';
+                if (response.ok) {
+                    $removalModalHeader.innerText = success;
+                    $removalModalBody.innerText = removeSuccess;
+                } else {
+                    $removalModalHeader.innerText = fail;
+                    $removalModalBody.innerText = removeFail;
+                }
+                const modal = new bootstrap.Modal(document.getElementById(removeModalId));
+                modal.show();
+            });
+
+        return false;
+    }
 
     $modal.addEventListener('shown.bs.modal', openingIngredientListElements);
     $modal.addEventListener('hidden.bs.modal', closingIngredientListElements);

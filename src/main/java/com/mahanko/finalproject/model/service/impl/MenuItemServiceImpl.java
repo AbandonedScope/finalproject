@@ -55,10 +55,9 @@ public class MenuItemServiceImpl implements MenuItemService {
             String menuItemPicture = parameters.get(MENU_ITEM_PICTURE);
             String pictureName = parameters.get(MENU_ITEM_PICTURE_NAME);
             long pictureSize = Long.parseLong(parameters.get(MENU_ITEM_PICTURE_SIZE));
-            BigDecimal menuItemCost = BigDecimal.valueOf(Double.parseDouble(parameters.get(MENU_ITEM_COST)));
+            String menuItemCostString = parameters.get(MENU_ITEM_COST);
             long sectionId = Long.parseLong(parameters.get(MENU_ITEM_SECTION_ID));
-            List<Double> ingredientWeights = parameters.getMultiple(INGREDIENT_WEIGHT).stream().map(Double::parseDouble).collect(Collectors.toList());
-            List<Long> ingredientIds = parameters.getMultiple(INGREDIENT_ID).stream().map(Long::parseLong).collect(Collectors.toList());
+            List<String> ingredientWeightsStrings = parameters.getMultiple(INGREDIENT_WEIGHT);
 
             MenuItemValidator menuItemValidator = new MenuItemValidatorImpl();
             List<String> validationMessages = new ArrayList<>();
@@ -68,7 +67,7 @@ public class MenuItemServiceImpl implements MenuItemService {
                 validationMessages.add(MEAL_NAME_VALIDATION_MESSAGE);
             }
 
-            if (!menuItemValidator.validateCost(menuItemCost)) {
+            if (!menuItemValidator.validateCost(menuItemCostString)) {
                 isValid = false;
                 validationMessages.add(MEAL_COST_VALIDATION_MESSAGE);
             }
@@ -78,14 +77,15 @@ public class MenuItemServiceImpl implements MenuItemService {
                 validationMessages.add(MEAL_PICTURE_VALIDATION_MESSAGE);
             }
 
-            if (!menuItemValidator.validateIngredientsWeights(ingredientWeights)) {
+            if (!menuItemValidator.validateIngredientsWeights(ingredientWeightsStrings)) {
                 isValid = false;
                 validationMessages.add(MEAL_INGREDIENTS_VALIDATION_MESSAGE);
             }
 
-
-            // FIXME: 01.05.2022 validation messages?
             if (isValid) {
+                BigDecimal menuItemCost = BigDecimal.valueOf(Double.parseDouble(menuItemCostString));
+                List<Long> ingredientIds = parameters.getMultiple(INGREDIENT_ID).stream().map(Long::parseLong).collect(Collectors.toList());
+                List<Double> ingredientWeights = parameters.getMultiple(INGREDIENT_ID).stream().map(Double::parseDouble).collect(Collectors.toList());
                 MenuItem menuItem = new MenuItem();
                 menuItem.setName(menuItemName);
                 menuItem.setCost(menuItemCost);
@@ -149,10 +149,9 @@ public class MenuItemServiceImpl implements MenuItemService {
         try {
             String menuItemName = parameters.get(MENU_ITEM_NAME).trim();
             String menuItemPicture = parameters.get(MENU_ITEM_PICTURE);
-            BigDecimal menuItemCost = BigDecimal.valueOf(Double.parseDouble(parameters.get(MENU_ITEM_COST)));
+            String menuItemCostString = parameters.get(MENU_ITEM_COST);
             long sectionId = Long.parseLong(parameters.get(MENU_ITEM_SECTION_ID));
-            List<Double> ingredientWeights = parameters.getMultiple(INGREDIENT_WEIGHT).stream().map(Double::parseDouble).collect(Collectors.toList());
-            List<Long> ingredientIds = parameters.getMultiple(INGREDIENT_ID).stream().map(Long::parseLong).collect(Collectors.toList());
+            List<String> ingredientWeightsStrings = parameters.getMultiple(INGREDIENT_WEIGHT);
 
             MenuItemValidator menuItemValidator = new MenuItemValidatorImpl();
             List<String> validationMessages = new ArrayList<>();
@@ -163,7 +162,12 @@ public class MenuItemServiceImpl implements MenuItemService {
                 validationMessages.add(MEAL_NAME_VALIDATION_MESSAGE);
             }
 
-            if (!menuItemValidator.validateCost(menuItemCost)) {
+            if (!menuItemValidator.validateIngredientsWeights(ingredientWeightsStrings)) {
+                isValid = false;
+                validationMessages.add(MEAL_INGREDIENTS_VALIDATION_MESSAGE);
+            }
+
+            if (!menuItemValidator.validateCost(menuItemCostString)) {
                 isValid = false;
                 validationMessages.add(MEAL_COST_VALIDATION_MESSAGE);
             }
@@ -180,6 +184,9 @@ public class MenuItemServiceImpl implements MenuItemService {
             }
 
             if (isValid) {
+                List<Double> ingredientWeights = parameters.getMultiple(INGREDIENT_WEIGHT).stream().map(Double::parseDouble).collect(Collectors.toList());
+                List<Long> ingredientIds = parameters.getMultiple(INGREDIENT_ID).stream().map(Long::parseLong).collect(Collectors.toList());
+                BigDecimal menuItemCost = BigDecimal.valueOf(Double.parseDouble(menuItemCostString));
                 menuItem.setName(menuItemName);
                 menuItem.setCost(menuItemCost);
                 menuItem.setSectionId(sectionId);

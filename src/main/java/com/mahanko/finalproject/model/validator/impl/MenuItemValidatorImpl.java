@@ -26,8 +26,15 @@ public class MenuItemValidatorImpl implements MenuItemValidator {
     }
 
     @Override
-    public boolean validateCost(BigDecimal cost) {
-        return cost.compareTo(MINIMAL_MENU_ITEM_COST) >= 0 && cost.compareTo(MAXIMAL_MENU_ITEM_COST) <= 0;
+    public boolean validateCost(String cost) {
+        boolean result;
+        try {
+            BigDecimal cst = BigDecimal.valueOf(Double.parseDouble(cost));
+            result = cst.compareTo(MINIMAL_MENU_ITEM_COST) >= 0 && cst.compareTo(MAXIMAL_MENU_ITEM_COST) <= 0;
+        } catch (NumberFormatException e) {
+            result = false;
+        }
+        return result;
     }
 
     @Override
@@ -38,13 +45,13 @@ public class MenuItemValidatorImpl implements MenuItemValidator {
     }
 
     @Override
-    public boolean validateIngredientsWeights(List<Double> weights) {
+    public boolean validateIngredientsWeights(List<String> weights) {
         boolean isValid = true;
-        if (weights.isEmpty()) {
+        if (weights == null || weights.isEmpty()) {
             isValid = false;
         } else {
-            for (Double weight : weights) {
-                if (weight < MINIMAL_INGREDIENT_WEIGHT || weight > MAXIMAL_INGREDIENT_WEIGHT) {
+            for (String weightString : weights) {
+                if (!validateWeight(weightString)) {
                     isValid = false;
                     break;
                 }
@@ -52,5 +59,18 @@ public class MenuItemValidatorImpl implements MenuItemValidator {
         }
 
         return isValid;
+    }
+
+    @Override
+    public boolean validateWeight(String weightString) {
+        boolean result;
+        try {
+            double weight = Double.parseDouble(weightString);
+            result = weight >= MINIMAL_INGREDIENT_WEIGHT && weight <= MAXIMAL_INGREDIENT_WEIGHT;
+        } catch (NumberFormatException e) {
+            result = false;
+        }
+
+        return result;
     }
 }

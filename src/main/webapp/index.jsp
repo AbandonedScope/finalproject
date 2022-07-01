@@ -141,7 +141,7 @@
                                 </div>
                             </li>
                             <li class="list-group-item p-0">
-                                <form id="addItemToCartForm-${menuItem.id}" class="m-0"
+                                <form onsubmit="onAddFormSubmitted(event)" id="addItemToCartForm-${menuItem.id}" class="m-0"
                                       action="${pageContext.request.contextPath}/controller"
                                       method="post">
                                     <input type="hidden" name="command" value="add-item-to-cart">
@@ -149,11 +149,10 @@
                                     <div class="input-group">
                                         <input class="form-control" type="number" name="menu-item-count" value="1"
                                                min="1"
+                                               max="100"
                                                step="1" required>
-                                        <button style="z-index: 0" onclick="onAddButtonPressed('${menuItem.id}')"
-                                                class="btn btn-outline-primary text-wrap" type="button">
-                                            <fmt:message key="action.guest.cart.add-to-cart"/>
-                                        </button>
+                                        <input class="btn btn-outline-primary text-wrap" type="submit"
+                                               value="<fmt:message key="action.guest.cart.add-to-cart"/>">
                                     </div>
                                 </form>
                             </li>
@@ -188,9 +187,10 @@
     const added = '<ftm:message key="message.add-to-cart.success"/>';
     const notAdded = '<ftm:message key="message.add-to-cart.fail"/>';
 
-    const onAddButtonPressed = async (id) => {
-        let $form = document.getElementById(addItemToCartFormIdPrefix + id);
-        let formData = new FormData($form);
+    const onAddFormSubmitted = async (event) => {
+        event.preventDefault();
+        let formData = new FormData(event.target);
+
         fetch(url, {
             method: 'POST',
             credentials: 'include',
@@ -208,6 +208,8 @@
                 }
                 toast.show();
             });
+
+        return false;
     }
 </script>
 </body>

@@ -1,7 +1,6 @@
 <%@ page contentType="text/html;charset=UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
-<%@ taglib prefix="ftm" uri="http://java.sun.com/jstl/fmt_rt" %>
 <%@include file="../../header.jsp" %>
 <html>
 <head>
@@ -115,6 +114,7 @@
                                         <form id="ingredientRemoveForm-${ingredient.id}"
                                               action="${pageContext.request.contextPath}/controller"
                                               method="post">
+                                            <input type="hidden" name="ingredient-id" value="${ingredient.id}">
                                             <input type="hidden" name="command" value="remove-ingredient">
                                         </form>
                                         <button onclick="onRemoveButtonPressed()"
@@ -140,7 +140,7 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">
-                            <ftm:message key="message.validation"/>
+                            <fmt:message key="message.validation"/>
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
@@ -154,12 +154,12 @@
                 <div class="modal-content">
                     <div class="modal-header">
                         <h5 class="modal-title">
-                            <ftm:message key="message.success"/>
+                            <fmt:message key="message.success"/>
                         </h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
                     </div>
                     <div id="successModalBody" class="modal-body">
-                        <ftm:message key="message.success.modifying"/>
+                        <fmt:message key="message.success.modifying"/>
                     </div>
                 </div>
             </div>
@@ -193,16 +193,16 @@
     const removeModalBodyId = 'removeModelBody';
     const validationModalBodyId = 'validationModalBody';
 
-    const success = '<ftm:message key="message.success"/>';
-    const fail = '<ftm:message key="message.fail"/>';
-    const removeFail = '<ftm:message key="message.fail.remove"/>';
-    const removeSuccess = '<ftm:message key="message.success.remove"/>';
+    const success = '<fmt:message key="message.success"/>';
+    const fail = '<fmt:message key="message.fail"/>';
+    const removeFail = '<fmt:message key="message.fail.remove"/>';
+    const removeSuccess = '<fmt:message key="message.success.remove"/>';
 
-    const INGREDIENT_NAME_VALIDATION_MESSAGE = '<ftm:message key="message.validation.ingredient-name"/>';
-    const INGREDIENT_PICTURE_VALIDATION_MESSAGE = '<ftm:message key="message.validation.ingredient-picture"/>';
-    const INGREDIENT_PROTEINS_VALIDATION_MESSAGE = '<ftm:message key="message.validation.ingredient-proteins"/>';
-    const INGREDIENT_FATS_VALIDATION_MESSAGE = '<ftm:message key="message.validation.ingredient-fats"/>';
-    const INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE = '<ftm:message key="message.validation.ingredient-carbohydrates"/>';
+    const INGREDIENT_NAME_VALIDATION_MESSAGE = '<fmt:message key="message.validation.ingredient-name"/>';
+    const INGREDIENT_PICTURE_VALIDATION_MESSAGE = '<fmt:message key="message.validation.ingredient-picture"/>';
+    const INGREDIENT_PROTEINS_VALIDATION_MESSAGE = '<fmt:message key="message.validation.ingredient-proteins"/>';
+    const INGREDIENT_FATS_VALIDATION_MESSAGE = '<fmt:message key="message.validation.ingredient-fats"/>';
+    const INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE = '<fmt:message key="message.validation.ingredient-carbohydrates"/>';
 
     const changeCurrentIngredientId = function (newId) {
         currentIngredientId = newId;
