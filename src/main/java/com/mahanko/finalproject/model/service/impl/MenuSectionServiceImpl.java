@@ -1,6 +1,7 @@
 package com.mahanko.finalproject.model.service.impl;
 
 import com.mahanko.finalproject.controller.RequestParameters;
+import com.mahanko.finalproject.controller.ValidationMessage;
 import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.dao.MenuItemDao;
@@ -113,7 +114,8 @@ public class MenuSectionServiceImpl implements MenuSectionService {
     }
 
     @Override
-    public void update(int id, RequestParameters parameters) throws ServiceException {
+    public boolean update(int id, RequestParameters parameters) throws ServiceException {
+        boolean updated = false;
         String sectionIdString = parameters.get(MENU_SECTION_ID);
         String sectionName = parameters.get(MENU_SECTION_NAME);
         int sectionId = Integer.parseInt(sectionIdString);
@@ -124,24 +126,31 @@ public class MenuSectionServiceImpl implements MenuSectionService {
             section.setName(sectionName);
             MenuSectionDao menuSectionDao = MenuSectionDaoImpl.getInstance();
             try {
-                menuSectionDao.update(sectionId, section);
+                updated = menuSectionDao.update(sectionId, section);
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
+        } else {
+            parameters.put(VALIDATION_MESSAGES, List.of(SECTION_NAME_VALIDATION_MESSAGE));
         }
+
+        return updated;
     }
 
     @Override
-    public void remove(int id) throws ServiceException {
+    public boolean remove(int id) throws ServiceException {
+        boolean removed;
         try {
             MenuSectionDao menuSectionDao = MenuSectionDaoImpl.getInstance();
             if (menuSectionDao.existsMerge(id)) {
-                menuSectionDao.setHidden(id, true);
+                removed = menuSectionDao.setHidden(id, true);
             } else {
-                menuSectionDao.remove(id);
+                removed = menuSectionDao.remove(id);
             }
         } catch (DaoException e) {
             throw new ServiceException(e);
         }
+
+        return removed;
     }
 }

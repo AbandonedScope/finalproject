@@ -179,6 +179,7 @@
         </div>
     </c:if>
 </div>
+<c:import url="../../footer.jsp"/>
 <script>
     const url = 'http://localhost:8080/demo1_war_exploded/controller';
     let currentIngredientId = -1;
@@ -213,7 +214,6 @@
     };
 
     const fillModalWithValidations = (validations) => {
-        console.log(validations)
         const $modalBody = document.getElementById(validationModalBodyId);
         $modalBody.innerText = '';
         const $validationsDiv = document.createElement("div");
@@ -293,6 +293,5 @@
             });
     }
 </script>
-<c:import url="../../footer.jsp"/>
 </body>
 </html>

@@ -140,7 +140,7 @@ public class IngredientServiceImpl implements IngredientService {
 
     @Override
     public boolean remove(long id) throws ServiceException {
-        boolean removed = false;
+        boolean removed;
         try {
             IngredientDao ingredientDao = IngredientDaoImpl.getInstance();
             if (ingredientDao.existsMerge(id)) {

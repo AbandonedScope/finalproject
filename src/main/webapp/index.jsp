@@ -1,6 +1,7 @@
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="ftm" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="/pages/header.jsp" %>
 <!DOCTYPE html>
 <html lang="en">
@@ -98,7 +99,7 @@
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-end">
-                                                    <form class="m-0"
+                                                    <form id="addItemToCartForm-${menuItem.id}" class="m-0"
                                                           action="${pageContext.request.contextPath}/controller"
                                                           method="post">
                                                         <input type="hidden" name="command" value="add-item-to-cart">
@@ -108,10 +109,12 @@
                                                                    name="menu-item-count" value="1"
                                                                    min="1"
                                                                    step="1" required>
-                                                            <input class="btn btn-outline-primary text-wrap"
-                                                                   type="submit"
-                                                                   name="submit-button"
-                                                                   value="<fmt:message key="action.guest.cart.add-to-cart"/>"/>
+                                                            <button onclick="onAddButtonPressed('${menuItem.id}')"
+                                                                    class="btn btn-outline-primary text-wrap"
+                                                                    type="button"
+                                                                    name="submit-button">
+                                                                <fmt:message key="action.guest.cart.add-to-cart"/>
+                                                            </button>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -138,7 +141,8 @@
                                 </div>
                             </li>
                             <li class="list-group-item p-0">
-                                <form class="m-0" action="${pageContext.request.contextPath}/controller"
+                                <form id="addItemToCartForm-${menuItem.id}" class="m-0"
+                                      action="${pageContext.request.contextPath}/controller"
                                       method="post">
                                     <input type="hidden" name="command" value="add-item-to-cart">
                                     <input type="hidden" name="menu-item-id" value="${menuItem.id}">
@@ -146,9 +150,10 @@
                                         <input class="form-control" type="number" name="menu-item-count" value="1"
                                                min="1"
                                                step="1" required>
-                                        <input class="btn btn-outline-primary text-wrap" type="submit"
-                                               name="submit-button"
-                                               value="<fmt:message key="action.guest.cart.add-to-cart"/>"/>
+                                        <button style="z-index: 0" onclick="onAddButtonPressed('${menuItem.id}')"
+                                                class="btn btn-outline-primary text-wrap" type="button">
+                                            <fmt:message key="action.guest.cart.add-to-cart"/>
+                                        </button>
                                     </div>
                                 </form>
                             </li>
@@ -158,7 +163,52 @@
             </c:forEach>
         </div>
     </c:forEach>
+    <div id="toast" class="toast position-fixed bottom-0 end-0 m-3" role="alert">
+        <div class="toast-header">
+            <em class="me-2 bi bi-bag-check"></em>
+            <strong class="me-auto">
+                <ftm:message key="navigation.guest.cart"/>
+            </strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div id="toastBody" class="toast-body">
+        </div>
+    </div>
 </div>
 <c:import url="pages/footer.jsp"/>
+<script>
+    const toastElList = document.querySelectorAll('.toast');
+    const toastList = [...toastElList].map(toastEl => new bootstrap.Toast(toastEl, {
+        autohide: true
+    }));
+    const url = 'http://localhost:8080/demo1_war_exploded/controller';
+    const addItemToCartFormIdPrefix = 'addItemToCartForm-';
+    const toastBodyId = 'toastBody';
+    const toastId = 'toast';
+    const added = '<ftm:message key="message.add-to-cart.success"/>';
+    const notAdded = '<ftm:message key="message.add-to-cart.fail"/>';
+
+    const onAddButtonPressed = async (id) => {
+        let $form = document.getElementById(addItemToCartFormIdPrefix + id);
+        let formData = new FormData($form);
+        fetch(url, {
+            method: 'POST',
+            credentials: 'include',
+            cache: 'no-cache',
+            body: formData
+        })
+            .then(async (response) => {
+                const toast = new bootstrap.Toast(document.getElementById(toastId));
+                const $divBody = document.getElementById(toastBodyId);
+                $divBody.innerText = '';
+                if (response.ok) {
+                    $divBody.innerText = added;
+                } else {
+                    $divBody.innerText = notAdded;
+                }
+                toast.show();
+            });
+    }
+</script>
 </body>
 </html>

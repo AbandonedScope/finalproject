@@ -219,7 +219,7 @@ public class MenuItemServiceImpl implements MenuItemService {
 
     @Override
     public boolean remove(long id) throws ServiceException {
-        boolean removed = false;
+        boolean removed;
         try {
             MenuItemDao menuItemDao = MenuItemDaoImpl.getInstance();
             if (menuItemDao.existsMerge(id)) {
