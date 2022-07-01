@@ -151,7 +151,7 @@
                                                min="1"
                                                max="100"
                                                step="1" required>
-                                        <input class="btn btn-outline-primary text-wrap" type="submit"
+                                        <input style="z-index: 0" class="btn btn-outline-primary text-wrap" type="submit"
                                                value="<fmt:message key="action.guest.cart.add-to-cart"/>">
                                     </div>
                                 </form>

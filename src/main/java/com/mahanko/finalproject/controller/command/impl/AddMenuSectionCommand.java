@@ -1,6 +1,5 @@
 package com.mahanko.finalproject.controller.command.impl;
 
-import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.exception.CommandException;
@@ -10,25 +9,30 @@ import com.mahanko.finalproject.model.service.impl.MenuSectionServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import static com.mahanko.finalproject.controller.ParameterType.*;
-import static com.mahanko.finalproject.controller.ValidationMessage.SECTION_ADD_FAIL_MESSAGE;
-import static com.mahanko.finalproject.controller.ValidationMessage.SECTION_ADD_SUCCESSFULLY_MESSAGE;
+import static com.mahanko.finalproject.controller.ValidationMessage.*;
 
 public class AddMenuSectionCommand extends AsynchronousCommand {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        Router route = new Router(PagePath.ADD_MENU_SECTION, Router.Type.FORWARD);
+        Router route;
         RequestParameters parameters = new RequestParameters();
         parameters.put(MENU_SECTION_NAME, request.getParameter(MENU_SECTION_NAME));
         MenuSectionService service = MenuSectionServiceImpl.getInstance();
         try {
             if(service.insert(parameters)) {
-                request.setAttribute(SECTION_ADD_SUCCESSFULLY_MESSAGE, SECTION_ADD_SUCCESSFULLY_MESSAGE);
+                route = fillResponse(response, true);
             } else {
-                if (!parameters.fillRequestWithValidations(request)) {
-                    // FIXME: 11.05.2022
-                    request.setAttribute(SECTION_ADD_FAIL_MESSAGE, SECTION_ADD_FAIL_MESSAGE);
+                List<String> validationMessages = parameters.getMultiple(VALIDATION_MESSAGES);
+                if (validationMessages == null) {
+                    validationMessages = new ArrayList<>();
+                    validationMessages.add(MENU_SECTION_WITH_SUCH_NAME_ALREADY_EXISTS_MESSAGE);
                 }
+
+                route = fillResponse(response, false);
             }
         } catch (ServiceException e) {
             throw new CommandException(e);

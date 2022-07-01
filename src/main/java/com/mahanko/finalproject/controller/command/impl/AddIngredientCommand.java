@@ -1,8 +1,8 @@
 package com.mahanko.finalproject.controller.command.impl;
 
-import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
+import com.mahanko.finalproject.controller.ValidationMessage;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.entity.menu.Ingredient;
@@ -18,20 +18,18 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Optional;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
-import static com.mahanko.finalproject.controller.ValidationMessage.INGREDIENT_ADD_MESSAGE;
+import static com.mahanko.finalproject.controller.ValidationMessage.VALIDATION_MESSAGES;
 
 public class AddIngredientCommand extends AsynchronousCommand {
-
     private static final Logger logger = LogManager.getLogger();
-    private static final String INGREDIENT_ALREADY_EXISTS_MESSAGE = "Such ingredient already exits.";
-    private static final String INGREDIENT_SUCCESSFUL_ADDED_MESSAGE = "Ingredient was successfully added.";
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        Router route = new Router(PagePath.ADD_INGREDIENT, Router.Type.FORWARD);
+        Router route;
         try {
             Part filePart = request.getPart(INGREDIENT_PICTURE);
             String pictureName = filePart.getSubmittedFileName();
@@ -52,12 +50,14 @@ public class AddIngredientCommand extends AsynchronousCommand {
             IngredientService ingredientService = IngredientServiceImpl.getInstance();
             Optional<Ingredient> ingredientOptional = ingredientService.insert(params);
             if (ingredientOptional.isPresent()) {
-                request.setAttribute(INGREDIENT_ADD_MESSAGE, INGREDIENT_SUCCESSFUL_ADDED_MESSAGE);
+                route = fillResponse(response, true);
             } else {
-                if (!params.fillRequestWithValidations(request)) {
-                    // FIXME: 11.05.2022 
-                    request.setAttribute(INGREDIENT_ALREADY_EXISTS_MESSAGE, INGREDIENT_ALREADY_EXISTS_MESSAGE);
+                List<String> validationMessages = params.getMultiple(VALIDATION_MESSAGES);
+                if (validationMessages == null) {
+                    validationMessages = List.of(ValidationMessage.INGREDIENT_WITH_SUCH_NAME_ALREADY_EXISTS_MESSAGE);
                 }
+
+                route = fillResponse(response, false, validationMessages);
             }
         } catch (IOException | ServletException e) {
             logger.log(Level.ERROR, e);

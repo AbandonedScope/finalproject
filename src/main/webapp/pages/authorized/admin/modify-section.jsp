@@ -82,63 +82,11 @@
                 </div>
             </c:forEach>
         </div>
-        <div class="modal fade" id="validationModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">
-                            <fmt:message key="message.validation"/>
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div id="validationModalBody" class="modal-body">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="successModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">
-                            <fmt:message key="message.success"/>
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div id="successModalBody" class="modal-body">
-                        <fmt:message key="message.success.modifying"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="removeModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="removeModelHeader">
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div id="removeModelBody" class="modal-body">
-                    </div>
-                </div>
-            </div>
-        </div>
+        <jsp:include page="../../modals/modals.jsp"/>
     </c:if>
 </div>
 <c:import url="../../footer.jsp"/>
 <script>
-    const url = 'http://localhost:8080/demo1_war_exploded/controller';
-    const successModalId = 'successModal';
-    const removeModalId = 'removeModal';
-    const removeModalHeaderId = 'removeModelHeader';
-    const removeModalBodyId = 'removeModelBody';
-    const validationModalBodyId = 'validationModalBody';
-    const success = '<fmt:message key="message.success"/>';
-    const fail = '<fmt:message key="message.fail"/>';
-    const removeFail = '<fmt:message key="message.fail.remove"/>';
-    const removeSuccess = '<fmt:message key="message.success.remove"/>';
-
     const SECTION_NAME_VALIDATION_MESSAGE = '<fmt:message key="message.validation.section-name"/>';
 
     const fillModalWithValidations = (validations) => {
@@ -157,60 +105,6 @@
             $validationsDiv.append($validationDiv);
         }
         $modalBody.append($validationsDiv);
-    }
-
-    const onModifyFormSubmit = async (event) => {
-        event.preventDefault();
-        let formData = new FormData(event.target);
-        fetch(url, {
-            method: 'POST',
-            credentials: 'include',
-            cache: 'no-cache',
-            body: formData
-        })
-            .then(async (response) => {
-                if (response.ok) {
-                    const modal = new bootstrap.Modal(document.getElementById(successModalId));
-                    modal.show();
-                } else if (response.status === 400) {
-                    let data = await response.json();
-                    if (data.validation_msg) {
-                        fillModalWithValidations(data.validation_msg);
-                        const modal = new bootstrap.Modal(document.getElementById(validationModalId));
-                        modal.show();
-                    }
-                }
-            });
-
-        return false;
-    }
-
-    const onRemoveFormSubmit = async (event) => {
-        event.preventDefault();
-        let formData = new FormData(event.target);
-        fetch(url, {
-            method: 'POST',
-            credentials: 'include',
-            cache: 'no-cache',
-            body: formData
-        })
-            .then(async (response) => {
-                let $removalModalHeader = document.getElementById(removeModalHeaderId);
-                let $removalModalBody = document.getElementById(removeModalBodyId);
-                $removalModalHeader.innerText = '';
-                $removalModalBody.innerText = '';
-                if (response.ok) {
-                    $removalModalHeader.innerText = success;
-                    $removalModalBody.innerText = removeSuccess;
-                } else {
-                    $removalModalHeader.innerText = fail;
-                    $removalModalBody.innerText = removeFail;
-                }
-                const modal = new bootstrap.Modal(document.getElementById(removeModalId));
-                modal.show();
-            });
-
-        return false;
     }
 </script>
 </body>

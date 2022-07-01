@@ -1,5 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.controller.ValidationMessage" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="../../header.jsp" %>
@@ -12,22 +11,17 @@
 <div class="mx-5 mt-2">
     <h2><fmt:message key="navigation.admin.menuitem"/></h2>
     <div class="justify-content-center mx-5">
-        <form id="form" action="${pageContext.request.contextPath}/controller" method="post"
+        <form onsubmit="onModifyFormSubmit(event)" id="form" action="${pageContext.request.contextPath}/controller"
+              method="post"
               enctype="multipart/form-data">
             <input type="hidden" name="command" value="add-menu-item"/>
             <div class="form-floating my-5">
                 <input class="form-control" id="name" type="text" name="menu-item-name" placeholder="Name" required>
-                <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_NAME_VALIDATION_MESSAGE)}">
-                    <fmt:message key="message.validation.meal-name"/>
-                </c:if>
                 <label for="name"><fmt:message key="label.menuitem.name"/></label>
             </div>
             <div class="form-floating my-5">
                 <input class="form-control" id="cost" type="number" name="menu-item-cost" min="0.01" step="0.01"
                        placeholder="10" required>
-                <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_COST_VALIDATION_MESSAGE)}">
-                    <fmt:message key="message.validation.meal-cost"/>
-                </c:if>
                 <label for="cost"><fmt:message key="label.menuitem.cost"/></label>
             </div>
             <div class="form-floating my-5">
@@ -45,11 +39,6 @@
                 <p class="mb-2">
                     <fmt:message key="label.menuitem.picture.condition"/>
                 </p>
-                <p>
-                    <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_PICTURE_VALIDATION_MESSAGE)}">
-                        <fmt:message key="message.validation.meal-picture"/>
-                    </c:if>
-                </p>
             </div>
             <div class="justify-content-evenly my-5" style="display: flex">
                 <div>
@@ -63,9 +52,6 @@
                 </div>
                 <div>
                     <fmt:message key="label.menuitem.ingredients"/>
-                    <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_INGREDIENTS_VALIDATION_MESSAGE)}">
-                        <fmt:message key="message.validation.meal-ingredients"/>
-                    </c:if>
                     <ul class="list-group">
                         <div style="max-height: 250px;
                                     width: 450px;
@@ -79,9 +65,7 @@
                        value="<fmt:message key="action.admin.add.menuitem"/>">
             </div>
         </form>
-        <c:if test="${not empty requestScope.get(ValidationMessage.MEAL_ADDED_SUCCESSFULLY_MESSAGE)}">
-            <fmt:message key="message.add.meal.success"/>
-        </c:if>
+        <jsp:include page="../../modals/addModal.jsp"/>
     </div>
 </div>
 <script>
@@ -138,7 +122,7 @@
         weightInput.name = 'ingredient-weight';
         weightInput.placeholder = 'Weight';
         weightInput.required = true;
-        weightInput.step= '0.01';
+        weightInput.step = '0.01';
         weightInput.min = '0.01';
         weightInput.style.maxWidth = '90px';
         weightInput.style.maxHeight = '30px';
@@ -201,6 +185,44 @@
             }
         }
     });
+
+    const MEAL_NAME_VALIDATION_MESSAGE = '<fmt:message key="message.validation.meal-name"/>';
+    const MEAL_COST_VALIDATION_MESSAGE = '<fmt:message key="message.validation.meal-cost"/>';
+    const MEAL_PICTURE_VALIDATION_MESSAGE = '<fmt:message key="message.validation.meal-picture"/>';
+    const MEAL_INGREDIENTS_VALIDATION_MESSAGE = '<fmt:message key="message.validation.meal-ingredients"/>';
+    const MENU_ITEM_WITH_SUCH_NAME_ALREADY_EXISTS_MESSAGE = '<fmt:message key="message.validation.meal-name.exists"/>';
+
+    const fillModalWithValidations = (validations) => {
+        const $modalBody = document.getElementById(validationModalBodyId);
+        $modalBody.innerText = '';
+        const $validationsDiv = document.createElement("div");
+        for (let validationMessage of validations) {
+            let message;
+            switch (validationMessage) {
+                case 'meal-name':
+                    message = MEAL_NAME_VALIDATION_MESSAGE;
+                    break;
+                case 'meal-cost':
+                    message = MEAL_COST_VALIDATION_MESSAGE;
+                    break;
+                case 'meal-picture':
+                    message = MEAL_PICTURE_VALIDATION_MESSAGE;
+                    break;
+                case 'meal-ingredients-validation-message':
+                    message = MEAL_INGREDIENTS_VALIDATION_MESSAGE;
+                    break;
+                case 'menu-item-exists':
+                    message = MENU_ITEM_WITH_SUCH_NAME_ALREADY_EXISTS_MESSAGE;
+                    break;
+            }
+
+            const $validationDiv = document.createElement("div");
+            $validationDiv.innerText = message;
+            $validationsDiv.append($validationDiv);
+        }
+
+        $modalBody.append($validationsDiv);
+    }
 
     window.addEventListener('load', renderHTMLIngredientList);
 </script>

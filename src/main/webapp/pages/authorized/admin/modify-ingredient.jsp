@@ -1,4 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8"%>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="../../header.jsp" %>
@@ -48,7 +48,8 @@
                                 <div class="col d-flex flex-column justify-content-between">
 
                                     <div>
-                                        <form id="ingredientForm-${ingredient.id}" class="m-0"
+                                        <form onsubmit="onModifyFormSubmit(event)" id="ingredientForm-${ingredient.id}"
+                                              class="m-0"
                                               action="${pageContext.request.contextPath}/controller"
                                               method="post" enctype="multipart/form-data">
                                             <input type="hidden" name="command" value="modify-ingredient">
@@ -65,7 +66,8 @@
                                                 <input class="form-control" id="ingredientCalories-${ingredient.id}"
                                                        type="number"
                                                        name="ingredient-calories"
-                                                       min="0.01" step="0.01"
+                                                       max="1000"
+                                                       min="0" step="0.01"
                                                        placeholder="10" value="${ingredient.calories}" required>
                                                 <label for="ingredientCalories-${ingredient.id}"><fmt:message
                                                         key="label.ingredient.calories"/></label>
@@ -74,7 +76,8 @@
                                                 <input class="form-control" id="ingredientProteins-${ingredient.id}"
                                                        type="number"
                                                        name="ingredient-proteins"
-                                                       min="0.01" step="0.01"
+                                                       max="1000"
+                                                       min="0" step="0.01"
                                                        placeholder="10" value="${ingredient.proteins}" required>
                                                 <label for="ingredientProteins-${ingredient.id}"><fmt:message
                                                         key="label.ingredient.proteins"/></label>
@@ -83,7 +86,8 @@
                                                 <input class="form-control" id="ingredientFats-${ingredient.id}"
                                                        type="number"
                                                        name="ingredient-fats"
-                                                       min="0.01" step="0.01"
+                                                       max="1000"
+                                                       min="0" step="0.01"
                                                        placeholder="10" value="${ingredient.fats}" required>
                                                 <label for="ingredientFats-${ingredient.id}"><fmt:message
                                                         key="label.ingredient.fats"/></label>
@@ -92,7 +96,8 @@
                                                 <input class="form-control"
                                                        id="ingredientCarbohydrates-${ingredient.id}" type="number"
                                                        name="ingredient-carbohydrates"
-                                                       min="0.01" step="0.01"
+                                                       max="1000"
+                                                       min="0" step="0.01"
                                                        placeholder="10" value="${ingredient.carbohydrates}" required>
                                                 <label for="ingredientCarbohydrates-${ingredient.id}"><fmt:message
                                                         key="label.ingredient.carbohydrates"/></label>
@@ -108,25 +113,22 @@
                                                     <fmt:message key="label.ingredient.picture.condition"/>
                                                 </p>
                                             </div>
+                                            <input class="btn btn-outline-primary text-wrap" type="submit"
+                                                   name="submit-button"
+                                                   value="<fmt:message key="action.modify.save"/>"/>
                                         </form>
                                     </div>
-                                    <div class="d-flex justify-content-evenly mt-3">
-                                        <form id="ingredientRemoveForm-${ingredient.id}"
+                                    <div class="d-flex justify-content-end mt-3">
+                                        <form onsubmit="onRemoveFormSubmit(event)"
+                                              id="ingredientRemoveForm-${ingredient.id}"
                                               action="${pageContext.request.contextPath}/controller"
                                               method="post">
                                             <input type="hidden" name="ingredient-id" value="${ingredient.id}">
                                             <input type="hidden" name="command" value="remove-ingredient">
+                                            <input class="btn btn-outline-danger text-wrap" type="submit"
+                                                   name="remove-button"
+                                                   value="<fmt:message key="action.modify.delete"/>"/>
                                         </form>
-                                        <button onclick="onRemoveButtonPressed()"
-                                                class="btn btn-outline-danger text-wrap" type="submit"
-                                                name="remove-button">
-                                            <fmt:message key="action.modify.delete"/>
-                                        </button>
-                                        <button onclick="onModifyButtonPressed()"
-                                                class="btn btn-outline-primary text-wrap" type="submit"
-                                                name="submit-button">
-                                            <fmt:message key="action.modify.save"/>
-                                        </button>
                                     </div>
                                 </div>
                             </div>
@@ -135,68 +137,13 @@
                 </div>
             </c:forEach>
         </div>
-        <div class="modal fade" id="validationModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">
-                            <fmt:message key="message.validation"/>
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div id="validationModalBody" class="modal-body">
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="successModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title">
-                            <fmt:message key="message.success"/>
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div id="successModalBody" class="modal-body">
-                        <fmt:message key="message.success.modifying"/>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="modal fade" id="removeModal" tabindex="-1">
-            <div class="modal-dialog modal-dialog-centered">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="removeModelHeader">
-                        </h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                    </div>
-                    <div id="removeModelBody" class="modal-body">
-                    </div>
-                </div>
-            </div>
-        </div>
+        <jsp:include page="../../modals/modals.jsp"/>
     </c:if>
 </div>
 <c:import url="../../footer.jsp"/>
 <script>
-    const url = 'http://localhost:8080/demo1_war_exploded/controller';
     let currentIngredientId = -1;
     const ingredientPictureImgIdPrefix = 'ingredientPictureImg-';
-    const ingredientFormIdPrefix = 'ingredientForm-';
-    const ingredientRemoveFormIdPrefix = 'ingredientRemoveForm-';
-    const validationModalId = 'validationModal';
-    const successModalId = 'successModal';
-    const removeModalId = 'removeModal';
-    const removeModalHeaderId = 'removeModelHeader';
-    const removeModalBodyId = 'removeModelBody';
-    const validationModalBodyId = 'validationModalBody';
-
-    const success = '<fmt:message key="message.success"/>';
-    const fail = '<fmt:message key="message.fail"/>';
-    const removeFail = '<fmt:message key="message.fail.remove"/>';
-    const removeSuccess = '<fmt:message key="message.success.remove"/>';
 
     const INGREDIENT_NAME_VALIDATION_MESSAGE = '<fmt:message key="message.validation.ingredient-name"/>';
     const INGREDIENT_PICTURE_VALIDATION_MESSAGE = '<fmt:message key="message.validation.ingredient-picture"/>';
@@ -206,6 +153,7 @@
 
     const changeCurrentIngredientId = function (newId) {
         currentIngredientId = newId;
+        console.log(currentIngredientId);
     }
 
     const onloadPictureChange = function (event) {
@@ -236,61 +184,13 @@
                     message = INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE;
                     break;
             }
+
             const $validationDiv = document.createElement("div");
             $validationDiv.innerText = message;
             $validationsDiv.append($validationDiv);
         }
+
         $modalBody.append($validationsDiv);
-    }
-
-    const onRemoveButtonPressed = async () => {
-        let $form = document.getElementById(ingredientRemoveFormIdPrefix + currentIngredientId);
-        let formData = new FormData($form);
-        fetch(url, {
-            method: 'POST',
-            credentials: 'include',
-            cache: 'no-cache',
-            body: formData
-        })
-            .then(async (response) => {
-                let $removalModalHeader = document.getElementById(removeModalHeaderId);
-                let $removalModalBody = document.getElementById(removeModalBodyId);
-                $removalModalHeader.innerText = '';
-                $removalModalBody.innerText = '';
-                if (response.ok) {
-                    $removalModalHeader.innerText = success;
-                    $removalModalBody.innerText = removeSuccess;
-                } else {
-                    $removalModalHeader.innerText = fail;
-                    $removalModalBody.innerText = removeFail;
-                }
-                const modal = new bootstrap.Modal(document.getElementById(removeModalId));
-                modal.show();
-            });
-    }
-
-    const onModifyButtonPressed = async () => {
-        let $form = document.getElementById(ingredientFormIdPrefix + currentIngredientId);
-        let formData = new FormData($form);
-        fetch(url, {
-            method: 'POST',
-            credentials: 'include',
-            cache: 'no-cache',
-            body: formData
-        })
-            .then(async (response) => {
-                if (response.ok) {
-                    const modal = new bootstrap.Modal(document.getElementById(successModalId));
-                    modal.show();
-                } else if (response.status === 400) {
-                    let data = await response.json();
-                    if (data.validation_msg) {
-                        fillModalWithValidations(data.validation_msg);
-                        const modal = new bootstrap.Modal(document.getElementById(validationModalId));
-                        modal.show();
-                    }
-                }
-            });
     }
 </script>
 </body>

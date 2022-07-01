@@ -96,7 +96,6 @@ public class MenuSectionServiceImpl implements MenuSectionService {
             validationMessages.add(SECTION_NAME_VALIDATION_MESSAGE);
         }
 
-        // FIXME: 04.05.2022
         if (isValid) {
             try {
                 MenuSectionDao menuSectionDao = MenuSectionDaoImpl.getInstance();

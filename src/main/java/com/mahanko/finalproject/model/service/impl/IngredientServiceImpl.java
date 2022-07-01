@@ -24,7 +24,7 @@ import static com.mahanko.finalproject.controller.ValidationMessage.*;
 
 public class IngredientServiceImpl implements IngredientService {
     private static final Logger logger = LogManager.getLogger();
-    private static final  IngredientServiceImpl instance = new IngredientServiceImpl();
+    private static final IngredientServiceImpl instance = new IngredientServiceImpl();
 
     private IngredientServiceImpl() {
     }
@@ -205,8 +205,6 @@ public class IngredientServiceImpl implements IngredientService {
                     validationMessages.add(INGREDIENT_PICTURE_VALIDATION_MESSAGE);
                 }
             }
-
-
 
             if (isValid) {
                 long ingredientId = Long.parseLong(ingredientIdString);

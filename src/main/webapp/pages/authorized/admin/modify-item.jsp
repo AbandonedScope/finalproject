@@ -158,7 +158,6 @@
                                                name="submit-button"
                                                value="<fmt:message key="action.modify.delete"/>"/>
                                     </form>
-
                                 </div>
                             </div>
                         </div>
@@ -167,8 +166,7 @@
             </c:forEach>
         </div>
 
-        <!-- Modal -->
-        <div class="modal fade" id="ingredientModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+        <div class="modal fade" id="ingredientModal" tabindex="-1"
              aria-hidden="true">
             <div class="modal-dialog modal-dialog-centered">
                 <div class="modal-content">
@@ -192,10 +190,10 @@
                                     <span class="input-group-addon">
                                         <img style="user-select: none; max-width: 40px; max-height: 40px"
                                              src="data:image/png;base64,${ingredient.pictureBase64}"
-                                             alt="${ingredient.name}">
-                                        <p id="existingIngredientPictureP-${ingredient.id}"
-                                           class="d-none">${ingredient.pictureBase64}</p>
+                                             alt="${ingredient.name}"/>
                                     </span>
+                                        <div id="existingIngredientPictureP-${ingredient.id}"
+                                             class="d-none">${ingredient.pictureBase64}</div>
                                         <div id="existingIngredientNameDiv-${ingredient.id}"
                                              class="input-group-addon ms-1 align-middle">
                                                 ${ingredient.name}
@@ -215,52 +213,10 @@
                 </div>
             </div>
         </div>
+        <jsp:include page="../../modals/modals.jsp"/>
     </c:if>
-    <div class="modal fade" id="validationModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <fmt:message key="message.validation"/>
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div id="validationModalBody" class="modal-body">
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="successModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">
-                        <fmt:message key="message.success"/>
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div id="successModalBody" class="modal-body">
-                    <fmt:message key="message.success.modifying"/>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="modal fade" id="removeModal" tabindex="-1">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="removeModelHeader">
-                    </h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-                </div>
-                <div id="removeModelBody" class="modal-body">
-                </div>
-            </div>
-        </div>
-    </div>
 </div>
 <script>
-    const url = 'http://localhost:8080/demo1_war_exploded/controller';
     const $modal = document.getElementById('ingredientModal');
     const delimiter = '-';
     let currentMenuItemId = -1;
@@ -271,17 +227,6 @@
     const existingIngredientNameDivIdPrefix = 'existingIngredientNameDiv-';
     const existingIngredientPicturePIdPrefix = 'existingIngredientPictureP-';
     const existingIngredientDivIdPrefix = 'existingIngredientDiv-';
-    const validationModalId = 'validationModal';
-    const successModalId = 'successModal';
-    const removeModalId = 'removeModal';
-    const removeModalHeaderId = 'removeModelHeader';
-    const removeModalBodyId = 'removeModelBody';
-    const validationModalBodyId = 'validationModalBody';
-
-    const success = '<fmt:message key="message.success"/>';
-    const fail = '<fmt:message key="message.fail"/>';
-    const removeFail = '<fmt:message key="message.fail.remove"/>';
-    const removeSuccess = '<fmt:message key="message.success.remove"/>';
 
     const deleteIngredient = function (removeId) {
         const ingredientDiv = document.getElementById(removeId);
@@ -467,65 +412,13 @@
                     message = MEAL_INGREDIENTS_VALIDATION_MESSAGE;
                     break;
             }
+
             const $validationDiv = document.createElement("div");
             $validationDiv.innerText = message;
             $validationsDiv.append($validationDiv);
         }
+
         $modalBody.append($validationsDiv);
-    }
-
-    const onModifyFormSubmit = async (event) => {
-        event.preventDefault();
-        let formData = new FormData(event.target);
-        fetch(url, {
-            method: 'POST',
-            credentials: 'include',
-            cache: 'no-cache',
-            body: formData
-        })
-            .then(async (response) => {
-                if (response.ok) {
-                    const modal = new bootstrap.Modal(document.getElementById(successModalId));
-                    modal.show();
-                } else if (response.status === 400) {
-                    let data = await response.json();
-                    if (data.validation_msg) {
-                        fillModalWithValidations(data.validation_msg);
-                        const modal = new bootstrap.Modal(document.getElementById(validationModalId));
-                        modal.show();
-                    }
-                }
-            });
-
-        return false;
-    }
-
-    const onRemoveFormSubmit = async (event) => {
-        event.preventDefault();
-        let formData = new FormData(event.target);
-        fetch(url, {
-            method: 'POST',
-            credentials: 'include',
-            cache: 'no-cache',
-            body: formData
-        })
-            .then(async (response) => {
-                let $removalModalHeader = document.getElementById(removeModalHeaderId);
-                let $removalModalBody = document.getElementById(removeModalBodyId);
-                $removalModalHeader.innerText = '';
-                $removalModalBody.innerText = '';
-                if (response.ok) {
-                    $removalModalHeader.innerText = success;
-                    $removalModalBody.innerText = removeSuccess;
-                } else {
-                    $removalModalHeader.innerText = fail;
-                    $removalModalBody.innerText = removeFail;
-                }
-                const modal = new bootstrap.Modal(document.getElementById(removeModalId));
-                modal.show();
-            });
-
-        return false;
     }
 
     $modal.addEventListener('shown.bs.modal', openingIngredientListElements);

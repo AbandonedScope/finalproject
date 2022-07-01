@@ -12,7 +12,8 @@
 <div class="mx-5 mt-2">
     <h2><fmt:message key="navigation.admin.ingredient"/></h2>
     <div class="justify-content-center mx-5">
-        <form action="${pageContext.request.contextPath}/controller" method="post" enctype="multipart/form-data">
+        <form onsubmit="onModifyFormSubmit(event)" action="${pageContext.request.contextPath}/controller" method="post"
+              enctype="multipart/form-data">
             <input type="hidden" name="command" value="add-ingredient"/>
             <div class="form-floating my-5">
                 <input class="form-control" id="name" type="text" name="ingredient-name" placeholder="Name" required>
@@ -72,19 +73,64 @@
                     <fmt:message key="label.ingredient.picture.condition"/>
                 </p>
                 <p>
-                <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_PICTURE_VALIDATION_MESSAGE)}">
-                    <fmt:message key="message.validation.ingredient-picture"/>
-                </c:if>
+                    <c:if test="${not empty requestScope.get(ValidationMessage.INGREDIENT_PICTURE_VALIDATION_MESSAGE)}">
+                        <fmt:message key="message.validation.ingredient-picture"/>
+                    </c:if>
                 </p>
             </div>
             <div class="d-flex justify-content-end">
-            <input class="btn btn-outline-primary fs-5" type="submit" name="sub"
-                   value="<fmt:message key="action.admin.add.ingredient"/>">
+                <input class="btn btn-outline-primary fs-5" type="submit" name="sub"
+                       value="<fmt:message key="action.admin.add.ingredient"/>">
             </div>
         </form>
-        ${requestScope.ingredient_add_msg}
+        <jsp:include page="../../modals/addModal.jsp"/>
     </div>
 </div>
 <c:import url="../../footer.jsp"/>
+<script>
+    const ingredientPictureImgIdPrefix = 'ingredientPictureImg-';
+
+    const INGREDIENT_NAME_VALIDATION_MESSAGE = '<fmt:message key="message.validation.ingredient-name"/>';
+    const INGREDIENT_PICTURE_VALIDATION_MESSAGE = '<fmt:message key="message.validation.ingredient-picture"/>';
+    const INGREDIENT_PROTEINS_VALIDATION_MESSAGE = '<fmt:message key="message.validation.ingredient-proteins"/>';
+    const INGREDIENT_FATS_VALIDATION_MESSAGE = '<fmt:message key="message.validation.ingredient-fats"/>';
+    const INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE = '<fmt:message key="message.validation.ingredient-carbohydrates"/>';
+    const INGREDIENT_WITH_SUCH_NAME_ALREADY_EXISTS_MESSAGE = '<fmt:message key="message.validation.ingredient-name.exists"/>';
+
+    const fillModalWithValidations = (validations) => {
+        const $modalBody = document.getElementById(validationModalBodyId);
+        $modalBody.innerText = '';
+        const $validationsDiv = document.createElement("div");
+        for (let validationMessage of validations) {
+            let message;
+            switch (validationMessage) {
+                case 'ingredient-name':
+                    message = INGREDIENT_NAME_VALIDATION_MESSAGE;
+                    break;
+                case 'ingredient-picture':
+                    message = INGREDIENT_PICTURE_VALIDATION_MESSAGE;
+                    break;
+                case 'ingredient-proteins':
+                    message = INGREDIENT_PROTEINS_VALIDATION_MESSAGE;
+                    break;
+                case 'ingredient-fats':
+                    message = INGREDIENT_FATS_VALIDATION_MESSAGE;
+                    break;
+                case 'ingredient-carbohydrates':
+                    message = INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE;
+                    break;
+                case 'ingredient-exists':
+                    message = INGREDIENT_WITH_SUCH_NAME_ALREADY_EXISTS_MESSAGE;
+                    break;
+            }
+
+            const $validationDiv = document.createElement("div");
+            $validationDiv.innerText = message;
+            $validationsDiv.append($validationDiv);
+        }
+
+        $modalBody.append($validationsDiv);
+    }
+</script>
 </body>
 </html>

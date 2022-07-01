@@ -85,7 +85,7 @@ public class MenuItemServiceImpl implements MenuItemService {
             if (isValid) {
                 BigDecimal menuItemCost = BigDecimal.valueOf(Double.parseDouble(menuItemCostString));
                 List<Long> ingredientIds = parameters.getMultiple(INGREDIENT_ID).stream().map(Long::parseLong).collect(Collectors.toList());
-                List<Double> ingredientWeights = parameters.getMultiple(INGREDIENT_ID).stream().map(Double::parseDouble).collect(Collectors.toList());
+                List<Double> ingredientWeights = parameters.getMultiple(INGREDIENT_WEIGHT).stream().map(Double::parseDouble).collect(Collectors.toList());
                 MenuItem menuItem = new MenuItem();
                 menuItem.setName(menuItemName);
                 menuItem.setCost(menuItemCost);

@@ -1,8 +1,8 @@
 package com.mahanko.finalproject.controller.command.impl;
 
-import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
+import com.mahanko.finalproject.controller.ValidationMessage;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.service.MenuItemService;
@@ -20,16 +20,14 @@ import java.io.IOException;
 import java.util.*;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
-import static com.mahanko.finalproject.controller.ValidationMessage.MEAL_ADDED_SUCCESSFULLY_MESSAGE;
+import static com.mahanko.finalproject.controller.ValidationMessage.VALIDATION_MESSAGES;
 
 public class AddMenuItemCommand extends AsynchronousCommand {
     private static final Logger logger = LogManager.getLogger();
-    // FIXME: 01.06.2022 
-    private static final String MENU_ITEM_ADD_SUCCESS = "Menu item was added successfully.";
-    private static final String MENU_ITEM_ADD_FAILED = "Menu item wasn't added. Probably item with such name already exists";
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
+        Router route;
         try {
             RequestParameters parameters = new RequestParameters();
             String[] ingredientIdsArray = request.getParameterValues(INGREDIENT_ID);
@@ -58,14 +56,16 @@ public class AddMenuItemCommand extends AsynchronousCommand {
             parameters.put(MENU_ITEM_SECTION_ID, request.getParameter(MENU_ITEM_SECTION_ID));
 
             MenuItemService menuItemService = MenuItemServiceImpl.getInstance();
-            if (menuItemService.insertNew(parameters)) {
-                request.setAttribute(MEAL_ADDED_SUCCESSFULLY_MESSAGE, MENU_ITEM_ADD_SUCCESS);
+            boolean inserted = menuItemService.insertNew(parameters);
+            if (inserted) {
+                route = fillResponse(response, true);
             } else {
-                if (!parameters.fillRequestWithValidations(request)) {
-                    // FIXME: 11.05.2022
-                    request.setAttribute(MENU_ITEM_ADD_FAILED, MENU_ITEM_ADD_FAILED);
+                List<String> validationMessages = parameters.getMultiple(VALIDATION_MESSAGES);
+                if (validationMessages == null) {
+                    validationMessages = List.of(ValidationMessage.MENU_ITEM_WITH_SUCH_NAME_ALREADY_EXISTS_MESSAGE);
                 }
 
+                route = fillResponse(response, false, validationMessages);
             }
         } catch (ServiceException e) {
             throw new CommandException(e);
@@ -74,6 +74,6 @@ public class AddMenuItemCommand extends AsynchronousCommand {
             throw new CommandException(e);
         }
 
-        return new Router(PagePath.ADD_MENU_ITEM, Router.Type.FORWARD);
+        return route;
     }
 }

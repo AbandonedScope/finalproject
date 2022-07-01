@@ -15,6 +15,9 @@ public class ValidationMessage {
     public static final String INGREDIENT_FATS_VALIDATION_MESSAGE = "ingredient-fats";
     public static final String INGREDIENT_CARBOHYDRATES_VALIDATION_MESSAGE = "ingredient-carbohydrates";
     public static final String INGREDIENT_PICTURE_VALIDATION_MESSAGE = "ingredient-picture";
+    public static final String INGREDIENT_WITH_SUCH_NAME_ALREADY_EXISTS_MESSAGE = "ingredient-exists";
+    public static final String MENU_ITEM_WITH_SUCH_NAME_ALREADY_EXISTS_MESSAGE = "menu-item-exists";
+    public static final String MENU_SECTION_WITH_SUCH_NAME_ALREADY_EXISTS_MESSAGE = "menu-section-exists";
     public static final String SECTION_NAME_VALIDATION_MESSAGE = "section-name";
     public static final String REGISTRATION_USER_EXISTS_MESSAGE = "user-exists";
     public static final String SERVING_DATETIME_VALIDATION_MESSAGE = "incorrect-datetime";
@@ -22,7 +25,6 @@ public class ValidationMessage {
     public static final String LOGIN_VALIDATION_MESSAGE = "login_msg";
     public static final String SECTION_ADD_SUCCESSFULLY_MESSAGE = "section-add-success";
     public static final String SECTION_ADD_FAIL_MESSAGE = "section-add-fail";
-    public static final String INGREDIENT_ADD_MESSAGE = "ingredient_add_msg";
     public static final String MEAL_ADDED_SUCCESSFULLY_MESSAGE = "success";
     public static final String MEAL_INGREDIENTS_VALIDATION_MESSAGE = "meal-ingredients-validation-message";
     private ValidationMessage() {
