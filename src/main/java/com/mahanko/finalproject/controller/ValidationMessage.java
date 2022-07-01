@@ -5,7 +5,7 @@ public class ValidationMessage {
     public static final String USER_SURNAME_VALIDATION_MESSAGE = "user-surname";
     public static final String LOGIN_REGISTRATION_VALIDATION_MESSAGE = "login";
     public static final String PASSWORD_VALIDATION_MESSAGE = "password";
-    public static final String CONFIRM_PASSWORD_VALIDATION_MESSAGE = "confirm-password";
+    public static final String WRONG_LOGIN_OR_PASSWORD_VALIDATION_MESSAGE = "wrong_login_or_password";
     public static final String MEAL_NAME_VALIDATION_MESSAGE = "meal-name";
     public static final String MEAL_COST_VALIDATION_MESSAGE = "meal-cost";
     public static final String MEAL_PICTURE_VALIDATION_MESSAGE = "meal-picture";
@@ -23,9 +23,7 @@ public class ValidationMessage {
     public static final String SERVING_DATETIME_VALIDATION_MESSAGE = "incorrect-datetime";
     public static final String VALIDATION_MESSAGES = "validation_msg";
     public static final String LOGIN_VALIDATION_MESSAGE = "login_msg";
-    public static final String SECTION_ADD_SUCCESSFULLY_MESSAGE = "section-add-success";
-    public static final String SECTION_ADD_FAIL_MESSAGE = "section-add-fail";
-    public static final String MEAL_ADDED_SUCCESSFULLY_MESSAGE = "success";
+    public static final String CUSTOMER_BLOCKED_MESSAGE = "customer_blocked";
     public static final String MEAL_INGREDIENTS_VALIDATION_MESSAGE = "meal-ingredients-validation-message";
     private ValidationMessage() {
     }

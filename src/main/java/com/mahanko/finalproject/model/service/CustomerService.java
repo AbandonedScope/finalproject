@@ -7,7 +7,7 @@ import com.mahanko.finalproject.exception.ServiceException;
 import java.util.Optional;
 
 public interface CustomerService {
-    Optional<CustomerEntity> authenticate(String login, String password) throws ServiceException;
+    Optional<CustomerEntity> authenticate(RequestParameters parameters) throws ServiceException;
 
     Optional<CustomerEntity> register(RequestParameters parameters) throws ServiceException;
 

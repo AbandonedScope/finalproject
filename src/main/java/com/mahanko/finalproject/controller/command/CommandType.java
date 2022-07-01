@@ -34,8 +34,9 @@ public enum CommandType {
     SET_CUSTOMER_BLOCKED(new SetCustomerBlockedCommand()),
     REMOVE_INGREDIENT(new RemoveIngredientCommand()),
     REMOVE_MENU_ITEM(new RemoveMenuItemCommand()),
-    REMOVE_MENU_SECTION(new RemoveMenuSectionCommand());
-
+    REMOVE_MENU_SECTION(new RemoveMenuSectionCommand()),
+    BLOCK_CUSTOMER(new BlockCustomerCommand()),
+    UNBLOCK_CUSTOMER(new UnblockCustomerCommand());
 
     private final Command command;
 

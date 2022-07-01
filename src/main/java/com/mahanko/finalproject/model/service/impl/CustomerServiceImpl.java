@@ -1,6 +1,7 @@
 package com.mahanko.finalproject.model.service.impl;
 
 import com.mahanko.finalproject.controller.RequestParameters;
+import com.mahanko.finalproject.controller.ValidationMessage;
 import com.mahanko.finalproject.model.dao.CustomerDao;
 import com.mahanko.finalproject.model.dao.impl.CustomerDaoImpl;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
@@ -30,19 +31,33 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public Optional<CustomerEntity> authenticate(String login, String password) throws ServiceException {
+    public Optional<CustomerEntity> authenticate(RequestParameters parameters) throws ServiceException {
+        String login = parameters.get(USER_LOGIN);
+        String password = parameters.get(USER_PASSWORD);
         Optional<CustomerEntity> optionalCustomer = Optional.empty();
         CustomerValidator validator = new CustomerValidatorImpl();
+        List<String> validationMessages = new ArrayList<>();
 
-        // FIXME: 11.05.2022
         if (validator.validateLogin(login)) {
             CustomerDao customerDao = CustomerDaoImpl.getInstance();
             try {
                 String encryptedPassword = PasswordEncryptor.encrypt(password);
                 optionalCustomer = customerDao.authenticate(login, encryptedPassword);
+                if (optionalCustomer.isEmpty()) {
+                    validationMessages.add(WRONG_LOGIN_OR_PASSWORD_VALIDATION_MESSAGE);
+                } else if (optionalCustomer.get().isBlocked()) {
+                    optionalCustomer = Optional.empty();
+                    validationMessages.add(CUSTOMER_BLOCKED_MESSAGE);
+                }
             } catch (DaoException e) {
                 throw new ServiceException(e);
             }
+        } else {
+            validationMessages.add(LOGIN_VALIDATION_MESSAGE);
+        }
+
+        if (!validationMessages.isEmpty()) {
+            parameters.put(VALIDATION_MESSAGES, validationMessages);
         }
 
         return optionalCustomer;
@@ -139,9 +154,9 @@ public class CustomerServiceImpl implements CustomerService {
             Optional<CustomerEntity> optionalCustomer = customerDao.findById(userId);
             if (optionalCustomer.isPresent()) {
                 CustomerEntity customer = optionalCustomer.get();
-                if (state || customer.getRole() != RoleType.ADMIN) {
+                if (!state || customer.getRole() != RoleType.ADMIN) {
                     customerDao.updateBlocked(userId, state);
-                } // TODO: 29.06.2022
+                }
             }
         } catch (DaoException e) {
             throw new ServiceException(e);

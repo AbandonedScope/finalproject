@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.controller.ValidationMessage" %>
+         import="com.mahanko.finalproject.model.entity.RoleType" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ftm" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -63,20 +63,43 @@
                     <div class="d-flex">
                         <c:choose>
                             <c:when test="${customer.blocked}">
-                                <div class="badge bg-danger text-wrap d-flex justify-content-center">
-                                    <p class="my-auto">
-                                        <ftm:message key="label.user.blocked.true"/>
-                                    </p>
+                                <div>
+                                    <div class="badge bg-danger text-wrap d-flex justify-content-center">
+                                        <p class="my-auto">
+                                            <ftm:message key="label.user.blocked.true"/>
+                                        </p>
+                                    </div>
+                                    <div class="mt-2">
+                                        <form class="m-0">
+                                            <input type="hidden" name="customer-id" value="${customer.id}"/>
+                                            <input type="hidden" name="command" value="unblock-customer">
+                                            <input class="btn btn-outline-success" type="submit"
+                                                   value="<fmt:message key="action.admin.unblock-user"/>">
+                                        </form>
+                                    </div>
                                 </div>
                             </c:when>
                             <c:when test="${not customer.blocked}">
-                                <div class="badge bg-success text-wrap d-flex justify-content-center">
-                                    <p class="my-auto">
-                                        <ftm:message key="label.user.blocked.false"/>
-                                    </p>
+                                <div>
+                                    <div class="badge bg-success text-wrap d-flex justify-content-center">
+                                        <p class="my-auto">
+                                            <ftm:message key="label.user.blocked.false"/>
+                                        </p>
+                                    </div>
+                                    <c:if test="${customer.role != RoleType.ADMIN}">
+                                        <div class="mt-2">
+                                            <form class="m-0">
+                                                <input type="hidden" name="customer-id" value="${customer.id}"/>
+                                                <input type="hidden" name="command" value="block-customer">
+                                                <input class="btn btn-outline-danger" type="submit"
+                                                       value="<fmt:message key="action.admin.block-user"/>">
+                                            </form>
+                                        </div>
+                                    </c:if>
                                 </div>
                             </c:when>
                         </c:choose>
+
                     </div>
                 </div>
             </li>

@@ -31,7 +31,7 @@ public class RequestParameters {
         boolean isNotEmpty = messages != null && !messages.isEmpty();
         if (isNotEmpty) {
             for (String message : messages) {
-                request.setAttribute(message, false);
+                request.setAttribute(message, true);
             }
         }
 

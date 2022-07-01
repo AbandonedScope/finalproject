@@ -22,7 +22,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
-public class GetCustomerInfoCommand implements Command {
+public class BlockCustomerCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
@@ -31,10 +31,10 @@ public class GetCustomerInfoCommand implements Command {
         try {
             long customerId = Long.parseLong(customerIdString);
             CustomerService customerService = CustomerServiceImpl.getInstance();
-            OrderService orderService = OrderServiceImpl.getInstance();
+            customerService.setBlocked(customerId, true);
             Optional<CustomerEntity> optionalCustomer = customerService.findById(customerId);
             if (optionalCustomer.isPresent()) {
-                List<OrderEntity> customerOrders = orderService.findOrdersByCustomerId(customerId);
+                List<OrderEntity> customerOrders = OrderServiceImpl.getInstance().findOrdersByCustomerId(customerId);
                 request.setAttribute(AttributeType.CUSTOMER, optionalCustomer.get());
                 if (!customerOrders.isEmpty()) {
                     request.setAttribute(AttributeType.CUSTOMER_ORDERS, customerOrders);
@@ -46,6 +46,7 @@ public class GetCustomerInfoCommand implements Command {
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
+
         return new Router(PagePath.CUSTOMER_INFO, Router.Type.FORWARD);
     }
 }

@@ -2,6 +2,7 @@ package com.mahanko.finalproject.controller.command.impl;
 
 import com.mahanko.finalproject.controller.AttributeType;
 import com.mahanko.finalproject.controller.PagePath;
+import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.exception.CommandException;
@@ -29,19 +30,20 @@ public class LoginCommand implements Command {
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String login = request.getParameter(USER_LOGIN);
         String password = request.getParameter(USER_PASSWORD);
-        CustomerService customerService =  CustomerServiceImpl.getInstance();
+        RequestParameters parameters = new RequestParameters();
+        parameters.put(USER_LOGIN, login);
+        parameters.put(USER_PASSWORD, password);
         String page;
         HttpSession session = request.getSession();
         Router route = new Router();
-        // FIXME: 22.04.2022 validation messages?
+        CustomerService customerService =  CustomerServiceImpl.getInstance();
         try {
-            Optional<CustomerEntity> optionalCustomer = customerService.authenticate(login, password);
+            Optional<CustomerEntity> optionalCustomer = customerService.authenticate(parameters);
             if (optionalCustomer.isPresent()) {
                 session.setAttribute(AttributeType.USER, optionalCustomer.get());
                 page = PagePath.MAIN;
             } else {
-                // FIXME: 11.05.2022
-                request.setAttribute(LOGIN_VALIDATION_MESSAGE, LOGIN_FAILED_MESSAGE);
+                parameters.fillRequestWithValidations(request);
                 page = PagePath.LOGIN;
                 route.setType(Router.Type.FORWARD);
             }
