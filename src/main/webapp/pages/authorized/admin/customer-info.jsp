@@ -12,6 +12,9 @@
 <body>
 <c:set var="orders" value="${requestScope.customerOrders}"/>
 <c:set var="customer" value="${requestScope.customer}"/>
+<c:if test="${empty customer}">
+    <c:redirect url="user-find.jsp"/>
+</c:if>
 <div class="mx-5 mt-2">
     <div>
         <ul class="list-group list-group-flush">
@@ -46,6 +49,26 @@
                 <div>
                     ${customer.role}
                 </div>
+                <c:if test="${customer.role == RoleType.CUSTOMER}">
+                    <div class="mt-2">
+                        <form class="m-0">
+                            <input type="hidden" name="customer-id" value="${customer.id}"/>
+                            <input type="hidden" name="command" value="set-customer-role-admin">
+                            <input class="btn btn-outline-warning" type="submit"
+                                   value="<fmt:message key="action.admin.set-role-admin"/>">
+                        </form>
+                    </div>
+                </c:if>
+                <c:if test="${customer.role == RoleType.ADMIN}">
+                    <div class="mt-2">
+                        <form class="m-0">
+                            <input type="hidden" name="customer-id" value="${customer.id}"/>
+                            <input type="hidden" name="command" value="set-customer-role-customer">
+                            <input class="btn btn-outline-warning" type="submit"
+                                   value="<fmt:message key="action.admin.set-role-customer"/>">
+                        </form>
+                    </div>
+                </c:if>
             </li>
             <li class="list-group-item">
                 <label>

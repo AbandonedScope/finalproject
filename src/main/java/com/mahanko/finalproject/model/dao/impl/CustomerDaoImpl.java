@@ -1,6 +1,7 @@
 package com.mahanko.finalproject.model.dao.impl;
 
 import com.mahanko.finalproject.model.dao.CustomerDao;
+import com.mahanko.finalproject.model.entity.RoleType;
 import com.mahanko.finalproject.model.mapper.CustomRowMapper;
 import com.mahanko.finalproject.model.mapper.impl.CustomerRowMapper;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
@@ -14,6 +15,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,6 +25,10 @@ public class CustomerDaoImpl implements CustomerDao {
             "SELECT u_id, u_name, u_surname, u_password, u_login, u_loyaltypoints, u_blocked, u_role " +
                     "FROM users " +
                     "WHERE u_login = ? AND u_password = ? ";
+    private static final String SELECT_BY_NAME_OR_SURNAME_OR_LOGIN =
+            "SELECT u_id, u_name, u_surname, u_password, u_login, u_loyaltypoints, u_blocked, u_role " +
+                    "FROM users " +
+                    "WHERE locate(?, concat_ws(' ', u_name, u_surname, u_login)) > 0";
     private static final String SELECT_BY_ID =
             "SELECT u_id, u_name, u_surname, u_password, u_login, u_loyaltypoints, u_blocked, u_role " +
                     "FROM users " +
@@ -36,6 +42,8 @@ public class CustomerDaoImpl implements CustomerDao {
             "update users set u_loyaltypoints = ? where u_id = ?";
     private static final String UPDATE_BLOCKED =
             "update users set u_blocked = ? where u_id = ?";
+    private static final String UPDATE_ROLE =
+            "update users set u_role = ? where u_id = ?";
 
     private static final CustomerDaoImpl instance = new CustomerDaoImpl();
 
@@ -110,6 +118,39 @@ public class CustomerDaoImpl implements CustomerDao {
         }
     }
 
+    @Override
+    public List<CustomerEntity> findByName(String name) throws DaoException {
+        List<CustomerEntity> customerEntities = new ArrayList<>();
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(SELECT_BY_NAME_OR_SURNAME_OR_LOGIN)) {
+            statement.setString(1, name);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    CustomRowMapper<CustomerEntity> mapper = new CustomerRowMapper();
+                    mapper.map(resultSet).ifPresent(customerEntities::add);
+                }
+            }
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+
+        return customerEntities;
+    }
+
+    @Override
+    public void updateRole(long id, RoleType role) throws DaoException {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_ROLE)) {
+            statement.setString(1, role.toString());
+            statement.setLong(2, id);
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            logger.log(Level.ERROR, e);
+            throw new DaoException(e);
+        }
+    }
+
 
     @Override
     public Optional<CustomerEntity> findById(long id) throws DaoException {
@@ -117,10 +158,11 @@ public class CustomerDaoImpl implements CustomerDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
             statement.setLong(1, id);
-            ResultSet resultSet = statement.executeQuery();
-            if (resultSet.next()) {
-                CustomRowMapper<CustomerEntity> mapper = new CustomerRowMapper();
-                optionalCustomer = mapper.map(resultSet);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                if (resultSet.next()) {
+                    CustomRowMapper<CustomerEntity> mapper = new CustomerRowMapper();
+                    optionalCustomer = mapper.map(resultSet);
+                }
             }
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);

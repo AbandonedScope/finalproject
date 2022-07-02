@@ -78,6 +78,12 @@
                             <fmt:message key="navigation.admin.orders"/>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link active"
+                           href="${pageContext.request.contextPath}/pages/authorized/admin/user-find.jsp">
+                            <fmt:message key="navigation.admin.users"/>
+                        </a>
+                    </li>
                 </c:if>
                 <c:choose>
                     <c:when test="${sessionScope.user != null && sessionScope.user.getRole() == RoleType.GUEST}">

@@ -1,5 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.controller.ValidationMessage" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="ftm" uri="http://java.sun.com/jsp/jstl/fmt" %>
@@ -12,6 +11,10 @@
 <body>
 <c:set var="order" value="${requestScope.order}"/>
 <c:set var="orderCustomer" value="${requestScope.orderCustomer}"/>
+
+<c:if test="${empty order}">
+    <c:redirect url="orders.jsp"/>
+</c:if>
 <div class="mx-5 mt-2">
     <div class="m-5 d-flex justify-content-evenly">
         <div>
@@ -37,7 +40,7 @@
                                 <span class="position-absolute top-50 start-50 translate-middle" tabindex="0"
                                       data-bs-toggle="popover"
                                       data-bs-trigger="hover focus"
-                                      data-bs-content="<ftm:message key="label.user.loyal-points.negative"/>">
+                                      data-bs-content="<fmt:message key="label.user.loyal-points.negative"/>">
                                     <em class="bi bi-exclamation-circle text-danger">
                                     </em>
                                 </span>

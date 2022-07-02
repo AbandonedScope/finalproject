@@ -17,7 +17,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ConnectionPool { //FIXME: 09.04.2022 Read about these properties
-    private static final String CONFIG_FILE_NAME = "config.properties";
     private static final int MAX_CONNECTIONS;
     private static final String DATABASE_DRIVER;
     private static final String URL;
@@ -32,11 +31,11 @@ public class ConnectionPool { //FIXME: 09.04.2022 Read about these properties
 
     static {
         properties = new Properties();
-        try (InputStream input = ConnectionPool.class.getClassLoader().getResourceAsStream(CONFIG_FILE_NAME)) {
+        try (InputStream input = ConnectionPool.class.getClassLoader().getResourceAsStream(ConnectionProperty.CONFIG_FILE_NAME)) {
             properties.load(input);
-            DATABASE_DRIVER = properties.getProperty("driver"); // FIXME: 18.04.2022 into constants
-            URL = properties.getProperty("url");
-            MAX_CONNECTIONS = Integer.parseInt(properties.getProperty("maxConnections"));
+            DATABASE_DRIVER = properties.getProperty(ConnectionProperty.DRIVER);
+            URL = properties.getProperty(ConnectionProperty.URL);
+            MAX_CONNECTIONS = Integer.parseInt(properties.getProperty(ConnectionProperty.MAX_CONNECTIONS_AMOUNT));
             Class.forName(DATABASE_DRIVER);
         } catch (ClassNotFoundException | NumberFormatException | IOException e) {
             logger.log(Level.ERROR, e);

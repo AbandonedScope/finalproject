@@ -70,7 +70,7 @@
                     <div class="align-items-center text-wrap" style="width: 50%">
                         <div class="text-center bi bi-emoji-frown" style="font-size: 12rem;"></div>
                         <p class="text-center" style="font-size: 2rem;">
-                            <fmt:message key="orders.empty"/>
+                            <fmt:message key="orders.empty.admin"/>
                         </p>
                     </div>
                 </div>

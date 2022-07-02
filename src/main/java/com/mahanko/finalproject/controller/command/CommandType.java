@@ -36,7 +36,10 @@ public enum CommandType {
     REMOVE_MENU_ITEM(new RemoveMenuItemCommand()),
     REMOVE_MENU_SECTION(new RemoveMenuSectionCommand()),
     BLOCK_CUSTOMER(new BlockCustomerCommand()),
-    UNBLOCK_CUSTOMER(new UnblockCustomerCommand());
+    UNBLOCK_CUSTOMER(new UnblockCustomerCommand()),
+    FIND_CUSTOMER_BY_NAME(new FindCustomerByNameCommand()),
+    SET_CUSTOMER_ROLE_ADMIN(new SetCustomerRoleAdminCommand()),
+    SET_CUSTOMER_ROLE_CUSTOMER(new SetCustomerRoleCustomerCommand());
 
     private final Command command;
 

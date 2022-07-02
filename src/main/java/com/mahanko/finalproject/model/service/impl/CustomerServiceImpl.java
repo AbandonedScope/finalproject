@@ -162,4 +162,27 @@ public class CustomerServiceImpl implements CustomerService {
             throw new ServiceException(e);
         }
     }
+
+    @Override
+    public List<CustomerEntity> findByName(String name) throws ServiceException {
+        List<CustomerEntity> customerEntities;
+        try {
+            CustomerDao customerDao = CustomerDaoImpl.getInstance();
+            customerEntities = customerDao.findByName(name);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+
+        return customerEntities;
+    }
+
+    @Override
+    public void setRole(long id, RoleType role) throws ServiceException {
+        try {
+            CustomerDao customerDao = CustomerDaoImpl.getInstance();
+            customerDao.updateRole(id, role);
+        } catch (DaoException e) {
+            throw new ServiceException(e);
+        }
+    }
 }

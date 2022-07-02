@@ -45,6 +45,7 @@ public final class ParameterType {
     public static final String ORDER_ITEMS = "order-items";
     public static final String ORDER_PAYMENT_TYPE = "payment-type";
     public static final String CUSTOMER_ID = "customer-id";
+    public static final String CUSTOMER_NAME = "customer-name";
     public static final String CUSTOMER_BLOCKED_STATE = "customer-blocked-state";
     public static final String BONUSES = "bonuses";
 
