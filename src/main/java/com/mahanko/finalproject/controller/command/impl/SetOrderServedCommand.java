@@ -6,9 +6,7 @@ import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
-import com.mahanko.finalproject.model.service.CustomerService;
 import com.mahanko.finalproject.model.service.OrderService;
-import com.mahanko.finalproject.model.service.impl.CustomerServiceImpl;
 import com.mahanko.finalproject.model.service.impl.OrderServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -16,6 +14,9 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * The {@link Command} that updates in database order served status to true.
+ */
 public class SetOrderServedCommand  implements Command {
     private static final Logger logger = LogManager.getLogger();
 

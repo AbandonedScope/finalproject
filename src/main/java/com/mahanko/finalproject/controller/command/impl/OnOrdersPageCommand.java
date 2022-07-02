@@ -14,6 +14,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
+/**
+ * The {@link Command} that is executes to find customer orders by its id.
+ */
 public class OnOrdersPageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

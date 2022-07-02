@@ -22,6 +22,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The {@link Command} that is used to find information about customer and customer's orders by its id.
+ */
 public class GetCustomerInfoCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 

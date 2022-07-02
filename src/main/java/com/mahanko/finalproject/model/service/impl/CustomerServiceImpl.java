@@ -1,7 +1,6 @@
 package com.mahanko.finalproject.model.service.impl;
 
 import com.mahanko.finalproject.controller.RequestParameters;
-import com.mahanko.finalproject.controller.ValidationMessage;
 import com.mahanko.finalproject.model.dao.CustomerDao;
 import com.mahanko.finalproject.model.dao.impl.CustomerDaoImpl;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
@@ -122,7 +121,7 @@ public class CustomerServiceImpl implements CustomerService {
 
     @Override
     public Optional<CustomerEntity> findById(long id) throws ServiceException {
-        Optional<CustomerEntity> optionalCustomer = Optional.empty();
+        Optional<CustomerEntity> optionalCustomer;
         CustomerDao customerDao = CustomerDaoImpl.getInstance();
         try {
             optionalCustomer = customerDao.findById(id);

@@ -13,7 +13,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
-
+/**
+ * The {@link Command} that is used to find ingredient by its name.
+ */
 public class FindIngredientsByNameCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

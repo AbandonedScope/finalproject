@@ -13,8 +13,14 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+import java.util.Optional;
+
 import static com.mahanko.finalproject.controller.AttributeType.ORDER_CART;
 
+/**
+ * The {@link AsynchronousCommand} that add new or additional {@link MenuItem}
+ * into customer's {@link OrderEntity}.
+ */
 public class AddItemToCartCommand extends AsynchronousCommand {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
@@ -32,10 +38,14 @@ public class AddItemToCartCommand extends AsynchronousCommand {
         MenuItemService service = MenuItemServiceImpl.getInstance();
         MenuItem item;
         try {
-            item = service.findById(itemId).orElseThrow(() -> new CommandException("No such item was found."));
-            order.addItem(item, count);
-            router.setType(Router.Type.NONE);
-        } catch (ServiceException e) {
+            Optional<MenuItem> optionalMeal = service.findById(itemId);
+            if (optionalMeal.isPresent()) {
+                item = optionalMeal.get();
+                order.addItem(item, count);
+            } else {
+                fillResponse(response, false);
+            }
+        } catch (ServiceException | NumberFormatException e) {
             throw new CommandException(e);
         }
 

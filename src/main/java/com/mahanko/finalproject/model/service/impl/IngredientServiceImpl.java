@@ -146,7 +146,7 @@ public class IngredientServiceImpl implements IngredientService {
         try {
             IngredientDao ingredientDao = IngredientDaoImpl.getInstance();
             if (ingredientDao.existsMerge(id)) {
-                removed = ingredientDao.setHidden(id, true);
+                removed = ingredientDao.updateHidden(id, true);
             } else {
                 removed = ingredientDao.remove(id);
             }

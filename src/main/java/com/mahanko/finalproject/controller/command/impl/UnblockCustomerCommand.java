@@ -21,6 +21,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The {@link Command} that unblock customer by id.
+ */
 public class UnblockCustomerCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 

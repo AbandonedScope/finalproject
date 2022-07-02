@@ -21,6 +21,9 @@ import java.util.Optional;
 import static com.mahanko.finalproject.controller.ParameterType.*;
 import static com.mahanko.finalproject.controller.ValidationMessage.REGISTRATION_USER_EXISTS_MESSAGE;
 
+/**
+ * The {@link Command} that insert new {@link CustomerEntity} into database.
+ */
 public class AddUserCommand implements Command {
     
     private static final Logger logger = LogManager.getLogger();

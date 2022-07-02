@@ -5,6 +5,7 @@ import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.ValidationMessage;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
+import com.mahanko.finalproject.model.entity.menu.MenuItem;
 import com.mahanko.finalproject.model.service.MenuItemService;
 import com.mahanko.finalproject.model.service.impl.MenuItemServiceImpl;
 import com.mahanko.finalproject.util.CustomPictureEncoder;
@@ -23,6 +24,9 @@ import java.util.stream.Collectors;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
 
+/**
+ * The {@link AsynchronousCommand} that update information about existing in database {@link MenuItem}.
+ */
 public class ModifyMenuItemCommand extends AsynchronousCommand {
     private static final Logger logger = LogManager.getLogger();
 

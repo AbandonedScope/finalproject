@@ -24,6 +24,9 @@ import java.util.Optional;
 import static com.mahanko.finalproject.controller.ParameterType.*;
 import static com.mahanko.finalproject.controller.ValidationMessage.VALIDATION_MESSAGES;
 
+/**
+ * The {@link AsynchronousCommand} that insert new {@link Ingredient} into database.
+ */
 public class AddIngredientCommand extends AsynchronousCommand {
     private static final Logger logger = LogManager.getLogger();
 

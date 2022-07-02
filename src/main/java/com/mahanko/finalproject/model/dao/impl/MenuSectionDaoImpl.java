@@ -10,10 +10,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -27,7 +24,7 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     private static final String INSERT_SECTION =
             "INSERT INTO sections(s_name) VALUES (?)";
     private static final String SELECT_BY_NAME =
-            "SELECT s_id, s_name FROM sections WHERE locate(?, s_name) > 0";
+            "SELECT s_id, s_name FROM sections WHERE locate(?, s_name) > 0 and s_hidden = 0";
     private static final String UPDATE_SECTION_BY_ID =
             "update sections set s_id = ?, s_name = ? where s_id = ?";
     private static final String SELECT_EXISTS_IN_MENU_ITEMS_BY_ID =
@@ -62,16 +59,21 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
             logger.log(Level.ERROR, e);
             throw new DaoException(e);
         }
+
         return sectionOptional;
     }
 
     @Override
-    public boolean insert(MenuSection id) throws DaoException {
+    public boolean insert(MenuSection entity) throws DaoException {
         boolean isInserted = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT_SECTION)) {
-            statement.setString(1, id.getName());
+             PreparedStatement statement = connection.prepareStatement(INSERT_SECTION, Statement.RETURN_GENERATED_KEYS)) {
+            statement.setString(1, entity.getName());
             if (statement.executeUpdate() != 0) {
+                try (ResultSet keysSet = statement.getGeneratedKeys()) {
+                    keysSet.next();
+                    entity.setId(keysSet.getInt(1));
+                }
                 isInserted = true;
             }
         } catch (SQLException e) {
@@ -108,7 +110,6 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
                 resultSet.next();
                 MenuSectionRowMapper mapper = new MenuSectionRowMapper();
                 while (!resultSet.isAfterLast()) {
-                    // FIXME: 27.04.2022 if empty???
                     mapper.map(resultSet).ifPresent(sections::add);
                 }
             }
@@ -179,7 +180,7 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     }
 
     @Override
-    public boolean setHidden(Integer id, boolean state) throws DaoException {
+    public boolean updateHidden(Integer id, boolean state) throws DaoException {
         boolean updated = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_HIDDEN_BY_ID)) {

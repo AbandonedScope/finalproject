@@ -2,7 +2,6 @@ package com.mahanko.finalproject.controller.command.impl;
 
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.ParameterType;
-import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.exception.CommandException;
@@ -17,6 +16,9 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * The {@link Command} that updates in database order served status to true and updates customer loyal points.
+ */
 public class SetOrderTakenCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
     @Override

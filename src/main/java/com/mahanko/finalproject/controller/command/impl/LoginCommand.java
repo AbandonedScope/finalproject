@@ -20,11 +20,12 @@ import org.apache.logging.log4j.Logger;
 import java.util.Optional;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
-import static com.mahanko.finalproject.controller.ValidationMessage.LOGIN_VALIDATION_MESSAGE;
 
+/**
+ * The {@link Command} that is used to sign in customer by its login and password.
+ */
 public class LoginCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
-    private static final String LOGIN_FAILED_MESSAGE = "Wrong login or password.";
 
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

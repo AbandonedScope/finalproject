@@ -4,6 +4,7 @@ import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
+import com.mahanko.finalproject.model.entity.menu.MenuSection;
 import com.mahanko.finalproject.model.service.MenuSectionService;
 import com.mahanko.finalproject.model.service.impl.MenuSectionServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -15,6 +16,9 @@ import java.util.List;
 import static com.mahanko.finalproject.controller.ParameterType.*;
 import static com.mahanko.finalproject.controller.ValidationMessage.*;
 
+/**
+ * The {@link AsynchronousCommand} that insert new {@link MenuSection} into database.
+ */
 public class AddMenuSectionCommand extends AsynchronousCommand {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

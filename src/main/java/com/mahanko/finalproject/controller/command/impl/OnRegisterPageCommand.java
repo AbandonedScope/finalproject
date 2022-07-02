@@ -7,6 +7,9 @@ import com.mahanko.finalproject.exception.CommandException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * The {@link Command} that redirects to registration page.
+ */
 public class OnRegisterPageCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

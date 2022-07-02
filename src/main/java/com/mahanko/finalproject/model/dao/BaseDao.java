@@ -10,7 +10,7 @@ public interface BaseDao<T, E extends AbstractEntity<T>> {
 
     Optional<E> findById(long id) throws DaoException;
 
-    boolean insert(E id) throws DaoException;
+    boolean insert(E entity) throws DaoException;
 
     boolean remove(T id) throws DaoException;
 

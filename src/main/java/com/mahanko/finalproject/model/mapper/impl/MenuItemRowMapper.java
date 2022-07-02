@@ -33,13 +33,18 @@ public class MenuItemRowMapper implements CustomRowMapper<MenuItem> {
             menuItem.setCost(resultSet.getBigDecimal(MENU_ITEM_COST));
             menuItem.setSectionId(resultSet.getLong(MENU_ITEM_SECTION));
             IngredientRowMapper ingredientMapper = new IngredientRowMapper();
-            do {
-                Optional<Ingredient> ingredientOptional = ingredientMapper.map(resultSet);
-                if (ingredientOptional.isPresent()) {
-                    ingredientOptional.get().setWeight(resultSet.getDouble(INGREDIENT_WEIGHT));
-                    menuItem.addIngredient(ingredientOptional.get());
-                }
-            } while (resultSet.next() && resultSet.getLong(MENU_ITEM_ID) == menuItem.getId());
+            if (!resultSet.isLast()) {
+                do {
+                    Optional<Ingredient> ingredientOptional = ingredientMapper.map(resultSet);
+                    if (ingredientOptional.isPresent()) {
+                        ingredientOptional.get().setWeight(resultSet.getDouble(INGREDIENT_WEIGHT));
+                        menuItem.addIngredient(ingredientOptional.get());
+                    }
+                } while (resultSet.next() && resultSet.getLong(MENU_ITEM_ID) == menuItem.getId());
+            } else {
+                resultSet.next();
+            }
+
             menuItemOptional = Optional.of(menuItem);
         } catch (SQLException | IOException e) {
             logger.log(Level.ERROR, e);

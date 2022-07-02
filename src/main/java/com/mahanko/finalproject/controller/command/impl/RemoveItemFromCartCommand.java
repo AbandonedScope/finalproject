@@ -14,6 +14,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * The {@link Command} that removes menu item from customer order.
+ */
 public class RemoveItemFromCartCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

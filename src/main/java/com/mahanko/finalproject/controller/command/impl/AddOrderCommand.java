@@ -18,6 +18,9 @@ import jakarta.servlet.http.HttpSession;
 import static com.mahanko.finalproject.controller.AttributeType.ORDER_CART;
 import static com.mahanko.finalproject.controller.ParameterType.*;
 
+/**
+ * The {@link Command} that insert new {@link OrderEntity} into database.
+ */
 public class AddOrderCommand implements Command {
 
     @Override

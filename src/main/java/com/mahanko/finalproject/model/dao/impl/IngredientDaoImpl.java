@@ -134,28 +134,27 @@ public class IngredientDaoImpl implements IngredientDao {
         return ingredientOptional;
     }
 
-    // FIXME: 22.04.2022 equal names
     @Override
-    public boolean insert(Ingredient id) throws DaoException {
+    public boolean insert(Ingredient entity) throws DaoException {
         boolean isInserted = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_NEW_INGREDIENTS, Statement.RETURN_GENERATED_KEYS)) {
-            String base64String = id.getPictureBase64();
+            String base64String = entity.getPictureBase64();
             byte[] data = CustomPictureEncoder.decodeString(base64String);
             Blob blob = connection.createBlob();
             blob.setBytes(1, data);
-            statement.setString(1, id.getName());
-            statement.setDouble(2, id.getProteins());
-            statement.setDouble(3, id.getFats());
-            statement.setDouble(4, id.getCarbohydrates());
-            statement.setDouble(5, id.getCalories());
+            statement.setString(1, entity.getName());
+            statement.setDouble(2, entity.getProteins());
+            statement.setDouble(3, entity.getFats());
+            statement.setDouble(4, entity.getCarbohydrates());
+            statement.setDouble(5, entity.getCalories());
             statement.setBlob(6, blob);
             if (statement.executeUpdate() != 0) {
                 isInserted = true;
                 try (ResultSet key = statement.getGeneratedKeys()) {
                     key.next();
                     long ingredientId = key.getLong(1);
-                    id.setId(ingredientId);
+                    entity.setId(ingredientId);
                 }
             }
         } catch (SQLException e) {
@@ -184,7 +183,7 @@ public class IngredientDaoImpl implements IngredientDao {
     }
 
     @Override
-    public boolean setHidden(Long id, boolean state) throws DaoException {
+    public boolean updateHidden(Long id, boolean state) throws DaoException {
         boolean updated = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_HIDDEN_BY_ID)) {

@@ -2,6 +2,7 @@ package com.mahanko.finalproject.controller.command.impl;
 
 import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.Router;
+import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.service.IngredientService;
@@ -12,6 +13,9 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+/**
+ * The {@link Command} that removes ingredient from database, or hides it, in case if it is used in any menu item.
+ */
 public class RemoveIngredientCommand extends AsynchronousCommand {
     private static final Logger logger = LogManager.getLogger();
 

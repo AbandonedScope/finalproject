@@ -10,7 +10,6 @@ import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
 import com.mahanko.finalproject.model.entity.OrderEntity;
 import com.mahanko.finalproject.model.service.CustomerService;
-import com.mahanko.finalproject.model.service.OrderService;
 import com.mahanko.finalproject.model.service.impl.CustomerServiceImpl;
 import com.mahanko.finalproject.model.service.impl.OrderServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
@@ -22,6 +21,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The {@link Command} that block customer by id.
+ */
 public class BlockCustomerCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 

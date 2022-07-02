@@ -1,7 +1,6 @@
 package com.mahanko.finalproject.model.service.impl;
 
 import com.mahanko.finalproject.controller.RequestParameters;
-import com.mahanko.finalproject.controller.ValidationMessage;
 import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.dao.MenuItemDao;
@@ -142,7 +141,7 @@ public class MenuSectionServiceImpl implements MenuSectionService {
         try {
             MenuSectionDao menuSectionDao = MenuSectionDaoImpl.getInstance();
             if (menuSectionDao.existsMerge(id)) {
-                removed = menuSectionDao.setHidden(id, true);
+                removed = menuSectionDao.updateHidden(id, true);
             } else {
                 removed = menuSectionDao.remove(id);
             }

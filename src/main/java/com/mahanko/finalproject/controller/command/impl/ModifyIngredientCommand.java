@@ -5,6 +5,7 @@ import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.ValidationMessage;
 import com.mahanko.finalproject.exception.CommandException;
 import com.mahanko.finalproject.exception.ServiceException;
+import com.mahanko.finalproject.model.entity.menu.Ingredient;
 import com.mahanko.finalproject.model.service.IngredientService;
 import com.mahanko.finalproject.model.service.impl.IngredientServiceImpl;
 import com.mahanko.finalproject.util.CustomPictureEncoder;
@@ -21,6 +22,9 @@ import java.util.List;
 
 import static com.mahanko.finalproject.controller.ParameterType.*;
 
+/**
+ * The {@link AsynchronousCommand} that update information about existing in database {@link Ingredient}.
+ */
 public class ModifyIngredientCommand extends AsynchronousCommand {
     private static final Logger logger = LogManager.getLogger();
 

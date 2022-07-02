@@ -101,25 +101,25 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public boolean insert(OrderEntity id) throws DaoException {
+    public boolean insert(OrderEntity entity) throws DaoException {
         boolean isInserted = false;
         Connection connection = ConnectionPool.getInstance().getConnection();
         try (PreparedStatement statement = connection.prepareStatement(INSERT_ORDER, Statement.RETURN_GENERATED_KEYS);
              PreparedStatement mergeStatement = connection.prepareStatement(INSERT_ORDER_MENU_ITEMS_MERGE)) {
             connection.setAutoCommit(false);
-            statement.setBigDecimal(1, id.getCost());
-            Timestamp servingTime = Timestamp.valueOf(id.getServingTime());
-            Timestamp creationTime = Timestamp.valueOf(id.getCreationTime());
+            statement.setBigDecimal(1, entity.getCost());
+            Timestamp servingTime = Timestamp.valueOf(entity.getServingTime());
+            Timestamp creationTime = Timestamp.valueOf(entity.getCreationTime());
             statement.setTimestamp(2, creationTime);
             statement.setTimestamp(3, servingTime);
-            statement.setLong(4, id.getUserId());
-            statement.setString(5, id.getPaymentType().name());
+            statement.setLong(4, entity.getUserId());
+            statement.setString(5, entity.getPaymentType().name());
             if (statement.executeUpdate() == 1) {
                 ResultSet keys = statement.getGeneratedKeys();
                 keys.next();
                 long orderId = keys.getLong(1);
 
-                for (var entry : id.getItems()) {
+                for (var entry : entity.getItems()) {
                     MenuItem meal = entry.getKey();
                     int count = entry.getValue();
                     mergeStatement.setLong(1, orderId);

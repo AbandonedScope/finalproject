@@ -99,7 +99,8 @@
                                                     </div>
                                                 </div>
                                                 <div class="d-flex justify-content-end">
-                                                    <form id="addItemToCartForm-${menuItem.id}" class="m-0"
+                                                    <form onsubmit="onAddFormSubmitted(event)"
+                                                          id="addItemToCartForm-${menuItem.id}" class="m-0"
                                                           action="${pageContext.request.contextPath}/controller"
                                                           method="post">
                                                         <input type="hidden" name="command" value="add-item-to-cart">
@@ -108,13 +109,13 @@
                                                             <input class="form-control" type="number"
                                                                    name="menu-item-count" value="1"
                                                                    min="1"
+                                                                   max="10"
                                                                    step="1" required>
-                                                            <button onclick="onAddButtonPressed('${menuItem.id}')"
-                                                                    class="btn btn-outline-primary text-wrap"
-                                                                    type="button"
-                                                                    name="submit-button">
-                                                                <fmt:message key="action.guest.cart.add-to-cart"/>
-                                                            </button>
+                                                            <input class="btn btn-outline-primary text-wrap"
+                                                                   type="submit"
+                                                                   name="submit-button"
+                                                                   value="
+                                                                <fmt:message key="action.guest.cart.add-to-cart"/>"/>
                                                         </div>
                                                     </form>
                                                 </div>
@@ -141,7 +142,8 @@
                                 </div>
                             </li>
                             <li class="list-group-item p-0">
-                                <form onsubmit="onAddFormSubmitted(event)" id="addItemToCartForm-${menuItem.id}" class="m-0"
+                                <form onsubmit="onAddFormSubmitted(event)" id="addItemToCartForm-${menuItem.id}"
+                                      class="m-0"
                                       action="${pageContext.request.contextPath}/controller"
                                       method="post">
                                     <input type="hidden" name="command" value="add-item-to-cart">
@@ -149,9 +151,10 @@
                                     <div class="input-group">
                                         <input class="form-control" type="number" name="menu-item-count" value="1"
                                                min="1"
-                                               max="100"
+                                               max="10"
                                                step="1" required>
-                                        <input style="z-index: 0" class="btn btn-outline-primary text-wrap" type="submit"
+                                        <input style="z-index: 0" class="btn btn-outline-primary text-wrap"
+                                               type="submit"
                                                value="<fmt:message key="action.guest.cart.add-to-cart"/>">
                                     </div>
                                 </form>

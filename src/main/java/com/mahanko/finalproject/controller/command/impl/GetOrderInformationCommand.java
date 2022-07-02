@@ -18,6 +18,9 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.Optional;
 
+/**
+ * The {@link Command} that is used to find information about order by its id.
+ */
 public class GetOrderInformationCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

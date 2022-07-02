@@ -22,6 +22,9 @@ import org.apache.logging.log4j.Logger;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The {@link Command} that sets customer role to a user by id.
+ */
 public class SetCustomerRoleCustomerCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 

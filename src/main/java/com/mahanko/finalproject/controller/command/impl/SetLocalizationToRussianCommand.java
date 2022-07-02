@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+/**
+ * The {@link Command} that sets localization to Russian.
+ */
 public class SetLocalizationToRussianCommand implements Command {
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {

@@ -1,5 +1,7 @@
 package com.mahanko.finalproject.model.entity;
 
+import java.util.Objects;
+
 public class CustomerEntity extends AbstractEntity<Long> {
     // FIXME: 30.05.2022 to property file
     private static final int DEFAULT_LOYALTY_POINTS_AMOUNT = 5;
@@ -10,15 +12,17 @@ public class CustomerEntity extends AbstractEntity<Long> {
     private int loyalPoints = DEFAULT_LOYALTY_POINTS_AMOUNT;
     private boolean blocked;
     private RoleType roleEntity;
+    private Integer hashCode;
 
-    public CustomerEntity() {}
+    public CustomerEntity() {
+    }
 
     public CustomerEntity(Long id) {
         super(id);
     }
 
     public static CustomerBuilder newBuilder() {
-        return  new CustomerEntity().new CustomerBuilder();
+        return new CustomerEntity().new CustomerBuilder();
     }
 
     public void setName(String name) {
@@ -121,5 +125,37 @@ public class CustomerEntity extends AbstractEntity<Long> {
         public CustomerEntity build() {
             return CustomerEntity.this;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof CustomerEntity)) return false;
+
+        CustomerEntity customer = (CustomerEntity) o;
+
+        if (loyalPoints != customer.loyalPoints) return false;
+        if (blocked != customer.blocked) return false;
+        if (!Objects.equals(name, customer.name)) return false;
+        if (!Objects.equals(surname, customer.surname)) return false;
+        if (!Objects.equals(password, customer.password)) return false;
+        if (!Objects.equals(login, customer.login)) return false;
+        return roleEntity == customer.roleEntity;
+    }
+
+    @Override
+    public int hashCode() {
+        if (hashCode == null) {
+            int result = name != null ? name.hashCode() : 0;
+            result = 31 * result + (surname != null ? surname.hashCode() : 0);
+            result = 31 * result + (password != null ? password.hashCode() : 0);
+            result = 31 * result + (login != null ? login.hashCode() : 0);
+            result = 31 * result + loyalPoints;
+            result = 31 * result + (blocked ? 1 : 0);
+            result = 31 * result + (roleEntity != null ? roleEntity.hashCode() : 0);
+            hashCode = result;
+        }
+
+        return hashCode;
     }
 }

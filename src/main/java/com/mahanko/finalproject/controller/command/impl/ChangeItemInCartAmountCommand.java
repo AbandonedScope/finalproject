@@ -18,6 +18,9 @@ import org.apache.logging.log4j.Logger;
 
 import static com.mahanko.finalproject.controller.AttributeType.ORDER_CART;
 
+/**
+ * The {@link Command} that changes amount of certain meal in the customer cart by id.
+ */
 public class ChangeItemInCartAmountCommand implements Command {
     private static final Logger logger = LogManager.getLogger();
 

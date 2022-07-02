@@ -173,17 +173,17 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public boolean insert(CustomerEntity id) throws DaoException {
+    public boolean insert(CustomerEntity entity) throws DaoException {
         boolean isInserted = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_NEW_CUSTOMER)) {
-            statement.setString(1, id.getName());
-            statement.setString(2, id.getSurname());
-            statement.setString(3, id.getLogin());
-            statement.setString(4, id.getPassword());
-            statement.setInt(5, id.getLoyalPoints());
-            statement.setBoolean(6, id.isBlocked());
-            statement.setString(7, id.getRole().toString());
+            statement.setString(1, entity.getName());
+            statement.setString(2, entity.getSurname());
+            statement.setString(3, entity.getLogin());
+            statement.setString(4, entity.getPassword());
+            statement.setInt(5, entity.getLoyalPoints());
+            statement.setBoolean(6, entity.isBlocked());
+            statement.setString(7, entity.getRole().toString());
             if (statement.executeUpdate() != 0) {
                 isInserted = true;
             }

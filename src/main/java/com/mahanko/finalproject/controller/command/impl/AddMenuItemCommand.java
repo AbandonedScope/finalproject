@@ -8,6 +8,7 @@ import com.mahanko.finalproject.exception.ServiceException;
 import com.mahanko.finalproject.model.service.MenuItemService;
 import com.mahanko.finalproject.model.service.impl.MenuItemServiceImpl;
 import com.mahanko.finalproject.util.CustomPictureEncoder;
+import com.mahanko.finalproject.model.entity.menu.MenuItem;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -22,6 +23,9 @@ import java.util.*;
 import static com.mahanko.finalproject.controller.ParameterType.*;
 import static com.mahanko.finalproject.controller.ValidationMessage.VALIDATION_MESSAGES;
 
+/**
+ * The {@link AsynchronousCommand} that insert new {@link MenuItem} into database.
+ */
 public class AddMenuItemCommand extends AsynchronousCommand {
     private static final Logger logger = LogManager.getLogger();
 

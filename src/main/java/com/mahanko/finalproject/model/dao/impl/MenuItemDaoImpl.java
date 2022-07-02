@@ -25,9 +25,9 @@ public class MenuItemDaoImpl implements MenuItemDao {
                     "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, " +
                     "ingr_carbohydrates, ingr_calories, ingr_picture " +
                     "FROM menu_items " +
-                    "INNER JOIN m2m_menuitems_ingredients " +
+                    "left JOIN m2m_menuitems_ingredients " +
                     "ON menu_items.mi_id = m2m_menuitems_ingredients.mi_id " +
-                    "INNER JOIN ingredients " +
+                    "left JOIN ingredients " +
                     "ON ingredients.ingr_id = m2m_menuitems_ingredients.ingr_id " +
                     "WHERE menu_items.mi_id = ?";
     private static final String INSERT_NEW_MENU_ITEM =
@@ -44,9 +44,9 @@ public class MenuItemDaoImpl implements MenuItemDao {
                     "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, " +
                     "ingr_carbohydrates, ingr_calories, ingr_picture " +
                     "FROM menu_items " +
-                    "INNER JOIN m2m_menuitems_ingredients " +
+                    "left JOIN m2m_menuitems_ingredients " +
                     "ON menu_items.mi_id = m2m_menuitems_ingredients.mi_id " +
-                    "INNER JOIN ingredients " +
+                    "left JOIN ingredients " +
                     "ON ingredients.ingr_id = m2m_menuitems_ingredients.ingr_id " +
                     "where menu_items.mi_hidden = 0";
     private static final String SELECT_ALL_JOIN_INGREDIENTS_BY_SECTION_ID =
@@ -55,9 +55,9 @@ public class MenuItemDaoImpl implements MenuItemDao {
                     "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, " +
                     "ingr_carbohydrates, ingr_calories, ingr_picture " +
                     "FROM menu_items " +
-                    "INNER JOIN m2m_menuitems_ingredients " +
+                    "left JOIN m2m_menuitems_ingredients " +
                     "ON menu_items.mi_id = m2m_menuitems_ingredients.mi_id " +
-                    "INNER JOIN ingredients " +
+                    "left JOIN ingredients " +
                     "ON ingredients.ingr_id = m2m_menuitems_ingredients.ingr_id " +
                     "where mi_section = ? and menu_items.mi_hidden = 0";
     private static final String SELECT_MENU_ITEMS_BY_NAME =
@@ -66,9 +66,9 @@ public class MenuItemDaoImpl implements MenuItemDao {
                     "ingredients.ingr_id, ingr_name, ingr_proteins, ingr_fats, " +
                     "ingr_carbohydrates, ingr_calories, ingr_picture " +
                     "FROM menu_items " +
-                    "INNER JOIN m2m_menuitems_ingredients " +
+                    "left JOIN m2m_menuitems_ingredients " +
                     "ON menu_items.mi_id = m2m_menuitems_ingredients.mi_id " +
-                    "INNER JOIN ingredients " +
+                    "left JOIN ingredients " +
                     "ON ingredients.ingr_id = m2m_menuitems_ingredients.ingr_id " +
                     "WHERE locate(?, mi_name) > 0 and menu_items.mi_hidden = 0";
     private static final String UPDATE_MENU_ITEM_BY_ID =
@@ -110,28 +110,28 @@ public class MenuItemDaoImpl implements MenuItemDao {
     }
 
     @Override
-    public boolean insert(MenuItem id) throws DaoException {
+    public boolean insert(MenuItem entity) throws DaoException {
         boolean isInserted = false;
         // FIXME: 22.04.2022 transactions
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(INSERT_NEW_MENU_ITEM, Statement.RETURN_GENERATED_KEYS)) {
             Blob pictureBlob = connection.createBlob();
-            byte[] pictureBytes = CustomPictureEncoder.decodeString(id.getPictureBase64());
+            byte[] pictureBytes = CustomPictureEncoder.decodeString(entity.getPictureBase64());
             pictureBlob.setBytes(1, pictureBytes);
-            statement.setLong(1, id.getSectionId());
-            statement.setString(2, id.getName());
+            statement.setLong(1, entity.getSectionId());
+            statement.setString(2, entity.getName());
             statement.setBlob(3, pictureBlob);
-            statement.setBigDecimal(4, id.getCost());
+            statement.setBigDecimal(4, entity.getCost());
             if (statement.executeUpdate() != 0) {
                 isInserted = true;
                 try (ResultSet keys = statement.getGeneratedKeys()) {
                     keys.next();
                     long menuItemId = keys.getLong(1);
-                    id.setId(menuItemId);
+                    entity.setId(menuItemId);
                 }
             }
             // FIXME: 22.04.2022
-            insertMenuItemIngredientsMerge(connection, id);
+            insertMenuItemIngredientsMerge(connection, entity);
         } catch (SQLException e) {
             logger.log(Level.ERROR, e);
             throw new DaoException(e);
@@ -158,7 +158,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
     }
 
     @Override
-    public boolean setHidden(Long id, boolean state) throws DaoException {
+    public boolean updateHidden(Long id, boolean state) throws DaoException {
         boolean updated = false;
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_HIDDEN_BY_ID)) {
@@ -181,10 +181,11 @@ public class MenuItemDaoImpl implements MenuItemDao {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ALL_MENU_ITEMS_JOIN_INGREDIENTS)) {
             try (ResultSet resultSet = statement.executeQuery()) {
-                resultSet.next();
-                CustomRowMapper<MenuItem> mapper = new MenuItemRowMapper();
-                while (!resultSet.isAfterLast()) {
-                    mapper.map(resultSet).ifPresent(menuItems::add);
+                if (resultSet.next()) {
+                    CustomRowMapper<MenuItem> mapper = new MenuItemRowMapper();
+                    while (!resultSet.isAfterLast()) {
+                        mapper.map(resultSet).ifPresent(menuItems::add);
+                    }
                 }
             }
         } catch (SQLException e) {

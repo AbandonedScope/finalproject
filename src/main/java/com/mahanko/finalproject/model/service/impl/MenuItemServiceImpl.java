@@ -230,7 +230,7 @@ public class MenuItemServiceImpl implements MenuItemService {
         try {
             MenuItemDao menuItemDao = MenuItemDaoImpl.getInstance();
             if (menuItemDao.existsMerge(id)) {
-                removed = menuItemDao.setHidden(id, true);
+                removed = menuItemDao.updateHidden(id, true);
             } else {
                 removed = menuItemDao.remove(id);
             }
