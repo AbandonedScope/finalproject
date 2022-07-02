@@ -8,7 +8,10 @@
 <head>
     <title><fmt:message key="navigation.guest.main"/></title>
 </head>
-<c:set var="sections" value="${applicationScope.sections}"/>
+<c:set var="sections" value="${requestScope.sections}"/>
+<c:if test="${empty sections}">
+    <c:redirect url="/controller?command=load-main-page-resources"/>
+</c:if>
 <body data-bs-spy="scroll" data-bs-target="#navbar-sections" data-bs-offset="150">
 <nav id="navbar-sections" class="navbar sticky-top navbar-light bg-light px-3" style="z-index: 1">
     <ul class="nav nav-pills">

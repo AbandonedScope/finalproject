@@ -15,7 +15,7 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 
-@WebFilter(filterName = "BaseFilter", urlPatterns = "/*") // urlPatterns - на кого срабатывают
+@WebFilter(filterName = "BaseFilter", urlPatterns = "/*")
 public class BaseFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {

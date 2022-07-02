@@ -1,5 +1,4 @@
-<%@ page contentType="text/html;charset=UTF-8"
-         import="com.mahanko.finalproject.controller.command.CommandType" %>
+<%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@include file="../header.jsp" %>
@@ -9,6 +8,9 @@
 </head>
 <body>
 <c:set var="orders" value="${requestScope.userOrders}"/>
+<c:if test="${orders == null}">
+    <c:redirect url="/controller?command=on-customer-orders-page"/>
+</c:if>
 <div class="m-5">
     <div>
         <c:choose>

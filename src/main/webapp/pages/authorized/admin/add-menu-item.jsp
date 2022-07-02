@@ -7,6 +7,9 @@
 <head>
     <title><fmt:message key="navigation.admin.menuitem"/></title>
 </head>
+<c:if test="${requestScope.ingredients == null || requestScope.sections == null}">
+    <c:redirect url="/controller?command=on-add-menu-item"/>
+</c:if>
 <body>
 <div class="mx-5 mt-2">
     <h2><fmt:message key="navigation.admin.menuitem"/></h2>
@@ -26,7 +29,7 @@
             </div>
             <div class="form-floating my-5">
                 <select class="form-select" id="sectionId" name="menu-item-section-id" required>
-                    <c:forEach var="sectionId" items="${sessionScope.sections}">
+                    <c:forEach var="sectionId" items="${requestScope.sections}">
                         <option value="${sectionId.id}">${sectionId.name}</option>
                     </c:forEach>
                 </select>
@@ -73,7 +76,7 @@
     const $list = document.getElementById("ingredients");
     const $chosenList = document.getElementById("chosen-ingredients");
     const ingredients =
-    ${sessionScope.ingredients}
+    ${requestScope.ingredients}
     const chosenIngredients = [];
 
     const createListItemElement = (ingr, name) => {

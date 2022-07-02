@@ -25,12 +25,7 @@ public final class ParameterType {
     public static final String MENU_ITEM_COUNT = "menu-item-count";
     public static final String MENU_ITEM_NAME = "menu-item-name";
     public static final String MENU_ITEM_COST = "menu-item-cost";
-    public static final String MENU_ITEM_CALORIES = "menu-item-calories";
-    public static final String MENU_ITEM_PROTEINS = "menu-item-proteins";
-    public static final String MENU_ITEM_FATS = "menu-item-fats";
-    public static final String MENU_ITEM_CARBOHYDRATES = "menu-item-carbohydrates";
     public static final String MENU_ITEM_PICTURE = "menu-item-picture";
-    public static final String MENU_ITEM_INGREDIENT = "menu-item-ingredient";
     public static final String MENU_ITEM_PICTURE_NAME = "menu-item-picture-name";
     public static final String MENU_ITEM_PICTURE_SIZE = "menu-item-picture-size";
     public static final String MENU_ITEM_SECTION_ID = "menu-item-section-id";
@@ -42,7 +37,6 @@ public final class ParameterType {
     public static final String ORDER_ID = "order-id";
     public static final String USER_ORDERS = "userOrders";
     public static final String ORDER_TIME = "order-time";
-    public static final String ORDER_ITEMS = "order-items";
     public static final String ORDER_PAYMENT_TYPE = "payment-type";
     public static final String CUSTOMER_ID = "customer-id";
     public static final String CUSTOMER_NAME = "customer-name";

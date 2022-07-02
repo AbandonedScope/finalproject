@@ -9,6 +9,9 @@
 </head>
 <body>
 <c:set var="orders" value="${requestScope.orders}"/>
+<c:if test="${orders == null}">
+    <c:redirect url="/controller?command=on-orders-page"/>
+</c:if>
 <div class="m-5">
     <div>
         <c:choose>

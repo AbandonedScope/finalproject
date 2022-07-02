@@ -16,10 +16,6 @@ import java.io.IOException;
 public class PageRedirectSecurityFilter implements Filter {
 
     @Override
-    public void init(FilterConfig config) throws ServletException {
-    }
-
-    @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
@@ -31,9 +27,4 @@ public class PageRedirectSecurityFilter implements Filter {
             httpServletResponse.sendRedirect(httpServletRequest.getContextPath().concat("/").concat(PagePath.MAIN));
         }
     }
-
-    @Override
-    public void destroy() {
-    }
-
 }

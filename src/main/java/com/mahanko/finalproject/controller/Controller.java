@@ -38,7 +38,7 @@ public class Controller extends HttpServlet {
     }
 
     private void process(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        Command command = CommandType.of(request.getParameter(ParameterType.COMMAND));
+        Command command = CommandType.of(request.getParameter(ParameterType.COMMAND)).getCommand();
         try {
             Router route = command.execute(request, response);
             String page = route.getPage();

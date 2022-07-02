@@ -37,7 +37,6 @@ public class AddUserCommand implements Command {
         params.put(USER_LOGIN, request.getParameter(USER_LOGIN));
         params.put(USER_PASSWORD, request.getParameter(USER_PASSWORD));
         params.put(USER_CONFIRM_PASSWORD, request.getParameter(USER_CONFIRM_PASSWORD));
-        // FIXME: 01.05.2022 validation messages
         try {
             CustomerService customerService = CustomerServiceImpl.getInstance();
             Optional<CustomerEntity> optionalCustomer = customerService.register(params);
@@ -45,7 +44,6 @@ public class AddUserCommand implements Command {
                 route.setPage(PagePath.REGISTRATION);
                 route.setType(Router.Type.FORWARD);
                 if (!params.fillRequestWithValidations(request)) {
-                    // FIXME: 11.05.2022
                     request.setAttribute(REGISTRATION_USER_EXISTS_MESSAGE, REGISTRATION_USER_EXISTS_MESSAGE);
                 }
             } else {
