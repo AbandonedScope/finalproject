@@ -15,6 +15,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type MenuSectionDaoImpl class executes requests to the DB.
+ */
 public class MenuSectionDaoImpl implements MenuSectionDao {
     private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_ALL_SECTIONS =

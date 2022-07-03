@@ -124,20 +124,6 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<OrderEntity> findOrdersPage(int pageNum, int pageSize) throws ServiceException {
-        List<OrderEntity> orders;
-        pageNum--;
-        try {
-            OrderDao orderDao = OrderDaoImpl.getInstance();
-            orders = orderDao.findPage((long) pageNum * pageSize, pageSize);
-        } catch (DaoException e) {
-            throw new ServiceException(e);
-        }
-
-        return orders;
-    }
-
-    @Override
     public boolean setItemAmount(OrderEntity order, String itemId, String amount) throws ServiceException {
         long id;
         int itemAmount;

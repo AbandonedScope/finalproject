@@ -139,7 +139,7 @@ public class CustomerServiceImpl implements CustomerService {
             Optional<CustomerEntity> optionalCustomer = customerDao.findById(userId);
             if (optionalCustomer.isPresent()) {
                 int customerLoyalPoints = optionalCustomer.get().getLoyalPoints();
-                customerDao.updateBonuses(userId, customerLoyalPoints + bonuses);
+                customerDao.updateLoyalPoints(userId, customerLoyalPoints + bonuses);
             }
         } catch (DaoException e) {
             throw new ServiceException(e);

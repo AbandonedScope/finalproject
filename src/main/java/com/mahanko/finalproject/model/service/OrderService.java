@@ -18,8 +18,6 @@ public interface OrderService {
 
     List<OrderEntity> findOrdersByCustomerId(Long id) throws ServiceException;
 
-    List<OrderEntity> findOrdersPage(int pageNum, int pageSize) throws ServiceException;
-
     boolean setItemAmount(OrderEntity order, String itemId, String amount) throws ServiceException;
 
     boolean removeItem(OrderEntity order, String itemId) throws ServiceException;

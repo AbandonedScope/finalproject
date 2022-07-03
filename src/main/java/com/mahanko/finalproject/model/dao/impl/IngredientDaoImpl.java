@@ -16,6 +16,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type IngredientDaoImpl class executes requests to the DB.
+ */
 public class IngredientDaoImpl implements IngredientDao {
     private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_BY_ID =

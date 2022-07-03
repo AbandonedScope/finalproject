@@ -63,7 +63,7 @@ public class CustomerDaoImplTest extends AbstractDaoTest {
     @Test(priority = 2, dependsOnMethods = "testFindById")
     public void testUpdateBonuses() throws DaoException {
         int newBonuses = 15;
-        customerDao.updateBonuses(customerId, newBonuses);
+        customerDao.updateLoyalPoints(customerId, newBonuses);
         var updatedCustomer = customerDao.findById(customerId).get();
         assertEquals(updatedCustomer.getLoyalPoints(), newBonuses);
     }

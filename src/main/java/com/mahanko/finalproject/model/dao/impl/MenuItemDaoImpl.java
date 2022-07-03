@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type MenuItemDaoImpl class executes requests to the DB.
+ */
 public class MenuItemDaoImpl implements MenuItemDao {
     private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_BY_ID =

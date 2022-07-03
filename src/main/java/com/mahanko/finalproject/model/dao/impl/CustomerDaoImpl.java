@@ -19,6 +19,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type CustomerDaoImpl class executes requests to the DB.
+ */
 public class CustomerDaoImpl implements CustomerDao {
     private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_BY_PASSWORD_LOGIN =
@@ -93,7 +96,7 @@ public class CustomerDaoImpl implements CustomerDao {
     }
 
     @Override
-    public void updateBonuses(long userId, int bonuses) throws DaoException {
+    public void updateLoyalPoints(long userId, int bonuses) throws DaoException {
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(UPDATE_BONUSES)) {
             statement.setInt(1, bonuses);

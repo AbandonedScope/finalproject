@@ -17,6 +17,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+/**
+ * The type OrderDaoImpl class executes requests to the DB.
+ */
 public class OrderDaoImpl implements OrderDao {
     private static final Logger logger = LogManager.getLogger();
     private static final String SELECT_ALL_LAZY =
@@ -63,9 +66,6 @@ public class OrderDaoImpl implements OrderDao {
                     "join m2m_menuitems_ingredients m2mmi on m2mom.mi_id = m2mmi.mi_id " +
                     "join ingredients on m2mmi.ingr_id = ingredients.ingr_id " +
                     "where orders.or_id = ?";
-    private static final String SELECT_ALL_OFFSET_LIMIT =
-            "select or_id, or_cost, or_creation_date, or_serving_date, " +
-                    "or_user, or_taken, or_served, or_payment_type from orders limit ?, ?";
     private static final String UPDATE_ORDER_TAKEN =
             "update orders set or_taken = ? where or_id = ?";
     private static final String UPDATE_ORDER_SERVED =
@@ -190,27 +190,6 @@ public class OrderDaoImpl implements OrderDao {
         }
 
         return customerOrders;
-    }
-
-    @Override
-    public List<OrderEntity> findPage(long offset, int pageSize) throws DaoException {
-        List<OrderEntity> orders = new ArrayList<>();
-        try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(SELECT_ALL_OFFSET_LIMIT)) {
-            statement.setLong(1, offset);
-            statement.setInt(2, pageSize);
-            try (ResultSet resultSet = statement.executeQuery()) {
-                CustomRowMapper<OrderEntity> mapper = new OrderLiteMapper();
-                while (resultSet.next()) {
-                    mapper.map(resultSet).ifPresent(orders::add);
-                }
-            }
-        } catch (SQLException e) {
-            logger.log(Level.ERROR, e);
-            throw new DaoException(e);
-        }
-
-        return orders;
     }
 
     @Override
