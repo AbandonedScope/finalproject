@@ -11,7 +11,7 @@ The client visits the cafe website and sees a list of menu sections and dishes c
 - find all menu items by section name
 - register
 - sign in, if he is registered
-### Client can:
+### Customer can:
 - add menu item to cart
 - chande menu item in cart amount
 - delete menu items from cart
