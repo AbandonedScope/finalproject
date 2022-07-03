@@ -40,7 +40,7 @@
                                     <em class="bi bi-link-45deg"></em>
                                 </button>
                             </form>
-                            <c:if test="${customer.loyalPoints < 0}">
+                            <c:if test="${customer.loyaltyPoints < 0}">
                                 <div class="m-2 position-relative">
                                 <span class="position-absolute top-50 start-50 translate-middle" tabindex="0"
                                       data-bs-toggle="popover"

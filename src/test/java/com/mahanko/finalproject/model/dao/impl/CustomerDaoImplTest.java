@@ -65,7 +65,7 @@ public class CustomerDaoImplTest extends AbstractDaoTest {
         int newBonuses = 15;
         customerDao.updateLoyalPoints(customerId, newBonuses);
         var updatedCustomer = customerDao.findById(customerId).get();
-        assertEquals(updatedCustomer.getLoyalPoints(), newBonuses);
+        assertEquals(updatedCustomer.getLoyaltyPoints(), newBonuses);
     }
 
     @Test(priority = 2, dependsOnMethods = "testFindById")

@@ -184,7 +184,7 @@ public class CustomerDaoImpl implements CustomerDao {
             statement.setString(2, entity.getSurname());
             statement.setString(3, entity.getLogin());
             statement.setString(4, entity.getPassword());
-            statement.setInt(5, entity.getLoyalPoints());
+            statement.setInt(5, entity.getLoyaltyPoints());
             statement.setBoolean(6, entity.isBlocked());
             statement.setString(7, entity.getRole().toString());
             if (statement.executeUpdate() != 0) {

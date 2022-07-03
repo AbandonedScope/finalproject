@@ -26,7 +26,7 @@ public class CustomerRowMapper implements CustomRowMapper<CustomerEntity> {
             customer.setSurname(resultSet.getString(ColumnName.USER_SURNAME));
             customer.setLogin(resultSet.getString(ColumnName.USER_LOGIN));
             customer.setPassword(resultSet.getString(ColumnName.USER_PASSWORD));
-            customer.setLoyalPoints(resultSet.getInt(ColumnName.USER_LOYALTY_POINTS));
+            customer.setLoyaltyPoints(resultSet.getInt(ColumnName.USER_LOYALTY_POINTS));
             customer.setBlocked(resultSet.getBoolean(ColumnName.USER_IS_BLOCKED));
             RoleType roleType = RoleType.valueOf(resultSet.getString(ColumnName.USER_ROLE_TYPE));
             customer.setRole(roleType);

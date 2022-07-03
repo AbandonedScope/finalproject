@@ -49,7 +49,7 @@
                     <fmt:message key="label.user.loyal-points"/>
                 </label>
                 <div>
-                    ${customer.loyalPoints}
+                    ${customer.loyaltyPoints}
                 </div>
             </li>
         </ul>
