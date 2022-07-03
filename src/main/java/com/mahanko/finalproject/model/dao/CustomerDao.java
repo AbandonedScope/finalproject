@@ -7,7 +7,7 @@ import com.mahanko.finalproject.model.entity.RoleType;
 import java.util.List;
 import java.util.Optional;
 
-public interface CustomerDao extends BaseDao<Long, CustomerEntity> {
+public interface CustomerDao extends FindInsertCapable<Long, CustomerEntity> {
     Optional<CustomerEntity> authenticate(String login, String password) throws DaoException;
 
     boolean checkExistence(String login) throws DaoException;

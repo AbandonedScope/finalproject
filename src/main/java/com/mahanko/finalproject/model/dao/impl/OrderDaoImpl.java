@@ -81,7 +81,7 @@ public class OrderDaoImpl implements OrderDao {
     }
 
     @Override
-    public Optional<OrderEntity> findById(long id) throws DaoException {
+    public Optional<OrderEntity> findById(Long id) throws DaoException {
         Optional<OrderEntity> optionalOrder = Optional.empty();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_ORDER_BY_ID_JOIN_MENU_ITEMS)) {
@@ -150,11 +150,6 @@ public class OrderDaoImpl implements OrderDao {
         }
 
         return isInserted;
-    }
-
-    @Override
-    public boolean remove(Long id) throws DaoException {
-        return false;
     }
 
     @Override
@@ -260,10 +255,5 @@ public class OrderDaoImpl implements OrderDao {
         }
 
         return orderEntities;
-    }
-
-    @Override
-    public boolean update(long id, OrderEntity entity) throws DaoException {
-        return false;
     }
 }

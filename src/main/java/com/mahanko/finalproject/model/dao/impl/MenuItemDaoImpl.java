@@ -90,7 +90,7 @@ public class MenuItemDaoImpl implements MenuItemDao {
     }
 
     @Override
-    public Optional<MenuItem> findById(long id) throws DaoException {
+    public Optional<MenuItem> findById(Long id) throws DaoException {
         Optional<MenuItem> item = Optional.empty();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {

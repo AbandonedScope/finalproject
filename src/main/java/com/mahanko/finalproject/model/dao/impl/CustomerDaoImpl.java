@@ -153,7 +153,7 @@ public class CustomerDaoImpl implements CustomerDao {
 
 
     @Override
-    public Optional<CustomerEntity> findById(long id) throws DaoException {
+    public Optional<CustomerEntity> findById(Long id) throws DaoException {
         Optional<CustomerEntity> optionalCustomer = Optional.empty();
         try (Connection connection = ConnectionPool.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(SELECT_BY_ID)) {
@@ -193,20 +193,5 @@ public class CustomerDaoImpl implements CustomerDao {
         }
 
         return isInserted;
-    }
-
-    @Override
-    public boolean remove(Long id) throws DaoException {
-        return false;
-    }
-
-    @Override
-    public List<CustomerEntity> findAll() throws DaoException {
-        return null;
-    }
-
-    @Override
-    public boolean update(long id, CustomerEntity entity) throws DaoException {
-        return false;
     }
 }

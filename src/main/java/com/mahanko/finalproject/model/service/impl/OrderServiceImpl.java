@@ -112,7 +112,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<OrderEntity> findOrdersByCustomerId(Long id) throws ServiceException {
-        // TODO: 21.05.2022
         List<OrderEntity> orders;
         try {
             OrderDao orderDao = OrderDaoImpl.getInstance();
@@ -140,7 +139,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public boolean setItemAmount(OrderEntity order, String itemId, String amount) throws ServiceException {
-        // FIXME: 21.05.2022 validation
         long id;
         int itemAmount;
         try {

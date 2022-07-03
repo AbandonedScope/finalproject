@@ -100,7 +100,6 @@ public class ConnectionPool { //FIXME: 09.04.2022 Read about these properties
         return isRemoved;
     }
 
-    //deregister driver
     public void destroyPool() {
         try {
             for (int i = 0; i < MAX_CONNECTIONS; i++) {
@@ -109,7 +108,7 @@ public class ConnectionPool { //FIXME: 09.04.2022 Read about these properties
 
             Driver driver = DriverManager.getDriver(URL);
             DriverManager.deregisterDriver(driver);
-        } catch (SQLException e) { // FIXME: 09.04.2022 Exceptions?
+        } catch (SQLException e) {
             logger.log(Level.INFO, e);
         } catch (InterruptedException e) {
             logger.log(Level.INFO, e);

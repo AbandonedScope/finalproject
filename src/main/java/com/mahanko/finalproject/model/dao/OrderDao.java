@@ -5,7 +5,7 @@ import com.mahanko.finalproject.model.entity.OrderEntity;
 
 import java.util.List;
 
-public interface OrderDao extends BaseDao<Long, OrderEntity> {
+public interface OrderDao extends FindAllCapable<Long, OrderEntity> {
     List<OrderEntity> findByCustomerId(Long id) throws DaoException;
 
     List<OrderEntity> findActiveByCustomerId(Long id) throws DaoException;
