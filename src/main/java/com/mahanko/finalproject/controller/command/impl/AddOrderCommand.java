@@ -44,7 +44,7 @@ public class AddOrderCommand implements Command {
         OrderService service = OrderServiceImpl.getInstance();
 
         try {
-            if (!service.insertNew(params, order)) {
+            if (!service.insert(params, order)) {
                 params.fillRequestWithValidations(request);
                 route.setType(Router.Type.FORWARD);
                 route.setPage(PagePath.SHOPPING_CART);

@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The type MenuItemDaoImpl class executes requests to the DB.
+ * The type MenuItemDaoImpl class executes requests to the DB. Singleton.
  */
 public class MenuItemDaoImpl implements MenuItemDao {
     private static final Logger logger = LogManager.getLogger();
@@ -88,6 +88,11 @@ public class MenuItemDaoImpl implements MenuItemDao {
     private MenuItemDaoImpl() {
     }
 
+    /**
+     * Get instance of the MenuItemDaoImpl class.
+     *
+     * @return the instance
+     */
     public static MenuItemDaoImpl getInstance() {
         return instance;
     }

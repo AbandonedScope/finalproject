@@ -17,7 +17,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The type IngredientDaoImpl class executes requests to the DB.
+ * The type IngredientDaoImpl class executes requests to the DB. Singleton.
  */
 public class IngredientDaoImpl implements IngredientDao {
     private static final Logger logger = LogManager.getLogger();
@@ -55,6 +55,11 @@ public class IngredientDaoImpl implements IngredientDao {
     private IngredientDaoImpl() {
     }
 
+    /**
+     * Get instance of the IngredientDaoImpl class.
+     *
+     * @return the instance
+     */
     public static IngredientDaoImpl getInstance() {
         return instance;
     }

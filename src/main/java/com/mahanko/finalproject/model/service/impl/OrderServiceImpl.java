@@ -22,6 +22,9 @@ import static com.mahanko.finalproject.controller.ParameterType.*;
 import static com.mahanko.finalproject.controller.ValidationMessage.SERVING_DATETIME_VALIDATION_MESSAGE;
 import static com.mahanko.finalproject.controller.ValidationMessage.VALIDATION_MESSAGES;
 
+/**
+ * The type OrderServiceImpl class. Performs operations with orders. Singleton.
+ */
 public class OrderServiceImpl implements OrderService {
     private static final Logger logger = LogManager.getLogger();
     private static final OrderServiceImpl instance = new OrderServiceImpl();
@@ -29,6 +32,11 @@ public class OrderServiceImpl implements OrderService {
     private OrderServiceImpl() {
     }
 
+    /**
+     * Get instance of the OrderServiceImpl class.
+     *
+     * @return the instance
+     */
     public static OrderServiceImpl getInstance() {
         return instance;
     }
@@ -72,7 +80,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean insertNew(RequestParameters parameters, OrderEntity order) throws ServiceException {
+    public boolean insert(RequestParameters parameters, OrderEntity order) throws ServiceException {
         boolean isInserted = false;
         boolean isValid = true;
         String servingDateTimeString = parameters.get(ORDER_TIME);
@@ -158,7 +166,7 @@ public class OrderServiceImpl implements OrderService {
             menuItemId = Long.parseLong(itemId);
         } catch (NumberFormatException e) {
             logger.log(Level.ERROR, e);
-            throw  new ServiceException(e);
+            throw new ServiceException(e);
         }
 
         var orderEntry = getOrderItemAmountPairByItemId(order, menuItemId);

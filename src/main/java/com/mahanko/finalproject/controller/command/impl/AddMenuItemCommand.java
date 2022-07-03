@@ -70,7 +70,7 @@ public class AddMenuItemCommand extends AsynchronousCommand {
             parameters.put(MENU_ITEM_SECTION_ID, request.getParameter(MENU_ITEM_SECTION_ID));
 
             MenuItemService menuItemService = MenuItemServiceImpl.getInstance();
-            boolean inserted = menuItemService.insertNew(parameters);
+            boolean inserted = menuItemService.insert(parameters);
             if (inserted) {
                 route = fillResponse(response, true);
             } else {

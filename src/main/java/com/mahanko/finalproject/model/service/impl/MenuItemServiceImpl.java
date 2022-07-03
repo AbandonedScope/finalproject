@@ -22,6 +22,9 @@ import java.util.stream.Collectors;
 import static com.mahanko.finalproject.controller.ParameterType.*;
 import static com.mahanko.finalproject.controller.ValidationMessage.*;
 
+/**
+ * The type MenuItemServiceImpl class. Performs operations with menu items. Singleton.
+ */
 public class MenuItemServiceImpl implements MenuItemService {
     private static final Logger logger = LogManager.getLogger();
     private static final MenuItemServiceImpl instance = new MenuItemServiceImpl();
@@ -29,6 +32,11 @@ public class MenuItemServiceImpl implements MenuItemService {
     private MenuItemServiceImpl() {
     }
 
+    /**
+     * Get instance of the MenuItemServiceImpl class.
+     *
+     * @return the instance
+     */
     public static MenuItemServiceImpl getInstance() {
         return instance;
     }
@@ -47,7 +55,7 @@ public class MenuItemServiceImpl implements MenuItemService {
     }
 
     @Override
-    public boolean insertNew(RequestParameters parameters) throws ServiceException {
+    public boolean insert(RequestParameters parameters) throws ServiceException {
         boolean isInserted = false;
         boolean isValid = true;
         try {

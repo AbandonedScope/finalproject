@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The type MenuSectionDaoImpl class executes requests to the DB.
+ * The type MenuSectionDaoImpl class executes requests to the DB. Singleton.
  */
 public class MenuSectionDaoImpl implements MenuSectionDao {
     private static final Logger logger = LogManager.getLogger();
@@ -42,6 +42,11 @@ public class MenuSectionDaoImpl implements MenuSectionDao {
     private MenuSectionDaoImpl() {
     }
 
+    /**
+     * Get instance of the MenuSectionDaoImpl class.
+     *
+     * @return the instance
+     */
     public static MenuSectionDaoImpl getInstance() {
         return instance;
     }

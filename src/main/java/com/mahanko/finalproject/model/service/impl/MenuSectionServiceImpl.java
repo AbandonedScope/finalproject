@@ -24,6 +24,9 @@ import static com.mahanko.finalproject.controller.ParameterType.*;
 import static com.mahanko.finalproject.controller.ValidationMessage.SECTION_NAME_VALIDATION_MESSAGE;
 import static com.mahanko.finalproject.controller.ValidationMessage.VALIDATION_MESSAGES;
 
+/**
+ * The type MenuSectionServiceImpl class. Performs operations with menu sections. Singleton.
+ */
 public class MenuSectionServiceImpl implements MenuSectionService {
     private static final Logger logger = LogManager.getLogger();
     private static final MenuSectionServiceImpl instance = new MenuSectionServiceImpl();
@@ -31,6 +34,11 @@ public class MenuSectionServiceImpl implements MenuSectionService {
     private MenuSectionServiceImpl() {
     }
 
+    /**
+     * Get instance of the MenuSectionServiceImpl class.
+     *
+     * @return the instance
+     */
     public static MenuSectionServiceImpl getInstance() {
         return instance;
     }

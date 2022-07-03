@@ -22,6 +22,9 @@ import java.util.Optional;
 import static com.mahanko.finalproject.controller.ParameterType.*;
 import static com.mahanko.finalproject.controller.ValidationMessage.*;
 
+/**
+ * The type IngredientServiceImpl class. Performs operations with ingredients. Singleton.
+ */
 public class IngredientServiceImpl implements IngredientService {
     private static final Logger logger = LogManager.getLogger();
     private static final IngredientServiceImpl instance = new IngredientServiceImpl();
@@ -29,14 +32,18 @@ public class IngredientServiceImpl implements IngredientService {
     private IngredientServiceImpl() {
     }
 
+    /**
+     * Get instance of the IngredientServiceImpl class.
+     *
+     * @return the instance
+     */
     public static IngredientServiceImpl getInstance() {
         return instance;
     }
 
     @Override
     public Optional<Ingredient> findById(Long id) throws ServiceException {
-        Ingredient ingredient;
-        Optional<Ingredient> ingredientOptional = Optional.empty();
+        Optional<Ingredient> ingredientOptional;
         try {
             ingredientOptional = IngredientDaoImpl.getInstance().findById(id);
         } catch (DaoException e) {

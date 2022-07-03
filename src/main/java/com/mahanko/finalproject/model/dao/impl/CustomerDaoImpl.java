@@ -20,7 +20,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The type CustomerDaoImpl class executes requests to the DB.
+ * The type CustomerDaoImpl class executes requests to the DB. Singleton.
  */
 public class CustomerDaoImpl implements CustomerDao {
     private static final Logger logger = LogManager.getLogger();
@@ -53,6 +53,11 @@ public class CustomerDaoImpl implements CustomerDao {
     private CustomerDaoImpl() {
     }
 
+    /**
+     * Get instance of the CustomerDaoImpl class.
+     *
+     * @return the instance
+     */
     public static CustomerDaoImpl getInstance() {
         return instance;
     }

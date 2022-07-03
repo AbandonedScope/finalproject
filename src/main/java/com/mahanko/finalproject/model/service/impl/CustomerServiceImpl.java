@@ -19,12 +19,20 @@ import java.util.Optional;
 import static com.mahanko.finalproject.controller.ParameterType.*;
 import static com.mahanko.finalproject.controller.ValidationMessage.*;
 
+/**
+ * The type CustomerServiceImpl class. Performs operations with customers. Singleton.
+ */
 public class CustomerServiceImpl implements CustomerService {
     private static final CustomerServiceImpl instance = new CustomerServiceImpl();
 
     private CustomerServiceImpl() {
     }
 
+    /**
+     * Get instance of the CustomerServiceImpl class.
+     *
+     * @return the instance
+     */
     public static CustomerServiceImpl getInstance() {
         return instance;
     }
@@ -133,7 +141,7 @@ public class CustomerServiceImpl implements CustomerService {
     }
 
     @Override
-    public void addBonuses(long userId, int bonuses) throws ServiceException {
+    public void addLoyaltyPoints(long userId, int bonuses) throws ServiceException {
         CustomerDao customerDao = CustomerDaoImpl.getInstance();
         try {
             Optional<CustomerEntity> optionalCustomer = customerDao.findById(userId);

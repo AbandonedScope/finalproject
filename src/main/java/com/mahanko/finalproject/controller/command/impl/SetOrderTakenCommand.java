@@ -46,7 +46,7 @@ public class SetOrderTakenCommand implements Command {
             CustomerService customerService = CustomerServiceImpl.getInstance();
             orderService.setTaken(orderId);
             orderService.setServed(orderId);
-            customerService.addBonuses(customerId, bonuses);
+            customerService.addLoyaltyPoints(customerId, bonuses);
         } catch (NumberFormatException e) {
             logger.log(Level.ERROR, e);
             throw new CommandException(e);

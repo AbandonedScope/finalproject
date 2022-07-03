@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * The type OrderDaoImpl class executes requests to the DB.
+ * The type OrderDaoImpl class executes requests to the DB. Singleton.
  */
 public class OrderDaoImpl implements OrderDao {
     private static final Logger logger = LogManager.getLogger();
@@ -76,6 +76,11 @@ public class OrderDaoImpl implements OrderDao {
     private OrderDaoImpl() {
     }
 
+    /**
+     * Get instance of the OrderDaoImpl class.
+     *
+     * @return the instance
+     */
     public static OrderDaoImpl getInstance() {
         return instance;
     }
@@ -194,8 +199,8 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void setTaken(long id, boolean state) throws DaoException {
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER_TAKEN)) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER_TAKEN)) {
             statement.setBoolean(1, state);
             statement.setLong(2, id);
             statement.executeUpdate();
@@ -207,8 +212,8 @@ public class OrderDaoImpl implements OrderDao {
 
     @Override
     public void setServed(long id, boolean isServed) throws DaoException {
-        try(Connection connection = ConnectionPool.getInstance().getConnection();
-        PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER_SERVED)) {
+        try (Connection connection = ConnectionPool.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(UPDATE_ORDER_SERVED)) {
             statement.setBoolean(1, isServed);
             statement.setLong(2, id);
             statement.executeUpdate();
