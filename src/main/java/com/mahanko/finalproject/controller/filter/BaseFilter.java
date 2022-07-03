@@ -15,6 +15,11 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Optional;
 
+/**
+ * The type Base filter class puts into session new object of {@link CustomerEntity} class in case if session doesn't contain one.
+ * Also adds headers to response, that prevents page caching.
+ * Also adds/reads cookies containing information about localization.
+ */
 @WebFilter(filterName = "BaseFilter", urlPatterns = "/*")
 public class BaseFilter implements Filter {
     @Override

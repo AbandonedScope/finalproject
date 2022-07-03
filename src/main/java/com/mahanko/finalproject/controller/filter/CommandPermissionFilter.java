@@ -1,7 +1,6 @@
 package com.mahanko.finalproject.controller.filter;
 
 import com.mahanko.finalproject.controller.AttributeType;
-import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.command.CommandType;
 import com.mahanko.finalproject.controller.filter.permission.UserPermission;
 import com.mahanko.finalproject.model.entity.CustomerEntity;
@@ -19,7 +18,13 @@ import java.io.IOException;
 
 import static com.mahanko.finalproject.controller.ParameterType.COMMAND;
 
-@WebFilter(filterName = "CommandPermissionFilter" , urlPatterns = "/controller")
+/**
+ * The type Command permission filter class determines what commands
+ * the client can use.
+ * @see jakarta.servlet.Filter
+ * @see UserPermission
+ */
+@WebFilter(filterName = "CommandPermissionFilter", urlPatterns = "/controller")
 public class CommandPermissionFilter implements Filter {
     private static final Logger logger = LogManager.getLogger();
 
@@ -27,12 +32,12 @@ public class CommandPermissionFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws ServletException, IOException {
         response.setContentType("text/html");
-        logger.log(Level.INFO,"CommandPermissionFilter - doFilter");
+        logger.log(Level.INFO, "CommandPermissionFilter - doFilter");
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
         HttpServletResponse httpServletResponse = (HttpServletResponse) response;
         HttpSession session = httpServletRequest.getSession();
         String commandString = httpServletRequest.getParameter(COMMAND);
-        if (commandString == null){
+        if (commandString == null) {
             httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST);
             return;
         }
@@ -41,12 +46,12 @@ public class CommandPermissionFilter implements Filter {
         RoleType role = RoleType.GUEST;
 
         CustomerEntity user = (CustomerEntity) session.getAttribute(AttributeType.USER);
-        if(user != null){
+        if (user != null) {
             role = user.getRole();
         }
 
         UserPermission type;
-        switch (role){
+        switch (role) {
             case ADMIN:
                 type = UserPermission.ADMIN;
                 break;
@@ -60,7 +65,7 @@ public class CommandPermissionFilter implements Filter {
 
         boolean isPermitted = type.isPermitted(command);
 
-        if(!isPermitted){
+        if (!isPermitted) {
             httpServletResponse.setStatus(HttpServletResponse.SC_FORBIDDEN);
             return;
         }

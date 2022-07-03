@@ -12,6 +12,9 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+/**
+ * The type Page redirect security filter class determines whether to allow user access to admins pages.
+ */
 @WebFilter(filterName = "PageRedirectSecurityFilter", urlPatterns = "/pages/admin/*")
 public class PageRedirectSecurityFilter implements Filter {
 

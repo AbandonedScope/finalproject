@@ -12,6 +12,10 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 
+/**
+ * The type Authorized filter class determines whether to allow user access to certain page or not,
+ * based on user authorization state.
+ */
 @WebFilter(filterName = "AuthorizedFilter", urlPatterns = "/pages/authorized/*")
 public class AuthorizedFilter implements Filter {
     @Override
