@@ -1,6 +1,5 @@
 package com.mahanko.finalproject.controller.command.impl;
 
-import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.ValidationMessage;

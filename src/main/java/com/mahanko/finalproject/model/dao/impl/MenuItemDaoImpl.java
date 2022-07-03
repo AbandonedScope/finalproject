@@ -120,9 +120,9 @@ public class MenuItemDaoImpl implements MenuItemDao {
     @Override
     public boolean insert(MenuItem entity) throws DaoException {
         boolean isInserted = false;
-        // FIXME: 22.04.2022 transactions
-        try (Connection connection = ConnectionPool.getInstance().getConnection();
-             PreparedStatement statement = connection.prepareStatement(INSERT_NEW_MENU_ITEM, Statement.RETURN_GENERATED_KEYS)) {
+        Connection connection = ConnectionPool.getInstance().getConnection();
+        try (PreparedStatement statement = connection.prepareStatement(INSERT_NEW_MENU_ITEM, Statement.RETURN_GENERATED_KEYS)) {
+            connection.setAutoCommit(false);
             Blob pictureBlob = connection.createBlob();
             byte[] pictureBytes = CustomPictureEncoder.decodeString(entity.getPictureBase64());
             pictureBlob.setBytes(1, pictureBytes);
@@ -138,11 +138,23 @@ public class MenuItemDaoImpl implements MenuItemDao {
                     entity.setId(menuItemId);
                 }
             }
-            // FIXME: 22.04.2022
             insertMenuItemIngredientsMerge(connection, entity);
+            connection.commit();
         } catch (SQLException e) {
+            try {
+                connection.rollback();
+            } catch (SQLException ex) {
+                logger.log(Level.ERROR, e);
+            }
+
             logger.log(Level.ERROR, e);
             throw new DaoException(e);
+        } finally {
+            try {
+                connection.close();
+            } catch (SQLException e) {
+                logger.log(Level.ERROR, e);
+            }
         }
 
         return isInserted;
