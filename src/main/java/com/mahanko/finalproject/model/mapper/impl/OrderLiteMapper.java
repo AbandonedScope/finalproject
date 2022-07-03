@@ -4,8 +4,6 @@ import com.mahanko.finalproject.exception.DaoException;
 import com.mahanko.finalproject.model.entity.OrderEntity;
 import com.mahanko.finalproject.model.entity.PaymentType;
 import com.mahanko.finalproject.model.mapper.CustomRowMapper;
-import org.apache.logging.log4j.LogManager;
-import org.apache.logging.log4j.Logger;
 
 import java.math.BigDecimal;
 import java.sql.ResultSet;
@@ -15,8 +13,10 @@ import java.util.Optional;
 
 import static com.mahanko.finalproject.model.mapper.ColumnName.*;
 
+/**
+ * The type OrderLiteMapper class. Maps result set to the OrderEntity class object.(maps without menu items).
+ */
 public class OrderLiteMapper implements CustomRowMapper<OrderEntity> {
-    private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Optional<OrderEntity> map(ResultSet resultSet) throws DaoException {

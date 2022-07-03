@@ -12,23 +12,19 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+/**
+ * The type MenuSectionRowMapper class. Maps result set to the MenuItem class object.
+ */
 public class MenuSectionRowMapper implements CustomRowMapper<MenuSection> {
     private static final Logger logger = LogManager.getLogger();
 
     @Override
     public Optional<MenuSection> map(ResultSet resultSet) throws DaoException {
         MenuSection section = new MenuSection();
-        Optional<MenuSection> sectionOptional = Optional.empty();
+        Optional<MenuSection> sectionOptional;
         try {
             section.setId(resultSet.getInt(ColumnName.SECTION_ID));
             section.setName(resultSet.getString(ColumnName.SECTION_NAME));
-//            CustomRowMapper<MenuItem> menuItemMapper = new MenuItemRowMapper();
-//            do {
-//                Optional<MenuItem> menuItemOptional = menuItemMapper.map(resultSet);
-//                if (menuItemOptional.isPresent()) {
-//
-//                }
-//            } while (resultSet.next() && resultSet.getInt(ColumnName.SECTION_ID) == section.getId())
             resultSet.next();
             sectionOptional = Optional.of(section);
         } catch (SQLException e) {

@@ -15,6 +15,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+/**
+ * The type IngredientRowMapper class. Maps result set to the Ingredient class object.
+ */
 public class IngredientRowMapper implements CustomRowMapper<Ingredient> {
     private static final Logger logger = LogManager.getLogger();
 

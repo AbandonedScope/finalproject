@@ -17,6 +17,9 @@ import java.util.Optional;
 
 import static com.mahanko.finalproject.model.mapper.ColumnName.*;
 
+/**
+ * The type MenuItemRowMapper class. Maps result set to the MenuItem class object.
+ */
 public class MenuItemRowMapper implements CustomRowMapper<MenuItem> {
     private static final Logger logger = LogManager.getLogger();
 
@@ -33,17 +36,13 @@ public class MenuItemRowMapper implements CustomRowMapper<MenuItem> {
             menuItem.setCost(resultSet.getBigDecimal(MENU_ITEM_COST));
             menuItem.setSectionId(resultSet.getLong(MENU_ITEM_SECTION));
             IngredientRowMapper ingredientMapper = new IngredientRowMapper();
-            if (!resultSet.isLast()) {
-                do {
-                    Optional<Ingredient> ingredientOptional = ingredientMapper.map(resultSet);
-                    if (ingredientOptional.isPresent()) {
-                        ingredientOptional.get().setWeight(resultSet.getDouble(INGREDIENT_WEIGHT));
-                        menuItem.addIngredient(ingredientOptional.get());
-                    }
-                } while (resultSet.next() && resultSet.getLong(MENU_ITEM_ID) == menuItem.getId());
-            } else {
-                resultSet.next();
-            }
+            do {
+                Optional<Ingredient> ingredientOptional = ingredientMapper.map(resultSet);
+                if (ingredientOptional.isPresent()) {
+                    ingredientOptional.get().setWeight(resultSet.getDouble(INGREDIENT_WEIGHT));
+                    menuItem.addIngredient(ingredientOptional.get());
+                }
+            } while (resultSet.next() && resultSet.getLong(MENU_ITEM_ID) == menuItem.getId());
 
             menuItemOptional = Optional.of(menuItem);
         } catch (SQLException | IOException e) {

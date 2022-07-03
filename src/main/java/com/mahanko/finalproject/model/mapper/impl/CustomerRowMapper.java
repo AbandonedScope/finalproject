@@ -13,6 +13,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Optional;
 
+/**
+ * The type CustomerRowMapper class. Maps result set to the CustomerEntity class object.
+ */
 public class CustomerRowMapper implements CustomRowMapper<CustomerEntity> {
     private static final Logger logger = LogManager.getLogger();
 
