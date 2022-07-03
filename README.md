@@ -4,7 +4,7 @@ The client visits the cafe website and sees a list of menu sections and dishes c
 
 ### Guest can:
 - add menu item to cart
-- chande menu item in cart amount
+- change menu item in cart amount
 - delete menu items from cart
 - change language
 - find all menu items
@@ -13,7 +13,7 @@ The client visits the cafe website and sees a list of menu sections and dishes c
 - sign in, if he is registered
 ### Customer can:
 - add menu item to cart
-- chande menu item in cart amount
+- change menu item in cart amount
 - delete menu items from cart
 - create an order
 - change language
@@ -24,7 +24,7 @@ The client visits the cafe website and sees a list of menu sections and dishes c
 - see it active orders
 ### Admin can:
 - add menu item to cart
-- chande menu item in cart amount
+- change menu item in cart amount
 - delete menu items from cart
 - create an order
 - change language
