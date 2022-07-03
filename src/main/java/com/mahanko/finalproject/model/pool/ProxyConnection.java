@@ -5,6 +5,9 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
+/**
+ * The type ProxyConnection class.
+ */
 class ProxyConnection implements Connection {
     private final Connection connection;
 
@@ -52,6 +55,11 @@ class ProxyConnection implements Connection {
         connection.rollback();
     }
 
+    /**
+     * Return proxy connection into connection pool.
+     *
+     * @throws SQLException the sql exception.
+     */
     @Override
     public void close() throws SQLException {
         if (!this.getAutoCommit()) {
@@ -61,6 +69,11 @@ class ProxyConnection implements Connection {
         ConnectionPool.getInstance().releaseConnection(this);
     }
 
+    /**
+     * Close the connection
+     *
+     * @throws SQLException the sql exception.
+     */
     void closeProxy() throws SQLException {
         connection.close();
     }

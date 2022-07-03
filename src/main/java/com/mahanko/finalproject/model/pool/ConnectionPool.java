@@ -16,7 +16,12 @@ import java.util.concurrent.LinkedBlockingDeque;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class ConnectionPool { //FIXME: 09.04.2022 Read about these properties
+/**
+ * The type ConnectionPool class. Announces two limited thread - safe queues
+ * for free and taken connections. It is a singleton class with private
+ * constructor and static method to initialize this class.
+ */
+public class ConnectionPool {
     private static final int MAX_CONNECTIONS;
     private static final String DATABASE_DRIVER;
     private static final String URL;
@@ -55,6 +60,11 @@ public class ConnectionPool { //FIXME: 09.04.2022 Read about these properties
         }
     }
 
+    /**
+     * Get instance connection pool.
+     *
+     * @return the connection pool
+     */
     public static ConnectionPool getInstance() {
         if (!isCreated.get()) {
             lock.lock();
@@ -70,6 +80,11 @@ public class ConnectionPool { //FIXME: 09.04.2022 Read about these properties
         return instance;
     }
 
+    /**
+     * Get connection.
+     *
+     * @return the connection
+     */
     public Connection getConnection() {
         ProxyConnection connection = null;
         try {
@@ -83,6 +98,12 @@ public class ConnectionPool { //FIXME: 09.04.2022 Read about these properties
         return connection;
     }
 
+    /**
+     * Release connection. The connection returns
+     * to the pool.
+     *
+     * @param connection the connection
+     */
     public boolean releaseConnection(Connection connection) {
         boolean isRemoved = false;
         if (connection instanceof ProxyConnection) {
@@ -100,6 +121,9 @@ public class ConnectionPool { //FIXME: 09.04.2022 Read about these properties
         return isRemoved;
     }
 
+    /**
+     * Destroy pool and deregister drivers.
+     */
     public void destroyPool() {
         try {
             for (int i = 0; i < MAX_CONNECTIONS; i++) {
