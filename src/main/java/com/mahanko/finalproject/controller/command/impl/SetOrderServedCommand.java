@@ -18,8 +18,19 @@ import org.apache.logging.log4j.Logger;
  * The {@link Command} that updates in database order served status to true.
  */
 public class SetOrderServedCommand  implements Command {
+    /**
+     * Used for writing logs
+     */
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {

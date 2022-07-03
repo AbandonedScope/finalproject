@@ -26,10 +26,22 @@ import java.util.Optional;
  * The {@link Command} that is used to find information about customer and customer's orders by its id.
  */
 public class GetCustomerInfoCommand implements Command {
+    /**
+     * Used for writing logs
+     */
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router with type {@link Router.Type#FORWARD} to {@link PagePath#CUSTOMER_INFO} in case if customer with certain id was found, otherwise with type {@link Router.Type#REDIRECT} to {@link PagePath#CUSTOMER_FIND}.
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
+        Router router = new Router(PagePath.CUSTOMER_INFO, Router.Type.FORWARD);
         String customerIdString = request.getParameter(ParameterType.CUSTOMER_ID);
         try {
             long customerId = Long.parseLong(customerIdString);
@@ -42,6 +54,8 @@ public class GetCustomerInfoCommand implements Command {
                 if (!customerOrders.isEmpty()) {
                     request.setAttribute(AttributeType.CUSTOMER_ORDERS, customerOrders);
                 }
+            } else {
+                router = new Router(PagePath.CUSTOMER_FIND);
             }
         } catch (NumberFormatException e) {
             logger.log(Level.ERROR, e);
@@ -49,6 +63,7 @@ public class GetCustomerInfoCommand implements Command {
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
-        return new Router(PagePath.CUSTOMER_INFO, Router.Type.FORWARD);
+
+        return router;
     }
 }

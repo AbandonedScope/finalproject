@@ -18,6 +18,14 @@ import java.util.List;
  * The {@link Command} that is executes to find customer orders by its id.
  */
 public class OnOrdersPageCommand implements Command {
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router route = new Router(PagePath.ORDERS, Router.Type.FORWARD);

@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.controller.command.impl;
 
+import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.ValidationMessage;
@@ -23,8 +24,19 @@ import static com.mahanko.finalproject.controller.ParameterType.*;
  * The {@link AsynchronousCommand} that update information about existing in database {@link MenuSection}.
  */
 public class ModifyMenuSectionCommand extends AsynchronousCommand {
+    /**
+     * Used for writing logs
+     */
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router with type {@link Router.Type#NONE}.
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router router;

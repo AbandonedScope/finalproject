@@ -22,6 +22,14 @@ import static com.mahanko.finalproject.controller.AttributeType.ORDER_CART;
  * into customer's {@link OrderEntity}.
  */
 public class AddItemToCartCommand extends AsynchronousCommand {
+
+    /**
+     *  Executes a command.
+     * @param request  The request
+     * @param response The responce
+     * @return The router  with type {@link Router.Type#NONE}
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router router = new Router(PagePath.MAIN, Router.Type.REDIRECT);

@@ -17,6 +17,14 @@ import java.util.List;
  * The {@link Command} that is used to find ingredient by its name.
  */
 public class FindIngredientsByNameCommand implements Command {
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return  The router with type {@link Router.Type#FORWARD} to {@link PagePath#MODIFY_INGREDIENT}.
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router route = new Router(PagePath.MODIFY_INGREDIENT, Router.Type.FORWARD);

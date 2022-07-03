@@ -23,16 +23,24 @@ import static com.mahanko.finalproject.controller.ParameterType.*;
  */
 public class AddOrderCommand implements Command {
 
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router with type {@link Router.Type#REDIRECT} to {@link PagePath#MAIN} in case of success, otherwise with type {@link Router.Type#FORWARD} to {@link PagePath#SHOPPING_CART}
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router route = new Router(PagePath.MAIN);
         HttpSession session = request.getSession();
         RequestParameters params = new RequestParameters();
-        OrderEntity order = (OrderEntity)session.getAttribute(ORDER_CART);
-        CustomerEntity customer = (CustomerEntity)session.getAttribute(AttributeType.USER);
+        OrderEntity order = (OrderEntity) session.getAttribute(ORDER_CART);
+        CustomerEntity customer = (CustomerEntity) session.getAttribute(AttributeType.USER);
         params.put(USER_ID, customer.getId().toString());
         params.put(ORDER_TIME, request.getParameter(ORDER_TIME));
-        params.put(ORDER_PAYMENT_TYPE,request.getParameter(ORDER_PAYMENT_TYPE));
+        params.put(ORDER_PAYMENT_TYPE, request.getParameter(ORDER_PAYMENT_TYPE));
         OrderService service = OrderServiceImpl.getInstance();
 
         try {
@@ -44,7 +52,7 @@ public class AddOrderCommand implements Command {
                 session.setAttribute(ORDER_CART, new OrderEntity());
             }
         } catch (ServiceException e) {
-            throw  new CommandException(e);
+            throw new CommandException(e);
         }
 
         return route;

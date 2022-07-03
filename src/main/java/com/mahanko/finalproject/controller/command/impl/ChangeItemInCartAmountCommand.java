@@ -22,8 +22,19 @@ import static com.mahanko.finalproject.controller.AttributeType.ORDER_CART;
  * The {@link Command} that changes amount of certain meal in the customer cart by id.
  */
 public class ChangeItemInCartAmountCommand implements Command {
+    /**
+     * Used for writing logs
+     */
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return  The router with type {@link Router.Type#REDIRECT} to {@link PagePath#SHOPPING_CART}.
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         HttpSession session = request.getSession();

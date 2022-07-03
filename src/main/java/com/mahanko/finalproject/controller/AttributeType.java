@@ -11,7 +11,7 @@ public final class AttributeType {
     public static final String CUSTOMER = "customer";
     public static final String CUSTOMERS = "customers";
     public static final String CUSTOMER_ORDERS = "customerOrders";
-
+    public static final String PAYMENT_TYPES = "paymentTypes";
 
     private AttributeType() {
     }

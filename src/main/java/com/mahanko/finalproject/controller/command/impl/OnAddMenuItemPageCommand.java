@@ -16,7 +16,18 @@ import com.mahanko.finalproject.model.service.impl.MenuSectionServiceImpl;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+/**
+ * The {@link Command} that find and put into request ingredients and sections.
+ */
 public class OnAddMenuItemPageCommand implements Command {
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         IngredientService service = IngredientServiceImpl.getInstance();

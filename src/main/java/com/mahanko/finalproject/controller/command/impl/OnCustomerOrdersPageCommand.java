@@ -17,7 +17,18 @@ import jakarta.servlet.http.HttpSession;
 
 import java.util.List;
 
+/**
+ * The {@link Command} that finds and puts into request customers active orders.
+ */
 public class OnCustomerOrdersPageCommand implements Command {
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         HttpSession session = request.getSession();

@@ -17,6 +17,14 @@ import java.util.List;
  * The {@link Command} that is used to find menu section by its name.
  */
 public class FindMenuSectionsByNameCommand implements Command {
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return  The router with type {@link Router.Type#FORWARD} to {@link PagePath#MODIFY_MENU_SECTION}.
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router route = new Router(PagePath.MODIFY_MENU_SECTION, Router.Type.FORWARD);

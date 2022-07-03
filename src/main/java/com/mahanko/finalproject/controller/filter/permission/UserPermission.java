@@ -46,7 +46,8 @@ public enum UserPermission {
             CommandType.REMOVE_MENU_ITEM_FROM_CART,
             CommandType.ON_ORDERS_PAGE,
             CommandType.ON_CUSTOMER_ORDERS_PAGE,
-            CommandType.ON_ADD_MENU_ITEM)),
+            CommandType.ON_ADD_MENU_ITEM,
+            CommandType.ON_CART_PAGE)),
     /**
      * Customer user permission.
      */
@@ -60,7 +61,8 @@ public enum UserPermission {
             CommandType.SET_LOCALIZATION_TO_RUSSIAN,
             CommandType.LOAD_MAIN_PAGE_RESOURCES,
             CommandType.REMOVE_MENU_ITEM_FROM_CART,
-            CommandType.ON_CUSTOMER_ORDERS_PAGE)),
+            CommandType.ON_CUSTOMER_ORDERS_PAGE,
+            CommandType.ON_CART_PAGE)),
     /**
      * Guest user permission.
      */
@@ -72,7 +74,8 @@ public enum UserPermission {
             CommandType.SET_LOCALIZATION_TO_ENGLISH,
             CommandType.SET_LOCALIZATION_TO_RUSSIAN,
             CommandType.LOAD_MAIN_PAGE_RESOURCES,
-            CommandType.REMOVE_MENU_ITEM_FROM_CART));
+            CommandType.REMOVE_MENU_ITEM_FROM_CART,
+            CommandType.ON_CART_PAGE));
 
     private final Set<CommandType> commands;
 
@@ -80,6 +83,11 @@ public enum UserPermission {
         this.commands = commands;
     }
 
+    /**
+     * Determines whether user is permitted to execute certain command type or not.
+     * @param commandType the command type, user wants to execute
+     * @return true - if user has a permission to execution this command type, otherwise false
+     */
     public boolean isPermitted(CommandType commandType) {
         return commands.stream().anyMatch(commandType::equals);
     }

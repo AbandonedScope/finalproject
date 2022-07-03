@@ -26,8 +26,19 @@ import java.util.Optional;
  * The {@link Command} that sets customer role to a user by id.
  */
 public class SetCustomerRoleCustomerCommand implements Command {
+    /**
+     * Used for writing logs
+     */
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String customerIdString = request.getParameter(ParameterType.CUSTOMER_ID);

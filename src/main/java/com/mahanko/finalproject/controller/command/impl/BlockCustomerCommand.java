@@ -25,8 +25,19 @@ import java.util.Optional;
  * The {@link Command} that block customer by id.
  */
 public class BlockCustomerCommand implements Command {
+    /**
+     * Used for writing logs
+     */
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return  The router with type {@link Router.Type#FORWARD} to {@link PagePath#CUSTOMER_INFO}.
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String customerIdString = request.getParameter(ParameterType.CUSTOMER_ID);
@@ -38,9 +49,7 @@ public class BlockCustomerCommand implements Command {
             if (optionalCustomer.isPresent()) {
                 List<OrderEntity> customerOrders = OrderServiceImpl.getInstance().findOrdersByCustomerId(customerId);
                 request.setAttribute(AttributeType.CUSTOMER, optionalCustomer.get());
-                if (!customerOrders.isEmpty()) {
-                    request.setAttribute(AttributeType.CUSTOMER_ORDERS, customerOrders);
-                }
+                request.setAttribute(AttributeType.CUSTOMER_ORDERS, customerOrders);
             }
         } catch (NumberFormatException e) {
             logger.log(Level.ERROR, e);

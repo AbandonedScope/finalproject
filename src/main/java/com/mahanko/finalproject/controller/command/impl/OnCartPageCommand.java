@@ -1,16 +1,21 @@
 package com.mahanko.finalproject.controller.command.impl;
 
+import com.mahanko.finalproject.controller.AttributeType;
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.exception.CommandException;
+import com.mahanko.finalproject.model.entity.PaymentType;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
 /**
- * The {@link Command} that redirects to registration page.
+ * The {@link Command} that find and puts into request allowed payment types.
  */
-public class OnRegisterPageCommand implements Command {
+public class OnCartPageCommand implements Command {
     /**
      * Executes a command.
      *
@@ -21,6 +26,8 @@ public class OnRegisterPageCommand implements Command {
      */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        return new Router(PagePath.REGISTRATION);
+        var paymentTypes = Arrays.stream(PaymentType.values()).map(PaymentType::toString).collect(Collectors.toList());
+        request.setAttribute(AttributeType.PAYMENT_TYPES, paymentTypes);
+        return new Router(PagePath.SHOPPING_CART, Router.Type.FORWARD);
     }
 }

@@ -14,7 +14,18 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 
+/**
+ * The {@link Command} that finds and pits into request sections of the menu with items.
+ */
 public class LoadMainPageResourcesCommand implements Command {
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router with type {@link Router.Type#FORWARD} to {@link PagePath#MAIN}.
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         MenuSectionService sectionService = MenuSectionServiceImpl.getInstance();

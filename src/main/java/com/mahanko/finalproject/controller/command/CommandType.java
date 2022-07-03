@@ -145,9 +145,22 @@ public enum CommandType {
      * The Set user role customer.
      */
     SET_CUSTOMER_ROLE_CUSTOMER(new SetCustomerRoleCustomerCommand()),
+    /**
+     * The Load main page resources.
+     */
     LOAD_MAIN_PAGE_RESOURCES(new LoadMainPageResourcesCommand()),
+    /**
+     * On customer orders page.
+     */
     ON_CUSTOMER_ORDERS_PAGE(new OnCustomerOrdersPageCommand()),
-    ON_ADD_MENU_ITEM(new OnAddMenuItemPageCommand());
+    /**
+     * On add menu item page.
+     */
+    ON_ADD_MENU_ITEM(new OnAddMenuItemPageCommand()),
+    /**
+     * On cart page.
+     */
+    ON_CART_PAGE(new OnCartPageCommand());
 
     private final Command command;
 
@@ -158,7 +171,7 @@ public enum CommandType {
     /**
      * Provide corresponding command or default command.
      *
-     * @param commandStr the command
+     * @param commandStr the command name
      * @return the command
      */
     public static CommandType of(String commandStr) {
@@ -173,6 +186,10 @@ public enum CommandType {
         return current;
     }
 
+    /**
+     * The get command
+     * @return the command
+     */
     public Command getCommand() {
         return command;
     }

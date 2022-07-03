@@ -25,8 +25,19 @@ import static com.mahanko.finalproject.controller.ParameterType.*;
  * The {@link Command} that is used to sign in customer by its login and password.
  */
 public class LoginCommand implements Command {
+    /**
+     * Used for writing logs
+     */
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router with type {@link Router.Type#REDIRECT} to {@link PagePath#MAIN} in case of success, otherwise with type {@link Router.Type#FORWARD} to {@link PagePath#LOGIN}.
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String login = request.getParameter(USER_LOGIN);

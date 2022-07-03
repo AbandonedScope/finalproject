@@ -10,6 +10,9 @@
 </head>
 <body>
 <c:set var="cart" value="${sessionScope.shoppingCart}"/>
+<c:if test="${requestScope.paymentTypes == null}">
+    <c:redirect url="/controller?command=on-cart-page"/>
+</c:if>
 <div class="mx-5 mt-2">
     <c:if test="${not empty cart.items}">
         <h2><fmt:message key="navigation.guest.cart"/></h2>

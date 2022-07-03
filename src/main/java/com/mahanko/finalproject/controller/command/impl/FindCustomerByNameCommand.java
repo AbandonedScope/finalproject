@@ -19,6 +19,14 @@ import java.util.List;
  * The {@link Command} that is used to find customer by its name, surname and login.
  */
 public class FindCustomerByNameCommand implements Command {
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return  The router with type {@link Router.Type#FORWARD} to {@link PagePath#CUSTOMER_FIND}.
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         try {

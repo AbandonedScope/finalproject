@@ -18,6 +18,14 @@ import jakarta.servlet.http.HttpSession;
  * The {@link Command} that removes menu item from customer order.
  */
 public class RemoveItemFromCartCommand implements Command {
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router route = new Router(PagePath.SHOPPING_CART);

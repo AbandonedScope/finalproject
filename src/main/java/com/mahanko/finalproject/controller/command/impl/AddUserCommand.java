@@ -25,9 +25,19 @@ import static com.mahanko.finalproject.controller.ValidationMessage.REGISTRATION
  * The {@link Command} that insert new {@link CustomerEntity} into database.
  */
 public class AddUserCommand implements Command {
-    
+    /**
+     * Used for writing logs
+     */
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router with type {@link Router.Type#REDIRECT} to {@link PagePath#MAIN} in case of success, otherwise with type {@link Router.Type#FORWARD} to {@link PagePath#REGISTRATION}
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router route = new Router();

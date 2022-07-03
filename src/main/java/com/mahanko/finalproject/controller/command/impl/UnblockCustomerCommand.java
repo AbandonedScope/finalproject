@@ -25,8 +25,19 @@ import java.util.Optional;
  * The {@link Command} that unblock customer by id.
  */
 public class UnblockCustomerCommand implements Command {
+    /**
+     * Used for writing logs
+     */
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         String customerIdString = request.getParameter(ParameterType.CUSTOMER_ID);
@@ -39,9 +50,7 @@ public class UnblockCustomerCommand implements Command {
                 CustomerEntity customer = optionalCustomer.get();
                 List<OrderEntity> customerOrders = OrderServiceImpl.getInstance().findOrdersByCustomerId(customerId);
                 request.setAttribute(AttributeType.CUSTOMER, customer);
-                if (!customerOrders.isEmpty()) {
-                    request.setAttribute(AttributeType.CUSTOMER_ORDERS, customerOrders);
-                }
+                request.setAttribute(AttributeType.CUSTOMER_ORDERS, customerOrders);
             }
         } catch (NumberFormatException e) {
             logger.log(Level.ERROR, e);

@@ -17,8 +17,19 @@ import org.apache.logging.log4j.Logger;
  * The {@link Command} that removes menu section from database, or hides it, in case if it contains any menu item.
  */
 public class RemoveMenuSectionCommand extends AsynchronousCommand {
+    /**
+     * Used for writing logs
+     */
     private static final Logger logger = LogManager.getLogger();
 
+    /**
+     * Executes a command.
+     *
+     * @param request  The request
+     * @param response The responce
+     * @return The router
+     * @throws CommandException the command exception
+     */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
         Router router;
