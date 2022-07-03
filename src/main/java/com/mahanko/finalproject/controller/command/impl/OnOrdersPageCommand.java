@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.controller.command.impl;
 
+import com.mahanko.finalproject.controller.AttributeType;
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.Router;
@@ -32,7 +33,7 @@ public class OnOrdersPageCommand implements Command {
         OrderService service = OrderServiceImpl.getInstance();
         try {
             List<OrderEntity> orders = service.findAll();
-            request.setAttribute(ParameterType.ORDERS, orders);
+            request.setAttribute(AttributeType.ORDERS, orders);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

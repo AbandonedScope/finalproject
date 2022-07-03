@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.controller.command.impl;
 
+import com.mahanko.finalproject.controller.AttributeType;
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.Router;
@@ -50,9 +51,10 @@ public class FindMenuItemsByNameCommand implements Command {
             throw new CommandException(e);
         }
 
-        request.setAttribute(ParameterType.MENU_ITEMS, items);
-        request.setAttribute(ParameterType.INGREDIENTS, ingredients);
-        request.setAttribute(ParameterType.SECTIONS, sections);
+
+        request.setAttribute(AttributeType.MENU_ITEMS, items);
+        request.setAttribute(AttributeType.INGREDIENTS, ingredients);
+        request.setAttribute(AttributeType.SECTIONS, sections);
         return route;
     }
 }

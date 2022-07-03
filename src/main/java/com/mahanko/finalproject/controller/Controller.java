@@ -16,6 +16,11 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
+/**
+ * The type Controller class. Manage requests and forms responses for clients.
+ * Override GET and POST methods.
+ * @see jakarta.servlet.http.HttpServlet
+ */
 @WebServlet(name = "mainServlet", urlPatterns = "/controller")
 @MultipartConfig
 public class Controller extends HttpServlet {

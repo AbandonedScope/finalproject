@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.controller.command.impl;
 
+import com.mahanko.finalproject.controller.AttributeType;
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.Router;
@@ -33,7 +34,7 @@ public class FindMenuSectionsByNameCommand implements Command {
         List<MenuSection> sections;
         try {
             sections = service.findByName(sectionName);
-            request.setAttribute(ParameterType.SECTIONS, sections);
+            request.setAttribute(AttributeType.SECTIONS, sections);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }

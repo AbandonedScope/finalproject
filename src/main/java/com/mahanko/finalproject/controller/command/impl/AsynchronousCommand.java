@@ -1,6 +1,7 @@
 package com.mahanko.finalproject.controller.command.impl;
 
 import com.mahanko.finalproject.controller.Router;
+import com.mahanko.finalproject.controller.Router.Type;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.util.ToJsonConverter;
 import com.mahanko.finalproject.util.ValidationsToJsonConverter;
@@ -10,7 +11,8 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * The command, that is supposed to return {@link Router} with {@link com.mahanko.finalproject.controller.Router.Type} NONE.
+ * The command, that is supposed to return {@link Router} with {@link Type#NONE}.
+ * @see Command
  */
 public abstract class AsynchronousCommand implements Command {
     /**
@@ -21,7 +23,7 @@ public abstract class AsynchronousCommand implements Command {
      */
     protected Router fillResponse(HttpServletResponse response, boolean success) {
         Router router = new Router();
-        router.setType(Router.Type.NONE);
+        router.setType(Type.NONE);
         if (success) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {
@@ -41,7 +43,7 @@ public abstract class AsynchronousCommand implements Command {
      */
     protected Router fillResponse(HttpServletResponse response, boolean success, List<String> validationMessages) throws IOException {
         Router router = new Router();
-        router.setType(Router.Type.NONE);
+        router.setType(Type.NONE);
         if (success) {
             response.setStatus(HttpServletResponse.SC_OK);
         } else {

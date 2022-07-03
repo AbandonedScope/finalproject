@@ -36,7 +36,7 @@ public class OnCustomerOrdersPageCommand implements Command {
         OrderService service = OrderServiceImpl.getInstance();
         try {
             List<OrderEntity> userOrders = service.findActiveByCustomerId(customer.getId());
-            request.setAttribute(ParameterType.USER_ORDERS, userOrders);
+            request.setAttribute(AttributeType.USER_ORDERS, userOrders);
         } catch (ServiceException e) {
             throw new CommandException(e);
         }
