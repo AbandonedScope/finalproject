@@ -7,6 +7,9 @@ import com.mysql.cj.util.StringUtils;
 
 import java.util.regex.Pattern;
 
+/**
+ * The type CustomerValidatorImpl class. Perform customers information validation.
+ */
 public class CustomerValidatorImpl implements CustomerValidator {
     private static final String NAME_SURNAME_REGEX = "^[A-Za-zА-Яа-я]{3,45}$";
     private static final String LOGIN_REGEX = "^[\\w&&\\D]\\w{4,15}$";

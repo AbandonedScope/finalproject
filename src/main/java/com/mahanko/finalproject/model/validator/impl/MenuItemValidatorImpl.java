@@ -7,6 +7,9 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.regex.Pattern;
 
+/**
+ * The type MenuItemValidatorImpl class. Perform menu items information validation.
+ */
 public class MenuItemValidatorImpl implements MenuItemValidator {
     private static final String MENU_ITEM_NAME_RUS_LONGER_2_SHORTER_45 = "[А-Яа-я\\s-]{2,45}";
     private static final String MENU_ITEM_NAME_ENG_LONGER_2_SHORTER_45 = "[A-Za-z\\s-]{2,45}";

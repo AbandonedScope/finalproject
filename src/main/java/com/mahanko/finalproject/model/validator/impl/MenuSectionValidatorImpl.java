@@ -5,6 +5,9 @@ import com.mysql.cj.util.StringUtils;
 
 import java.util.regex.Pattern;
 
+/**
+ * The type MenuSectionValidatorImpl class. Perform menu sections information validation.
+ */
 public class MenuSectionValidatorImpl implements MenuSectionValidator {
     private static final String MENU_SECTION_NAME_RUS = "[А-Яа-я\\s]{2,45}";
     private static final String MENU_SECTION_NAME_ENG = "[A-Za-z\\s]{2,45}";

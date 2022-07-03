@@ -5,6 +5,9 @@ import com.mysql.cj.util.StringUtils;
 
 import java.util.regex.Pattern;
 
+/**
+ * The type IngredientValidatorImpl class. Perform ingredients information validation.
+ */
 public class IngredientValidatorImpl implements IngredientValidator {
     private static final String INGREDIENT_NAME_RUS_LONGER_2_SHORTER_45 = "[А-Яа-я\\s]{2,45}";
     private static final String INGREDIENT_NAME_ENG_LONGER_2_SHORTER_45 = "[A-Za-z\\s]{2,45}";

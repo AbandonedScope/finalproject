@@ -6,6 +6,9 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.time.temporal.ChronoUnit;
 
+/**
+ * The type OrderValidatorImpl class. Perform orders information validation.
+ */
 public class OrderValidatorImpl implements OrderValidator {
     private static final int MINIMAL_DELAY_TIME_IN_MINUTES = 29;
     private static final int MAXIMAL_DELAY_TIME_IN_DAYS = 1;
@@ -19,7 +22,7 @@ public class OrderValidatorImpl implements OrderValidator {
             dateTime = LocalDateTime.parse(time);
             LocalDateTime now = LocalDateTime.now();
             if (dateTime.isBefore(now.plus(MINIMAL_DELAY_TIME_IN_MINUTES, ChronoUnit.MINUTES))
-            || dateTime.isAfter(now.plus(MAXIMAL_DELAY_TIME_IN_DAYS, ChronoUnit.DAYS))) {
+                    || dateTime.isAfter(now.plus(MAXIMAL_DELAY_TIME_IN_DAYS, ChronoUnit.DAYS))) {
                 isValid = false;
             }
         } catch (DateTimeParseException e) {
