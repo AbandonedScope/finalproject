@@ -168,7 +168,7 @@
             </c:forEach>
         </div>
     </c:forEach>
-    <div id="toast" class="toast position-fixed bottom-0 end-0 m-3" role="alert">
+    <div style="z-index: 5000" id="toast" class="toast position-fixed bottom-0 end-0 m-3" role="alert">
         <div class="toast-header">
             <em class="me-2 bi bi-bag-check"></em>
             <strong class="me-auto">
