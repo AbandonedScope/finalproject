@@ -1,6 +1,5 @@
 package com.mahanko.finalproject.controller.command.impl;
 
-import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.ValidationMessage;
@@ -33,7 +32,7 @@ public class ModifyMenuSectionCommand extends AsynchronousCommand {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
+     * @param response The response
      * @return The router with type {@link Router.Type#NONE}.
      * @throws CommandException the command exception
      */

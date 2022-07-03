@@ -1,5 +1,6 @@
 package com.mahanko.finalproject.controller.command.impl;
 
+import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
@@ -26,8 +27,8 @@ public class RemoveMenuItemCommand extends AsynchronousCommand {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
-     * @return The router
+     * @param response The response
+     * @return The router with type {@link Router.Type#NONE}.
      * @throws CommandException the command exception
      */
     @Override

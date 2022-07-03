@@ -15,8 +15,8 @@ public class OnRegisterPageCommand implements Command {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
-     * @return The router
+     * @param response The response
+     * @return  with type {@link Router.Type#REDIRECT} to {@link PagePath#REGISTRATION}.
      * @throws CommandException the command exception
      */
     @Override

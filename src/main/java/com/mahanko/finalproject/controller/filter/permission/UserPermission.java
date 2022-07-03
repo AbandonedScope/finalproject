@@ -34,7 +34,6 @@ public enum UserPermission {
             CommandType.REMOVE_INGREDIENT,
             CommandType.REMOVE_MENU_ITEM,
             CommandType.REMOVE_MENU_SECTION,
-            CommandType.SET_CUSTOMER_BLOCKED,
             CommandType.SET_CUSTOMER_ROLE_ADMIN,
             CommandType.SET_CUSTOMER_ROLE_CUSTOMER,
             CommandType.SET_LOCALIZATION_TO_ENGLISH,

@@ -1,9 +1,6 @@
 package com.mahanko.finalproject.controller.command.impl;
 
-import com.mahanko.finalproject.controller.AttributeType;
-import com.mahanko.finalproject.controller.LocaleType;
-import com.mahanko.finalproject.controller.ParameterType;
-import com.mahanko.finalproject.controller.Router;
+import com.mahanko.finalproject.controller.*;
 import com.mahanko.finalproject.controller.command.Command;
 import com.mahanko.finalproject.controller.filter.CookieName;
 import com.mahanko.finalproject.exception.CommandException;
@@ -20,8 +17,8 @@ public class SetLocalizationToEnglishCommand implements Command {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
-     * @return The router
+     * @param response The response
+     * @return The router with type {@link Router.Type#REDIRECT} to previous page.
      * @throws CommandException the command exception
      */
     @Override

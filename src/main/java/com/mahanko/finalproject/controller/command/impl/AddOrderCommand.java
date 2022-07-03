@@ -27,7 +27,7 @@ public class AddOrderCommand implements Command {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
+     * @param response The response
      * @return The router with type {@link Router.Type#REDIRECT} to {@link PagePath#MAIN} in case of success, otherwise with type {@link Router.Type#FORWARD} to {@link PagePath#SHOPPING_CART}
      * @throws CommandException the command exception
      */

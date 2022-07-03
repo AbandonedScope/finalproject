@@ -3,7 +3,6 @@ package com.mahanko.finalproject.controller.command.impl;
 import com.mahanko.finalproject.controller.PagePath;
 import com.mahanko.finalproject.controller.Router;
 import com.mahanko.finalproject.controller.command.Command;
-import com.mahanko.finalproject.exception.CommandException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
@@ -15,7 +14,7 @@ public class DefaultCommand implements Command {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
+     * @param response The response
      * @return  The router with type {@link Router.Type#REDIRECT} to {@link PagePath#MAIN}.
      */
     @Override

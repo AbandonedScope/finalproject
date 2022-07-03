@@ -28,7 +28,7 @@ public class SetOrderServedCommand  implements Command {
      *
      * @param request  The request
      * @param response The responce
-     * @return The router
+     * @return The router with type {@link Router.Type#REDIRECT} to {@link PagePath#ORDERS}.
      * @throws CommandException the command exception
      */
     @Override

@@ -110,10 +110,6 @@ public enum CommandType {
      */
     SET_ORDER_SERVED(new SetOrderServedCommand()),
     /**
-     * The Set customer blocked.
-     */
-    SET_CUSTOMER_BLOCKED(new SetCustomerBlockedCommand()),
-    /**
      * The Remove ingredient.
      */
     REMOVE_INGREDIENT(new RemoveIngredientCommand()),

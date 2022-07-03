@@ -35,7 +35,7 @@ public class UnblockCustomerCommand implements Command {
      *
      * @param request  The request
      * @param response The responce
-     * @return The router
+     * @return The router with type {@link Router.Type#FORWARD} to {@link PagePath#CUSTOMER_INFO}.
      * @throws CommandException the command exception
      */
     @Override

@@ -21,7 +21,7 @@ public class SetLocalizationToRussianCommand implements Command {
      *
      * @param request  The request
      * @param response The responce
-     * @return The router
+     * @return The router with type {@link Router.Type#REDIRECT} to previous page.
      * @throws CommandException the command exception
      */
     @Override

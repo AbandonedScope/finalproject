@@ -31,7 +31,7 @@ public class ChangeItemInCartAmountCommand implements Command {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
+     * @param response The response
      * @return  The router with type {@link Router.Type#REDIRECT} to {@link PagePath#SHOPPING_CART}.
      * @throws CommandException the command exception
      */

@@ -25,8 +25,8 @@ public class OnCustomerOrdersPageCommand implements Command {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
-     * @return The router
+     * @param response The response
+     * @return The router with type {@link Router.Type#FORWARD} to {@link PagePath#USER_ORDERS}.
      * @throws CommandException the command exception
      */
     @Override

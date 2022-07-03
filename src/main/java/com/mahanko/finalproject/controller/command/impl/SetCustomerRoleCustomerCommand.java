@@ -35,8 +35,8 @@ public class SetCustomerRoleCustomerCommand implements Command {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
-     * @return The router
+     * @param response The response
+     * @return The router with type {@link Router.Type#FORWARD} to {@link PagePath#CUSTOMER_INFO}.
      * @throws CommandException the command exception
      */
     @Override

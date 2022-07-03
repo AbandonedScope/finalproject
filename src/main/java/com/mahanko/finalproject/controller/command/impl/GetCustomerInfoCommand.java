@@ -35,7 +35,7 @@ public class GetCustomerInfoCommand implements Command {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
+     * @param response The response
      * @return The router with type {@link Router.Type#FORWARD} to {@link PagePath#CUSTOMER_INFO} in case if customer with certain id was found, otherwise with type {@link Router.Type#REDIRECT} to {@link PagePath#CUSTOMER_FIND}.
      * @throws CommandException the command exception
      */

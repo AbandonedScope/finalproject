@@ -21,7 +21,7 @@ public class FindIngredientsByNameCommand implements Command {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
+     * @param response The response
      * @return  The router with type {@link Router.Type#FORWARD} to {@link PagePath#MODIFY_INGREDIENT}.
      * @throws CommandException the command exception
      */

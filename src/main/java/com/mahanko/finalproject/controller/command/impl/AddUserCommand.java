@@ -34,7 +34,7 @@ public class AddUserCommand implements Command {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
+     * @param response The response
      * @return The router with type {@link Router.Type#REDIRECT} to {@link PagePath#MAIN} in case of success, otherwise with type {@link Router.Type#FORWARD} to {@link PagePath#REGISTRATION}
      * @throws CommandException the command exception
      */

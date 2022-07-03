@@ -24,8 +24,8 @@ public class OnAddMenuItemPageCommand implements Command {
      * Executes a command.
      *
      * @param request  The request
-     * @param response The responce
-     * @return The router
+     * @param response The response
+     * @return The router with type {@link Router.Type#FORWARD} to {@link PagePath#ADD_MENU_ITEM}.
      * @throws CommandException the command exception
      */
     @Override
