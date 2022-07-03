@@ -7,7 +7,9 @@
     <title>404</title>
 </head>
 <body>
-404
+<div class="container justify-content-center">
+    <h1>Error 404</h1>
+</div>
 <c:import url="../footer.jsp"/>
 </body>
 </html>
