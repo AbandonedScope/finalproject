@@ -44,6 +44,8 @@ The client visits the cafe website and sees a list of menu sections and dishes c
 - delete existing menu item
 - block/unblock users
 - change users roles (customer -> admin, admin -> customer)
+- add user loyalty points
+- change order state
 - find users by name
 - find information about user
 - find all orders
