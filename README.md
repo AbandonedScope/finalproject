@@ -1,38 +1,49 @@
-# Final Project - GoodCafe
+# Final Project - Cafee
 
-A customer makes an **Order** in a cafe. He inputs the data for delivery. 
-While making  an order, the customer can leave comments. The system shows **the price of the Order** and
-offers to pay an order **by card or cash**.  For  received
-orders  during the year, client **gets a discount** depending on their quantity. 
-If the Customer makes an order and does not pick it up, 
-the administrator can block this user. *The administrator manages the menu, can
-blocks \ unblocks  clients*.
+The client visits the cafe website and sees a list of menu sections and dishes corresponding to them. He can see information about the dish, find out what ingredients it consists of, how many calories, proteins, fats and carbohydrates it contains. The customer adds dishes to the cart and goes to the order page. He makes an order and chooses the date and time when to pick it up, as well as the type of payment - cash or card. The administrator is reviewing the order. When a customer comes to pick up an order, the administrator gives him loyalty points. If the client did not come for the order, the administrator can lower his loyalty points and block the client. The administrator manages the menu, blocks / unblocks clients, adds / removes administrators.
 
 ### Guest can:
+- add menu item to cart
+- chande menu item in cart amount
+- delete menu items from cart
 - change language
-- find all menu
+- find all menu items
+- find all menu items by section name
 - register
 - sign in, if he is registered
-- sort all menu by price
 ### Client can:
-- add products to cart
+- add menu item to cart
+- chande menu item in cart amount
+- delete menu items from cart
 - create an order
-- delete products from cart
 - change language
-- find all menu and menu by section name
-- sort all menu or menu by section name by price
+- find all menu items
+- find all menu items by section name
 - sign out
-- update profile
-- change password
+- see it profily
+- see it active orders
 ### Admin can:
+- add menu item to cart
+- chande menu item in cart amount
+- delete menu items from cart
+- create an order
 - change language
-- find all menu and menu by section name
-- sort all menu or menu by section name by price
+- find all menu items
+- find all menu items by section name
 - sign out
-- update profile
-- change password
-- block\unblock clients
-- manage menu
-- manage orders
-- manage sections
-- add new admins
+- see it profily
+- see it active orders
+- add new ingredient
+- change existing ingredient information
+- delete existing ingredient
+- add new menu section
+- change existing menu section information
+- delete existing menu section
+- add new menu item
+- change existing menu item information
+- delete existing menu item
+- block/unblock users
+- change users roles (customer -> admin, admin -> customer)
+- find users by name
+- find information about user
+- find all orders
