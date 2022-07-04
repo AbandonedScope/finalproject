@@ -81,7 +81,7 @@
         </c:if>
         <c:choose>
             <c:when test="${sessionScope.user.role == RoleType.GUEST}">
-                <a href="login.jsp">
+                <a href="${pageContext.request.contextPath}/pages/login.jsp">
                     <button type="button" class="btn btn-outline-primary fs-5">
                         <fmt:message key="action.guest.make-order"/>
                     </button>
@@ -124,7 +124,7 @@
                             <c:if test="${not empty requestScope.get(ValidationMessage.SERVING_DATETIME_VALIDATION_MESSAGE)}">
                                 <fmt:message key="message.validation.order.serving-date"/>
                             </c:if>
-                            <p>Minimum value now + 30 minutes</p>
+                            <p><fmt:message key="cart.order-modal.serving-date.constrain"/></p>
 
                         </div>
                         <div class="modal-footer">

@@ -46,7 +46,8 @@ public enum UserPermission {
             CommandType.ON_ORDERS_PAGE,
             CommandType.ON_CUSTOMER_ORDERS_PAGE,
             CommandType.ON_ADD_MENU_ITEM,
-            CommandType.ON_CART_PAGE)),
+            CommandType.ON_CART_PAGE,
+            CommandType.REGISTER)),
     /**
      * Customer user permission.
      */
@@ -61,7 +62,8 @@ public enum UserPermission {
             CommandType.LOAD_MAIN_PAGE_RESOURCES,
             CommandType.REMOVE_MENU_ITEM_FROM_CART,
             CommandType.ON_CUSTOMER_ORDERS_PAGE,
-            CommandType.ON_CART_PAGE)),
+            CommandType.ON_CART_PAGE,
+            CommandType.REGISTER)),
     /**
      * Guest user permission.
      */
@@ -74,7 +76,8 @@ public enum UserPermission {
             CommandType.SET_LOCALIZATION_TO_RUSSIAN,
             CommandType.LOAD_MAIN_PAGE_RESOURCES,
             CommandType.REMOVE_MENU_ITEM_FROM_CART,
-            CommandType.ON_CART_PAGE));
+            CommandType.ON_CART_PAGE,
+            CommandType.REGISTER));
 
     private final Set<CommandType> commands;
 

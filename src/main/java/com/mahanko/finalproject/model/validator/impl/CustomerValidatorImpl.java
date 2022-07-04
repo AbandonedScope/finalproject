@@ -4,6 +4,7 @@ import com.mahanko.finalproject.controller.ParameterType;
 import com.mahanko.finalproject.controller.RequestParameters;
 import com.mahanko.finalproject.model.validator.CustomerValidator;
 import com.mysql.cj.util.StringUtils;
+import org.apache.commons.text.StringEscapeUtils;
 
 import java.util.regex.Pattern;
 

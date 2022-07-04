@@ -26,7 +26,8 @@ public class SetLocalizationToRussianCommand implements Command {
      */
     @Override
     public Router execute(HttpServletRequest request, HttpServletResponse response) throws CommandException {
-        Router router = new Router(request.getParameter(ParameterType.PATH), Router.Type.REDIRECT);
+        String path = request.getParameter(ParameterType.PATH);
+        Router router = new Router(path, Router.Type.REDIRECT);
         HttpSession session = request.getSession();
         session.setAttribute(AttributeType.LOCALE, LocaleType.RUSSIAN);
         response.addCookie(new Cookie(CookieName.LOCALE, LocaleType.RUSSIAN));
