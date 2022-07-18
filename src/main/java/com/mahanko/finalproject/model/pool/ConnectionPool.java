@@ -25,8 +25,6 @@ public class ConnectionPool {
     private static final int MAX_CONNECTIONS;
     private static final String DATABASE_DRIVER;
     private static final String URL;
-    private static final AtomicBoolean isCreated = new AtomicBoolean(false);
-    private static final ReentrantLock lock = new ReentrantLock(true);
     private static final Properties properties;
     private static final Logger logger = LogManager.getLogger();
     private static ConnectionPool instance;
@@ -66,17 +64,14 @@ public class ConnectionPool {
      * @return the connection pool
      */
     public static ConnectionPool getInstance() {
-        if (!isCreated.get()) {
-            lock.lock();
-            try {
+        if (instance == null) {
+            synchronized (ConnectionPool.class) {
                 if (instance == null) {
                     instance = new ConnectionPool();
-                    isCreated.set(true);
                 }
-            } finally {
-                lock.unlock();
             }
         }
+
         return instance;
     }
 
