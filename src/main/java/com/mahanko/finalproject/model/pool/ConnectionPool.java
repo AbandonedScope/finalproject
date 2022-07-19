@@ -13,8 +13,6 @@ import java.sql.SQLException;
 import java.util.Properties;
 import java.util.concurrent.BlockingDeque;
 import java.util.concurrent.LinkedBlockingDeque;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * The type ConnectionPool class. Announces two limited thread - safe queues
@@ -25,11 +23,9 @@ public class ConnectionPool {
     private static final int MAX_CONNECTIONS;
     private static final String DATABASE_DRIVER;
     private static final String URL;
-    private static final AtomicBoolean isCreated = new AtomicBoolean(false);
-    private static final ReentrantLock lock = new ReentrantLock(true);
     private static final Properties properties;
     private static final Logger logger = LogManager.getLogger();
-    private static ConnectionPool instance;
+    private static final ConnectionPool instance = new ConnectionPool();
     private final BlockingDeque<ProxyConnection> freeConnections = new LinkedBlockingDeque<>(MAX_CONNECTIONS);
     private final BlockingDeque<ProxyConnection> takenConnections = new LinkedBlockingDeque<>(MAX_CONNECTIONS);
 
@@ -66,17 +62,6 @@ public class ConnectionPool {
      * @return the connection pool
      */
     public static ConnectionPool getInstance() {
-        if (!isCreated.get()) {
-            lock.lock();
-            try {
-                if (instance == null) {
-                    instance = new ConnectionPool();
-                    isCreated.set(true);
-                }
-            } finally {
-                lock.unlock();
-            }
-        }
         return instance;
     }
 
